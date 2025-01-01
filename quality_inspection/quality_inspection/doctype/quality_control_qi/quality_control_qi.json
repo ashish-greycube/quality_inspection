@@ -1,0 +1,82 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2024-12-30 20:41:08.095302",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "date_of_inspection",
+  "flooring_class",
+  "column_break_fvru",
+  "vendor",
+  "section_break_zngt",
+  "quality_control_items"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "QC-YYYY-"
+  },
+  {
+   "default": "Today",
+   "fieldname": "date_of_inspection",
+   "fieldtype": "Date",
+   "label": "Date of Inspection"
+  },
+  {
+   "fieldname": "flooring_class",
+   "fieldtype": "Select",
+   "label": "Flooring Class",
+   "options": "\nHARDWOOD\nFLOORING\nLAMINATE FLOORING\nLVP & WPC"
+  },
+  {
+   "fieldname": "column_break_fvru",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "vendor",
+   "fieldtype": "Link",
+   "label": "Vendor",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "section_break_zngt",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "quality_control_items",
+   "fieldtype": "Table",
+   "label": "Quality Control Items",
+   "options": "Quality Control Items QI"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-12-30 23:55:42.410364",
+ "modified_by": "Administrator",
+ "module": "Quality Inspection",
+ "name": "Quality Control QI",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
