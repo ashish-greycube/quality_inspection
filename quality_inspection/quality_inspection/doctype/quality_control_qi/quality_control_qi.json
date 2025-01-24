@@ -8,11 +8,27 @@
  "field_order": [
   "naming_series",
   "date_of_inspection",
-  "flooring_class",
   "column_break_fvru",
   "vendor",
-  "section_break_zngt",
-  "quality_control_items"
+  "flooring_class",
+  "section_break_gvfx",
+  "quality_control_item",
+  "tab_2_tab",
+  "no_of_po",
+  "pallet_details",
+  "tab_3_tab",
+  "inner_and_outer_carton_details",
+  "tab_4_tab",
+  "color_match_and_embossing_details",
+  "tab_5_tab",
+  "over_wax_and_edge_paint",
+  "tab_6_tab",
+  "please_choose_the_equipment_in_use",
+  "moisture_content_details",
+  "tab_7_tab",
+  "open_box_inspection_details",
+  "tab_8_tab",
+  "width_and_thickness_details"
  ],
  "fields": [
   {
@@ -44,19 +60,107 @@
    "options": "Supplier"
   },
   {
-   "fieldname": "section_break_zngt",
+   "fieldname": "tab_2_tab",
+   "fieldtype": "Tab Break",
+   "label": "Pallet Information"
+  },
+  {
+   "fieldname": "no_of_po",
+   "fieldtype": "Int",
+   "label": "No of PO"
+  },
+  {
+   "fieldname": "pallet_details",
+   "fieldtype": "Table",
+   "label": "Pallet Details",
+   "options": "Pallet Information QI"
+  },
+  {
+   "fieldname": "tab_3_tab",
+   "fieldtype": "Tab Break",
+   "label": "Inner and Outer Carton"
+  },
+  {
+   "fieldname": "inner_and_outer_carton_details",
+   "fieldtype": "Table",
+   "label": "Inner and Outer Carton Details",
+   "options": "Inner and Outer Carton Details QI"
+  },
+  {
+   "fieldname": "tab_4_tab",
+   "fieldtype": "Tab Break",
+   "label": "Color Match & Embossing"
+  },
+  {
+   "fieldname": "color_match_and_embossing_details",
+   "fieldtype": "Table",
+   "label": "Color Match and Embossing Details",
+   "options": "Color Match and Embossing Details Ql"
+  },
+  {
+   "fieldname": "tab_5_tab",
+   "fieldtype": "Tab Break",
+   "label": "Over Wax and Edge Paint"
+  },
+  {
+   "fieldname": "over_wax_and_edge_paint",
+   "fieldtype": "Table",
+   "label": "Over Wax and Edge Paint",
+   "options": "Over Wax and Edge Paint Ql"
+  },
+  {
+   "fieldname": "tab_6_tab",
+   "fieldtype": "Tab Break",
+   "label": "Moisture Content"
+  },
+  {
+   "fieldname": "moisture_content_details",
+   "fieldtype": "Table",
+   "label": "Moisture Content Details",
+   "options": "Moisture Content Details QI"
+  },
+  {
+   "fieldname": "please_choose_the_equipment_in_use",
+   "fieldtype": "Select",
+   "label": "Please choose the equipment in use",
+   "options": "Pin Meter\nSurface Meter"
+  },
+  {
+   "fieldname": "tab_7_tab",
+   "fieldtype": "Tab Break",
+   "label": "Open Box Inspection"
+  },
+  {
+   "fieldname": "open_box_inspection_details",
+   "fieldtype": "Table",
+   "label": "Open Box Inspection Details",
+   "options": "Open Box Inspection Details QI"
+  },
+  {
+   "fieldname": "tab_8_tab",
+   "fieldtype": "Tab Break",
+   "label": "Width And Thickness"
+  },
+  {
+   "fieldname": "width_and_thickness_details",
+   "fieldtype": "Table",
+   "label": "Width And Thickness Details",
+   "options": "Width And Thickness Details QI"
+  },
+  {
+   "fieldname": "section_break_gvfx",
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "quality_control_items",
+   "fieldname": "quality_control_item",
    "fieldtype": "Table",
-   "label": "Quality Control Items",
-   "options": "Quality Control Items QI"
+   "label": "Quality Control Item",
+   "options": "Quality Control Item QI"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-12-30 23:55:42.410364",
+ "modified": "2025-01-23 18:54:17.767383",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Quality Control QI",

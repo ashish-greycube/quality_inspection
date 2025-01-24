@@ -1,0 +1,66 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-01-22 01:16:08.354683",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "width",
+  "thickness_without_padding",
+  "thickness_with_padding",
+  "master_sample_and_matching_board",
+  "manual_pull_test",
+  "manual_select"
+ ],
+ "fields": [
+  {
+   "fieldname": "width",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Width"
+  },
+  {
+   "fieldname": "thickness_without_padding",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Thickness Without Padding"
+  },
+  {
+   "fieldname": "thickness_with_padding",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Thickness With Padding"
+  },
+  {
+   "fieldname": "master_sample_and_matching_board",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Master Sample and Matching Board"
+  },
+  {
+   "fieldname": "manual_pull_test",
+   "fieldtype": "Button",
+   "in_list_view": 1,
+   "label": "Manual Pull Test"
+  },
+  {
+   "fieldname": "manual_select",
+   "fieldtype": "Select",
+   "label": "Manual Select",
+   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-01-22 01:19:18.296943",
+ "modified_by": "Administrator",
+ "module": "Quality Inspection",
+ "name": "Width And Thickness Details QI",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

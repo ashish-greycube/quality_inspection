@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../../apps/quality_inspection/quality_inspection/public/js/override.js"],
+  "sourcesContent": ["frappe.provide(\"frappe.ui.form\");\n\nclass QuaGridRow extends frappe.ui.form.GridRow {\n    make() {\n        console.log(\"--------QuaGridRow\");\n    }\n}"],
+  "mappings": ";;AAAA,SAAO,QAAQ,gBAAgB;AAE/B,MAAM,aAAN,cAAyB,OAAO,GAAG,KAAK,QAAQ;AAAA,IAC5C,OAAO;AACH,cAAQ,IAAI,oBAAoB;AAAA,IACpC;AAAA,EACJ;",
+  "names": []
+}
