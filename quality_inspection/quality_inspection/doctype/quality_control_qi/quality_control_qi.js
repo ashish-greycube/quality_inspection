@@ -12,31 +12,54 @@ frappe.ui.form.on("Quality Control QI", {
                     frappe.throw("Please select vendor first!")
                 }
                 else {
-                    let d = erpnext.utils.map_current_doc({
-                        method: "quality_inspection.quality_inspection.doctype.quality_control_qi.quality_control_qi.make_quality_inspection_order",
-                        source_doctype: "TAS Purchase Order",
-                        target: frm,
-                        setters: [
-                            {
-                                label: "Vendor",
-                                fieldname: "vendor",
-                                fieldtype: "Link",
-                                options: "Supplier",
-                                default: frm.doc.vendor || undefined,
-                            },
-                                
-                        ],
-                        get_query_filters: {
-                            vendor: frm.doc.vendor,
-                            docstatus: 0,
-                            // status: ["!=", "Lost"],
+                    new frappe.ui.form.MultiSelectDialog({
+                        doctype: "TAS Purchase Order",
+                        target: cur_frm,
+                        setters: {
+                            vendor: frm.doc.vendor || undefined,
                         },
-                        allow_child_item_selection: true,
+                        add_filters_group: 1,
+                        // date_field: "transaction_date",
+                        allow_child_item_selection: 1,
                         child_fieldname: "items",
-                        child_columns: ["item_no", "qty", "color"],
-                    });
+                        child_columns:  ["item_no", "qty", "color"],
+                        // get_query() {
+                        //     return {
+                        //         filters: { docstatus: ['!=', 2] }
+                        //     }
+                        // },
+                        action(selections, args) {
+                            if (args.filtered_children.length > 0 && selections.length > 0){
+                                frappe
+                                .call({
+                                    method: "make_quality_control_item_using_tas_po_items",
+                                    doc: frm.doc,
+                                    args: args.filtered_children,
+                                })
+                                .then(() => {
+                                    console.log("--data--")
+                                    refresh_field("quality_control_item");
+                                });
+                            }
+                            else if (selections.length > 0){
+                                frappe
+                                .call({
+                                    method: "make_quality_control_item_using_tas_po",
+                                    doc: frm.doc,
+                                    args: selections,
+                                })
+                                .then(() => {
+                                    console.log("--data11111111--")
+                                    refresh_field("quality_control_item");
+                                });
+                            }
 
-                    console.log(d, '=====d')
+				            cur_dialog.hide();
+                            console.log(selections, '====selections')
+                            console.log(args, '====args')
+                            // console.log(args.filtered_children); // list of selected item names
+                        }
+                    });
 
                     // setTimeout(() => {
                     //     d.$parent.append(`
@@ -52,10 +75,15 @@ frappe.ui.form.on("Quality Control QI", {
     },
 
     // onload: function (frm) {
-    //     setInterval(() => {
+    //     let a = setInterval(() => {
     //         console.log("-----interval--------")
-    //         frm.fields_dict.pallet_details.grid.wrapper.find('.editable-row').click()
+    //         if(frm.fields_dict.pallet_details.grid.wrapper.find('.editable-row').length > 0){
+    //             frm.fields_dict.pallet_details.grid.wrapper.find('.editable-row').click()
+    //             clearInterval(a);
+    //         }
+
     //     }, 100);
+        
     // }
 });
 
@@ -64,7 +92,7 @@ frappe.ui.form.on("Pallet Information QI", {
     pallet_details_add: function (frm, cdt, cdn) {
         setTimeout(() => {
             console.log("click")
-            frm.fields_dict.pallet_details.grid.wrapper.find('[data-fieldname="status"].col').click()
+            frm.fields_dict.pallet_details.grid.wrapper.find('.editable-row').click()
         }, 100);
 
         set_button_color_in_pallet_info(frm, cdt, cdn)

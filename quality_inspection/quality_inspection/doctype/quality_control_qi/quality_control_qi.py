@@ -6,17 +6,71 @@ from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
 
 class QualityControlQI(Document):
-	pass
+	@frappe.whitelist()
+	def make_quality_control_item_using_tas_po_items(self, items):
+		if items:
+			tas_po_list = frappe.db.get_list(
+				"TAS Purchase Order Item",
+				parent_doctype="TAS Purchase Order",
+				filters={"name": ["in", items]},
+				fields=["name", "parent", "item_no", "item_desc", "qty", "color", "cost"],
+			)
+
+			self.quality_control_item = []
+
+			for item in tas_po_list:
+				self.append(
+					"quality_control_item",
+					{
+						"item": item.item_no,
+						"item_name": item.item_desc,
+						"qty": item.qty,
+						"color": item.color,
+						"amount": item.cost,
+						"tas_po_ref": item.parent,
+					},
+				)
+
+		print(items, "=======tas_po========")
+		print(tas_po_list, "=======tas_po_list========")
+		return self
+	
+	@frappe.whitelist()
+	def make_quality_control_item_using_tas_po(self, tas_po):
+		if tas_po:
+			tas_po_list = frappe.db.get_list(
+				"TAS Purchase Order",
+				filters={"name": ["in", tas_po]},
+				fields=["name"],
+			)
+			print(tas_po, "=======tas_po========")
+			print(tas_po_list, "=======tas_po_list========")
+
+			self.quality_control_item = []
+			for po in tas_po_list:
+				po_doc = frappe.get_doc("TAS Purchase Order", po.name)
+
+				for item in po_doc.items:
+					print(item.item_no, "=======item========")
+					self.append(
+						"quality_control_item",
+					{
+						"item": item.item_no,
+						"item_name": item.item_desc,
+						"qty": item.qty,
+						"color": item.color,
+						"amount": item.cost,
+						"tas_po_ref": item.parent,
+					},
+					)
+
+		return self
 
 @frappe.whitelist()
-def make_quality_inspection_order(source_name,target_doc=None, ignore_permissions=False, args=None):
-	if args is None:
-		args = {}
-	# if isinstance(args, str):
-	# 	args = json.loads(args)
+def make_quality_inspection_order(source_name,target_doc=None, ignore_permissions=False):
 
-	def postprocess(source, target):
-		doc = frappe.get_doc('TAS Purchase Order', source_name)
+	# def postprocess(source, target):
+		# doc = frappe.get_doc('TAS Purchase Order', source_name)
 
 		# supplier_items = []
 		# for d in target.quality_control_item:
@@ -31,25 +85,15 @@ def make_quality_inspection_order(source_name,target_doc=None, ignore_permission
 		# 	row.qty = item.qty
 		# 	row.color = item.color
 		# 	row.amount = item.cost
-
-	def select_item(d):
-		filtered_items = args.get("filtered_children", [])
-		print(filtered_items, "====filtered_items===")
-		child_filter = d.name in filtered_items if filtered_items else True
-		print(d.name, "====d.name===")
-		print(child_filter, "====child_filter===")
-		# qty = d.received_qty or d.ordered_qty
-
-		return child_filter
 	
-	print(select_item, "====select_item===")
-
 	doclist = get_mapped_doc(
-		"TAS Purchase Order",
-		source_name,
-		{
+		from_doctype="TAS Purchase Order",
+		from_docname=source_name,
+		target_doc=target_doc,
+		table_maps={
 			"TAS Purchase Order": {
 				"doctype": "Quality Control QI",
+				"field_map": [["name","tas_po_ref"]],
 			},
 			"TAS Purchase Order Item": {
 				"doctype": "Quality Control Item QI",
@@ -59,13 +103,12 @@ def make_quality_inspection_order(source_name,target_doc=None, ignore_permission
 					["qty", "qty"],
 					["color", "color"],
 					["cost", "amount"],
+					["parent", "tas_po_ref"],
 				],
 				# "condition": lambda doc: len(doc.name) < 0,
-				"condition": select_item,
+				"condition": lambda doc: doc.qty > 0,
 			},
 		},
-		target_doc,
-		postprocess,
 		ignore_permissions=ignore_permissions,
 	)
 
