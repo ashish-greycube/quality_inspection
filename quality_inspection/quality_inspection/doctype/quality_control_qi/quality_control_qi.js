@@ -3,8 +3,9 @@
 
 frappe.ui.form.on("Quality Control QI", {
     refresh(frm) {
-   
-        set_button_color_in_pallet_info(frm)
+        // draw_html(frm)
+
+        // set_button_color_in_pallet_info(frm)
         if (!frm.is_new()) {
             frm.add_custom_button(__("TAS Po"), function () {
 
@@ -38,7 +39,7 @@ frappe.ui.form.on("Quality Control QI", {
                                 })
                                 .then(() => {
                                     console.log("--data--")
-                                    refresh_field("quality_control_item");
+                                    refresh_field("tas_po_name_1");
                                 });
                             }
                             else if (selections.length > 0){
@@ -50,7 +51,7 @@ frappe.ui.form.on("Quality Control QI", {
                                 })
                                 .then(() => {
                                     console.log("--data11111111--")
-                                    refresh_field("quality_control_item");
+                                    refresh_field("quality_control_item_1");
                                 });
                             }
 
@@ -74,18 +75,35 @@ frappe.ui.form.on("Quality Control QI", {
         }
     },
 
-    // onload: function (frm) {
-    //     let a = setInterval(() => {
-    //         console.log("-----interval--------")
-    //         if(frm.fields_dict.pallet_details.grid.wrapper.find('.editable-row').length > 0){
-    //             frm.fields_dict.pallet_details.grid.wrapper.find('.editable-row').click()
-    //             clearInterval(a);
-    //         }
+    onload: function (frm) {
+        draw_html(frm)
+        // let a = setInterval(() => {
+        //     console.log("-----interval--------")
+        //     if(frm.fields_dict.pallet_details.grid.wrapper.find('.editable-row').length > 0){
+        //         frm.fields_dict.pallet_details.grid.wrapper.find('.editable-row').click()
+        //         clearInterval(a);
+        //     }
 
-    //     }, 100);
+        // }, 100);
         
-    // }
+    }
 });
+
+
+let draw_html = function(frm){
+    console.log('draw_html')
+    if (
+        frm.fields_dict["pallet"] &&
+        frm.is_new() == undefined &&
+        frm.doc.__onload && "pallet_html" in frm.doc.__onload
+    ) {
+        frm.set_df_property('pallet', 'options', frm.doc.__onload.pallet_html)
+        frm.refresh_field('pallet')
+    }else{
+        frm.set_df_property('pallet', 'options', "<div><div>")
+        frm.refresh_field('pallet')         
+    }
+}
 
 
 frappe.ui.form.on("Pallet Information QI", {

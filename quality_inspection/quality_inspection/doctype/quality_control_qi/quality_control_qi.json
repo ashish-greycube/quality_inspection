@@ -12,14 +12,71 @@
   "vendor",
   "flooring_class",
   "section_break_gvfx",
-  "quality_control_item",
-  "tab_2_tab",
   "no_of_po",
-  "pallet_details",
+  "tas_po_name_1",
+  "quality_control_item_1",
+  "tas_po_name_2",
+  "quality_control_item_2",
+  "tas_po_name_3",
+  "quality_control_item_3",
+  "tas_po_name_4",
+  "quality_control_item_4",
+  "tas_po_name_5",
+  "quality_control_item_5",
+  "tas_po_name_6",
+  "quality_control_item_6",
+  "tas_po_name_7",
+  "quality_control_item_7",
+  "tas_po_name_8",
+  "quality_control_item_8",
+  "tas_po_name_9",
+  "quality_control_item_9",
+  "tas_po_name_10",
+  "quality_control_item_10",
+  "tab_2_tab",
+  "pallet",
+  "po_1",
+  "pallet_details_1",
+  "po_2",
+  "pallet_details_2",
+  "po_3",
+  "pallet_details_3",
+  "po_4",
+  "pallet_details_4",
+  "po_5",
+  "pallet_details_5",
+  "po_6",
+  "pallet_details_6",
+  "po_7",
+  "pallet_details_7",
+  "po_8",
+  "pallet_details_8",
+  "po_9",
+  "pallet_details_9",
+  "po_10",
+  "pallet_details_10",
   "tab_3_tab",
-  "inner_and_outer_carton_details",
+  "inner_and_outer_carton_details_1",
+  "inner_and_outer_carton_details_2",
+  "inner_and_outer_carton_details_3",
+  "inner_and_outer_carton_details_4",
+  "inner_and_outer_carton_details_5",
+  "inner_and_outer_carton_details_6",
+  "inner_and_outer_carton_details_7",
+  "inner_and_outer_carton_details_8",
+  "inner_and_outer_carton_details_9",
+  "inner_and_outer_carton_details_10",
   "tab_4_tab",
-  "color_match_and_embossing_details",
+  "color_match_and_embossing_details_1",
+  "color_match_and_embossing_details_2",
+  "color_match_and_embossing_details_3",
+  "color_match_and_embossing_details_4",
+  "color_match_and_embossing_details_5",
+  "color_match_and_embossing_details_6",
+  "color_match_and_embossing_details_7",
+  "color_match_and_embossing_details_8",
+  "color_match_and_embossing_details_9",
+  "color_match_and_embossing_details_10",
   "tab_5_tab",
   "over_wax_and_edge_paint",
   "tab_6_tab",
@@ -70,32 +127,14 @@
    "label": "No of PO"
   },
   {
-   "fieldname": "pallet_details",
-   "fieldtype": "Table",
-   "label": "Pallet Details",
-   "options": "Pallet Information QI"
-  },
-  {
    "fieldname": "tab_3_tab",
    "fieldtype": "Tab Break",
    "label": "Inner and Outer Carton"
   },
   {
-   "fieldname": "inner_and_outer_carton_details",
-   "fieldtype": "Table",
-   "label": "Inner and Outer Carton Details",
-   "options": "Inner and Outer Carton Details QI"
-  },
-  {
    "fieldname": "tab_4_tab",
    "fieldtype": "Tab Break",
    "label": "Color Match & Embossing"
-  },
-  {
-   "fieldname": "color_match_and_embossing_details",
-   "fieldtype": "Table",
-   "label": "Color Match and Embossing Details",
-   "options": "Color Match and Embossing Details Ql"
   },
   {
    "fieldname": "tab_5_tab",
@@ -152,15 +191,424 @@
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "quality_control_item",
+   "fieldname": "pallet",
+   "fieldtype": "HTML",
+   "label": "pallet"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>0",
+   "fieldname": "quality_control_item_1",
    "fieldtype": "Table",
    "label": "Quality Control Item",
    "options": "Quality Control Item QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>1",
+   "fieldname": "quality_control_item_2",
+   "fieldtype": "Table",
+   "label": "Quality Control Item",
+   "options": "Quality Control Item QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>2",
+   "fieldname": "quality_control_item_3",
+   "fieldtype": "Table",
+   "label": "Quality Control Item",
+   "options": "Quality Control Item QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>3",
+   "fieldname": "quality_control_item_4",
+   "fieldtype": "Table",
+   "label": "Quality Control Item",
+   "options": "Quality Control Item QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>4",
+   "fieldname": "quality_control_item_5",
+   "fieldtype": "Table",
+   "label": "Quality Control Item",
+   "options": "Quality Control Item QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>5",
+   "fieldname": "quality_control_item_6",
+   "fieldtype": "Table",
+   "label": "Quality Control Item",
+   "options": "Quality Control Item QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>6",
+   "fieldname": "quality_control_item_7",
+   "fieldtype": "Table",
+   "label": "Quality Control Item",
+   "options": "Quality Control Item QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>7",
+   "fieldname": "quality_control_item_8",
+   "fieldtype": "Table",
+   "label": "Quality Control Item",
+   "options": "Quality Control Item QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>8",
+   "fieldname": "quality_control_item_9",
+   "fieldtype": "Table",
+   "label": "Quality Control Item",
+   "options": "Quality Control Item QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>9",
+   "fieldname": "quality_control_item_10",
+   "fieldtype": "Table",
+   "label": "Quality Control Item",
+   "options": "Quality Control Item QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>0",
+   "fieldname": "pallet_details_1",
+   "fieldtype": "Table",
+   "label": "Pallet Details",
+   "options": "Pallet Information QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>1",
+   "fieldname": "pallet_details_2",
+   "fieldtype": "Table",
+   "label": "Pallet Details",
+   "options": "Pallet Information QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>2",
+   "fieldname": "pallet_details_3",
+   "fieldtype": "Table",
+   "label": "Pallet Details",
+   "options": "Pallet Information QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>3",
+   "fieldname": "pallet_details_4",
+   "fieldtype": "Table",
+   "label": "Pallet Details",
+   "options": "Pallet Information QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>4",
+   "fieldname": "pallet_details_5",
+   "fieldtype": "Table",
+   "label": "Pallet Details",
+   "options": "Pallet Information QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>5",
+   "fieldname": "pallet_details_6",
+   "fieldtype": "Table",
+   "label": "Pallet Details",
+   "options": "Pallet Information QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>6",
+   "fieldname": "pallet_details_7",
+   "fieldtype": "Table",
+   "label": "Pallet Details",
+   "options": "Pallet Information QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>7",
+   "fieldname": "pallet_details_8",
+   "fieldtype": "Table",
+   "label": "Pallet Details",
+   "options": "Pallet Information QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>8",
+   "fieldname": "pallet_details_9",
+   "fieldtype": "Table",
+   "label": "Pallet Details",
+   "options": "Pallet Information QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>9",
+   "fieldname": "pallet_details_10",
+   "fieldtype": "Table",
+   "label": "Pallet Details",
+   "options": "Pallet Information QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>0",
+   "fieldname": "tas_po_name_1",
+   "fieldtype": "Data",
+   "label": "tas_po_name_1",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>1",
+   "fieldname": "tas_po_name_2",
+   "fieldtype": "Data",
+   "label": "tas_po_name_2",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>2",
+   "fieldname": "tas_po_name_3",
+   "fieldtype": "Data",
+   "label": "tas_po_name_3",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>3",
+   "fieldname": "tas_po_name_4",
+   "fieldtype": "Data",
+   "label": "tas_po_name_4",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>4",
+   "fieldname": "tas_po_name_5",
+   "fieldtype": "Data",
+   "label": "tas_po_name_5",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>5",
+   "fieldname": "tas_po_name_6",
+   "fieldtype": "Data",
+   "label": "tas_po_name_6",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>6",
+   "fieldname": "tas_po_name_7",
+   "fieldtype": "Data",
+   "label": "tas_po_name_7",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>7",
+   "fieldname": "tas_po_name_8",
+   "fieldtype": "Data",
+   "label": "tas_po_name_8",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>8",
+   "fieldname": "tas_po_name_9",
+   "fieldtype": "Data",
+   "label": "tas_po_name_9",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>9",
+   "fieldname": "tas_po_name_10",
+   "fieldtype": "Data",
+   "label": "tas_po_name_10",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>0",
+   "fieldname": "po_1",
+   "fieldtype": "Data",
+   "label": "Po_1"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>1",
+   "fieldname": "po_2",
+   "fieldtype": "Data",
+   "label": "Po_2"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>2",
+   "fieldname": "po_3",
+   "fieldtype": "Data",
+   "label": "po_3"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>3",
+   "fieldname": "po_4",
+   "fieldtype": "Data",
+   "label": "Po_4"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>4",
+   "fieldname": "po_5",
+   "fieldtype": "Data",
+   "label": "Po_5"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>5",
+   "fieldname": "po_6",
+   "fieldtype": "Data",
+   "label": "Po_6"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>6",
+   "fieldname": "po_7",
+   "fieldtype": "Data",
+   "label": "Po_7"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>7",
+   "fieldname": "po_8",
+   "fieldtype": "Data",
+   "label": "Po_8"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>8",
+   "fieldname": "po_9",
+   "fieldtype": "Data",
+   "label": "Po_9"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>9",
+   "fieldname": "po_10",
+   "fieldtype": "Data",
+   "label": "Po_10"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>0",
+   "fieldname": "inner_and_outer_carton_details_1",
+   "fieldtype": "Table",
+   "label": "Inner and Outer Carton Details",
+   "options": "Inner and Outer Carton Details QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>1",
+   "fieldname": "inner_and_outer_carton_details_2",
+   "fieldtype": "Table",
+   "label": "Inner and Outer Carton Details",
+   "options": "Inner and Outer Carton Details QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>2",
+   "fieldname": "inner_and_outer_carton_details_3",
+   "fieldtype": "Table",
+   "label": "Inner and Outer Carton Details",
+   "options": "Inner and Outer Carton Details QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>3",
+   "fieldname": "inner_and_outer_carton_details_4",
+   "fieldtype": "Table",
+   "label": "Inner and Outer Carton Details",
+   "options": "Inner and Outer Carton Details QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>4",
+   "fieldname": "inner_and_outer_carton_details_5",
+   "fieldtype": "Table",
+   "label": "Inner and Outer Carton Details",
+   "options": "Inner and Outer Carton Details QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>5",
+   "fieldname": "inner_and_outer_carton_details_6",
+   "fieldtype": "Table",
+   "label": "Inner and Outer Carton Details",
+   "options": "Inner and Outer Carton Details QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>6",
+   "fieldname": "inner_and_outer_carton_details_7",
+   "fieldtype": "Table",
+   "label": "Inner and Outer Carton Details",
+   "options": "Inner and Outer Carton Details QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>7",
+   "fieldname": "inner_and_outer_carton_details_8",
+   "fieldtype": "Table",
+   "label": "Inner and Outer Carton Details",
+   "options": "Inner and Outer Carton Details QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>8",
+   "fieldname": "inner_and_outer_carton_details_9",
+   "fieldtype": "Table",
+   "label": "Inner and Outer Carton Details",
+   "options": "Inner and Outer Carton Details QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>9",
+   "fieldname": "inner_and_outer_carton_details_10",
+   "fieldtype": "Table",
+   "label": "Inner and Outer Carton Details",
+   "options": "Inner and Outer Carton Details QI"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>0",
+   "fieldname": "color_match_and_embossing_details_1",
+   "fieldtype": "Table",
+   "label": "Color Match and Embossing Details",
+   "options": "Color Match and Embossing Details Ql"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>1",
+   "fieldname": "color_match_and_embossing_details_2",
+   "fieldtype": "Table",
+   "label": "Color Match and Embossing Details",
+   "options": "Color Match and Embossing Details Ql"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>2",
+   "fieldname": "color_match_and_embossing_details_3",
+   "fieldtype": "Table",
+   "label": "Color Match and Embossing Details",
+   "options": "Color Match and Embossing Details Ql"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>3",
+   "fieldname": "color_match_and_embossing_details_4",
+   "fieldtype": "Table",
+   "label": "Color Match and Embossing Details",
+   "options": "Color Match and Embossing Details Ql"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>4",
+   "fieldname": "color_match_and_embossing_details_5",
+   "fieldtype": "Table",
+   "label": "Color Match and Embossing Details",
+   "options": "Color Match and Embossing Details Ql"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>5",
+   "fieldname": "color_match_and_embossing_details_6",
+   "fieldtype": "Table",
+   "label": "Color Match and Embossing Details",
+   "options": "Color Match and Embossing Details Ql"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>6",
+   "fieldname": "color_match_and_embossing_details_7",
+   "fieldtype": "Table",
+   "label": "Color Match and Embossing Details",
+   "options": "Color Match and Embossing Details Ql"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>7",
+   "fieldname": "color_match_and_embossing_details_8",
+   "fieldtype": "Table",
+   "label": "Color Match and Embossing Details",
+   "options": "Color Match and Embossing Details Ql"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>8",
+   "fieldname": "color_match_and_embossing_details_9",
+   "fieldtype": "Table",
+   "label": "Color Match and Embossing Details",
+   "options": "Color Match and Embossing Details Ql"
+  },
+  {
+   "depends_on": "eval:doc.no_of_po>9",
+   "fieldname": "color_match_and_embossing_details_10",
+   "fieldtype": "Table",
+   "label": "Color Match and Embossing Details",
+   "options": "Color Match and Embossing Details Ql"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-01-26 21:09:08.855816",
+ "modified": "2025-02-05 18:00:47.594694",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Quality Control QI",
