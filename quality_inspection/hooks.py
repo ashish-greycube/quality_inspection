@@ -86,6 +86,7 @@ app_include_js = "override.bundle.js"
 
 # before_install = "quality_inspection.install.before_install"
 # after_install = "quality_inspection.install.after_install"
+after_migrate = "quality_inspection.migrate.after_migrate"
 
 # Uninstallation
 # ------------

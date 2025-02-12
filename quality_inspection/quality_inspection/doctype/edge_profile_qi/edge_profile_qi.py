@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class QualityAssuranceSettingsTAS(Document):
+class EdgeProfileQI(Document):
 	pass

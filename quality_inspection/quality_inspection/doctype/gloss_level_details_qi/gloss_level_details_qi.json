@@ -6,10 +6,38 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "item_color",
+  "column_break_wxff",
   "master_sample",
-  "finished_board",
-  "results",
-  "results_select"
+  "master_gl",
+  "section_break_thrd",
+  "finished_board_1",
+  "column_break_msgs",
+  "fb_gl_1",
+  "column_break_pbok",
+  "results_1",
+  "results_select_1",
+  "section_break_codi",
+  "finished_board_2",
+  "column_break_erqq",
+  "fb_gl_2",
+  "column_break_otyj",
+  "results_2",
+  "results_select_2",
+  "section_break_rzfd",
+  "finished_board_3",
+  "column_break_kqil",
+  "fb_gl_3",
+  "column_break_zypg",
+  "results_3",
+  "results_select_3",
+  "section_break_oott",
+  "finished_board_4",
+  "column_break_uwpj",
+  "fb_gl_4",
+  "column_break_nglr",
+  "results_4",
+  "results_select_4"
  ],
  "fields": [
   {
@@ -19,19 +47,157 @@
    "label": "Master Sample"
   },
   {
-   "fieldname": "finished_board",
+   "fieldname": "item_color",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Item Color"
+  },
+  {
+   "fieldname": "column_break_wxff",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "master_gl",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Master Gloss Level"
+  },
+  {
+   "description": "Reading from finished board that matches master sample",
+   "fieldname": "section_break_thrd",
+   "fieldtype": "Section Break",
+   "label": "Sample 1"
+  },
+  {
+   "fieldname": "finished_board_1",
    "fieldtype": "Attach",
    "in_list_view": 1,
    "label": "Finished Board"
   },
   {
-   "fieldname": "results",
+   "fieldname": "column_break_msgs",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "fb_gl_1",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Gloss Level"
+  },
+  {
+   "fieldname": "column_break_pbok",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "results_1",
    "fieldtype": "Button",
    "in_list_view": 1,
    "label": "Results"
   },
   {
-   "fieldname": "results_select",
+   "fieldname": "results_select_1",
+   "fieldtype": "Select",
+   "label": "Results Select",
+   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
+  },
+  {
+   "description": "Highest reading found on the finished board used for (1)",
+   "fieldname": "section_break_codi",
+   "fieldtype": "Section Break",
+   "label": "Sample 2"
+  },
+  {
+   "fieldname": "finished_board_2",
+   "fieldtype": "Attach"
+  },
+  {
+   "fieldname": "column_break_erqq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "fb_gl_2",
+   "fieldtype": "Float",
+   "label": "Gloss Level"
+  },
+  {
+   "fieldname": "column_break_otyj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "results_2",
+   "fieldtype": "Button",
+   "label": "Results"
+  },
+  {
+   "fieldname": "results_select_2",
+   "fieldtype": "Select",
+   "label": "Results Select",
+   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
+  },
+  {
+   "description": "Lowest reading found on the finished board used for (1)",
+   "fieldname": "section_break_rzfd",
+   "fieldtype": "Section Break",
+   "label": "Sample 3"
+  },
+  {
+   "fieldname": "finished_board_3",
+   "fieldtype": "Attach"
+  },
+  {
+   "fieldname": "column_break_kqil",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "fb_gl_3",
+   "fieldtype": "Float",
+   "label": "Gloss Level"
+  },
+  {
+   "fieldname": "column_break_zypg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "results_3",
+   "fieldtype": "Button",
+   "label": "Results"
+  },
+  {
+   "fieldname": "results_select_3",
+   "fieldtype": "Select",
+   "label": "Results Select",
+   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
+  },
+  {
+   "description": "2 average readings from 2 different planks",
+   "fieldname": "section_break_oott",
+   "fieldtype": "Section Break",
+   "label": "Sample 4"
+  },
+  {
+   "fieldname": "finished_board_4",
+   "fieldtype": "Attach"
+  },
+  {
+   "fieldname": "column_break_uwpj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "fb_gl_4",
+   "fieldtype": "Float",
+   "label": "Gloss Level"
+  },
+  {
+   "fieldname": "column_break_nglr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "results_4",
+   "fieldtype": "Button",
+   "label": "Results"
+  },
+  {
+   "fieldname": "results_select_4",
    "fieldtype": "Select",
    "label": "Results Select",
    "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
@@ -40,7 +206,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-01-20 20:28:50.170445",
+ "modified": "2025-02-11 02:29:42.857447",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Gloss Level Details QI",

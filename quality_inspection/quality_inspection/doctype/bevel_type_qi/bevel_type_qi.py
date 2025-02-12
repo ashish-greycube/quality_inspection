@@ -1,9 +1,9 @@
-# Copyright (c) 2024, GreyCube Technologies and contributors
+# Copyright (c) 2025, GreyCube Technologies and contributors
 # For license information, please see license.txt
 
 # import frappe
 from frappe.model.document import Document
 
 
-class PalletTypeTAS(Document):
+class BevelTypeQI(Document):
 	pass

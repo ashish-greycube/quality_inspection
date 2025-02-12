@@ -3,9 +3,8 @@
 
 frappe.ui.form.on("Quality Control QI", {
     refresh(frm) {
-        // draw_html(frm)
 
-        // set_button_color_in_pallet_info(frm)
+        set_button_color_in_pallet_info(frm)
         if (!frm.is_new()) {
             frm.add_custom_button(__("TAS Po"), function () {
 
@@ -76,7 +75,7 @@ frappe.ui.form.on("Quality Control QI", {
     },
 
     onload: function (frm) {
-        draw_html(frm)
+        set_html_details(frm)
         // let a = setInterval(() => {
         //     console.log("-----interval--------")
         //     if(frm.fields_dict.pallet_details.grid.wrapper.find('.editable-row').length > 0){
@@ -89,20 +88,32 @@ frappe.ui.form.on("Quality Control QI", {
     }
 });
 
-
-let draw_html = function(frm){
-    console.log('draw_html')
+let make_html =  function(frm, field_name, html_details){
     if (
-        frm.fields_dict["pallet"] &&
+        frm.fields_dict[field_name] &&
         frm.is_new() == undefined &&
-        frm.doc.__onload && "pallet_html" in frm.doc.__onload
+        frm.doc.__onload && html_details in frm.doc.__onload
     ) {
-        frm.set_df_property('pallet', 'options', frm.doc.__onload.pallet_html)
-        frm.refresh_field('pallet')
+        frm.set_df_property(field_name, 'options', frm.doc.__onload[html_details])
+        frm.refresh_field(field_name)
     }else{
-        frm.set_df_property('pallet', 'options', "<div><div>")
-        frm.refresh_field('pallet')         
+        frm.set_df_property(field_name, 'options', "<div><div>")
+        frm.refresh_field(field_name)
     }
+}
+
+
+let set_html_details = function(frm){
+
+    make_html(frm, "pallet", "pallet_html")
+    make_html(frm, "inner", "inner_outer_html")
+    make_html(frm, "color", "color_match_html")
+    make_html(frm, "over_wax", "over_wax_html")
+    make_html(frm, "gloss_level", "gloss_level_html")
+    make_html(frm, "moisture", "moisture_html")
+    make_html(frm, "open_box", "open_box_html")
+    make_html(frm, "width_thick", "width_thickness_html")
+    
 }
 
 

@@ -1,8 +1,7 @@
-<p>This section requires e.g. 5 attachments, Attached: 2 Pending 3 <br>
-Pass Ratio: 90% <br>
-Fail Ratio: 10%
-<br>
-Equipment in use: LOV</p>
-<h4>
-    Pallet Default Value : {{ minimum }}
-</h4>
+<p>This section requires e.g. {{total_attach}} attachments, Attached: {{total_attach - pending}} Pending {{pending}} <br>
+Pass Ration: {{pass_ration}} % <br>
+Fail Ration: {{100 - pass_ration}} %</p>
+
+{% if color %}
+Color: {{color}}
+{% endif %}

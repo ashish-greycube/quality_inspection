@@ -6,6 +6,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "item_color",
   "master_sample",
   "finished_board",
   "results",
@@ -49,12 +50,18 @@
    "fieldtype": "Select",
    "label": "Embossing Select",
    "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
+  },
+  {
+   "fieldname": "item_color",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Item Color"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-01-20 19:34:33.856662",
+ "modified": "2025-02-07 00:14:35.819788",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Color Match and Embossing Details Ql",

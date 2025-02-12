@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestPalletTypeTAS(FrappeTestCase):
+class TestPalletTypeQI(FrappeTestCase):
 	pass

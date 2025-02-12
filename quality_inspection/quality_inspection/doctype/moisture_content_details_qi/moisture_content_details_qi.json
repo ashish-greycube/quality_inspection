@@ -6,14 +6,39 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "item_color",
   "master_sample",
+  "column_break_blmr",
   "default_moisture",
   "current_moisture",
-  "finished_board",
-  "default",
-  "current",
-  "results",
-  "results_select"
+  "section_break_mbdg",
+  "finished_board_1",
+  "column_break_huof",
+  "current_1",
+  "column_break_hpnj",
+  "results_1",
+  "results_select_1",
+  "section_break_nmzn",
+  "finished_board_2",
+  "column_break_fgmf",
+  "current_2",
+  "column_break_xtpj",
+  "results_2",
+  "results_select_2",
+  "section_break_tfsy",
+  "finished_board_3",
+  "column_break_cszi",
+  "current_3",
+  "column_break_zzdg",
+  "results_3",
+  "results_select_3",
+  "section_break_gibk",
+  "finished_board_4",
+  "column_break_qadn",
+  "current_4",
+  "column_break_gcys",
+  "results_4",
+  "results_select_4"
  ],
  "fields": [
   {
@@ -26,7 +51,7 @@
   {
    "columns": 1,
    "fieldname": "default_moisture",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Default Moisture"
   },
@@ -38,35 +63,160 @@
    "label": "Current Moisture"
   },
   {
+   "columns": 2,
+   "fieldname": "item_color",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Item Color"
+  },
+  {
+   "fieldname": "column_break_blmr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_mbdg",
+   "fieldtype": "Section Break",
+   "label": "Sample 1"
+  },
+  {
    "columns": 1,
-   "fieldname": "finished_board",
+   "fieldname": "finished_board_1",
    "fieldtype": "Attach",
    "in_list_view": 1,
    "label": "Finished Board"
   },
   {
-   "columns": 1,
-   "fieldname": "default",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Default"
+   "fieldname": "column_break_huof",
+   "fieldtype": "Column Break"
   },
   {
    "columns": 2,
-   "fieldname": "current",
+   "fieldname": "current_1",
    "fieldtype": "Float",
    "in_list_view": 1,
    "label": "Current"
   },
   {
+   "fieldname": "column_break_hpnj",
+   "fieldtype": "Column Break"
+  },
+  {
    "columns": 2,
-   "fieldname": "results",
+   "fieldname": "results_1",
    "fieldtype": "Button",
    "in_list_view": 1,
    "label": "Results"
   },
   {
-   "fieldname": "results_select",
+   "default": "To Do",
+   "fieldname": "results_select_1",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Results Select",
+   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_nmzn",
+   "fieldtype": "Section Break",
+   "label": "Sample 2"
+  },
+  {
+   "fieldname": "finished_board_2",
+   "fieldtype": "Attach",
+   "label": "Finished Board"
+  },
+  {
+   "fieldname": "column_break_fgmf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "current_2",
+   "fieldtype": "Float",
+   "label": "Current"
+  },
+  {
+   "fieldname": "column_break_xtpj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "results_2",
+   "fieldtype": "Button",
+   "label": "Results"
+  },
+  {
+   "default": "To Do",
+   "fieldname": "results_select_2",
+   "fieldtype": "Select",
+   "label": "Results Select",
+   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
+  },
+  {
+   "fieldname": "section_break_tfsy",
+   "fieldtype": "Section Break",
+   "label": "Sample 3"
+  },
+  {
+   "fieldname": "finished_board_3",
+   "fieldtype": "Attach",
+   "label": "Finished Board"
+  },
+  {
+   "fieldname": "column_break_cszi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "current_3",
+   "fieldtype": "Float",
+   "label": "Current"
+  },
+  {
+   "fieldname": "column_break_zzdg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "results_3",
+   "fieldtype": "Button",
+   "label": "Results"
+  },
+  {
+   "default": "To Do",
+   "fieldname": "results_select_3",
+   "fieldtype": "Select",
+   "label": "Results Select",
+   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
+  },
+  {
+   "fieldname": "section_break_gibk",
+   "fieldtype": "Section Break",
+   "label": "Sample 4"
+  },
+  {
+   "fieldname": "finished_board_4",
+   "fieldtype": "Attach",
+   "label": "Finished Board"
+  },
+  {
+   "fieldname": "column_break_qadn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "current_4",
+   "fieldtype": "Float",
+   "label": "Current"
+  },
+  {
+   "fieldname": "column_break_gcys",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "results_4",
+   "fieldtype": "Button",
+   "label": "Results"
+  },
+  {
+   "default": "To Do",
+   "fieldname": "results_select_4",
    "fieldtype": "Select",
    "label": "Results Select",
    "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
@@ -75,7 +225,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-01-20 20:49:57.914135",
+ "modified": "2025-02-10 00:16:32.392913",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Moisture Content Details QI",

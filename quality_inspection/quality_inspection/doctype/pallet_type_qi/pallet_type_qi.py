@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class EquipmentTAS(Document):
+class PalletTypeQI(Document):
 	pass

@@ -1,7 +1,7 @@
 // Copyright (c) 2024, GreyCube Technologies and contributors
 // For license information, please see license.txt
 
-// frappe.ui.form.on("Pallet Type TAS", {
+// frappe.ui.form.on("Edge Profile QI", {
 // 	refresh(frm) {
 
 // 	},

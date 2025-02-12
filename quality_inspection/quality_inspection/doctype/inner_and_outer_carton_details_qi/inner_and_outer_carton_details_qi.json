@@ -6,6 +6,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "item_color",
   "hologram",
   "hologram_select",
   "carb",
@@ -115,12 +116,19 @@
    "fieldtype": "Select",
    "label": "Insert Sheet Select",
    "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
+  },
+  {
+   "columns": 1,
+   "fieldname": "item_color",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Item Color"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-01-20 19:26:10.221652",
+ "modified": "2025-02-07 00:14:14.124385",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Inner and Outer Carton Details QI",

@@ -6,39 +6,29 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "width",
-  "thickness_without_padding",
-  "thickness_with_padding",
-  "master_sample_and_matching_board",
+  "item_color",
+  "column_break_wbmx",
+  "section_break_bukw",
+  "finished_board_1",
+  "column_break_niyy",
+  "width_1",
+  "section_break_cvvi",
+  "finished_board_2",
+  "column_break_rtmk",
+  "thickness_without_padding_1",
+  "section_break_hpil",
+  "finished_board_3",
+  "column_break_vhxt",
+  "thickness_with_padding_1",
+  "section_break_twal",
+  "master_sample_matching_board",
+  "column_break_ioto",
   "manual_pull_test",
   "manual_select"
  ],
  "fields": [
   {
-   "fieldname": "width",
-   "fieldtype": "Attach",
-   "in_list_view": 1,
-   "label": "Width"
-  },
-  {
-   "fieldname": "thickness_without_padding",
-   "fieldtype": "Attach",
-   "in_list_view": 1,
-   "label": "Thickness Without Padding"
-  },
-  {
-   "fieldname": "thickness_with_padding",
-   "fieldtype": "Attach",
-   "in_list_view": 1,
-   "label": "Thickness With Padding"
-  },
-  {
-   "fieldname": "master_sample_and_matching_board",
-   "fieldtype": "Attach",
-   "in_list_view": 1,
-   "label": "Master Sample and Matching Board"
-  },
-  {
+   "columns": 1,
    "fieldname": "manual_pull_test",
    "fieldtype": "Button",
    "in_list_view": 1,
@@ -49,12 +39,108 @@
    "fieldtype": "Select",
    "label": "Manual Select",
    "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
+  },
+  {
+   "columns": 1,
+   "fieldname": "item_color",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Item Color"
+  },
+  {
+   "fieldname": "section_break_bukw",
+   "fieldtype": "Section Break",
+   "label": "Width"
+  },
+  {
+   "columns": 1,
+   "fieldname": "finished_board_1",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Finished Board"
+  },
+  {
+   "fieldname": "section_break_cvvi",
+   "fieldtype": "Section Break",
+   "label": "Thickness without padding"
+  },
+  {
+   "columns": 1,
+   "fieldname": "finished_board_2",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Finished Board"
+  },
+  {
+   "fieldname": "section_break_hpil",
+   "fieldtype": "Section Break",
+   "label": "Thickness with Padding"
+  },
+  {
+   "columns": 1,
+   "fieldname": "finished_board_3",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Finished Board"
+  },
+  {
+   "fieldname": "section_break_twal",
+   "fieldtype": "Section Break",
+   "label": "Manual Pull Test"
+  },
+  {
+   "columns": 1,
+   "fieldname": "master_sample_matching_board",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Master Sample & Matching Board"
+  },
+  {
+   "fieldname": "column_break_ioto",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_wbmx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_niyy",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_rtmk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_vhxt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "columns": 1,
+   "fieldname": "width_1",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Width"
+  },
+  {
+   "columns": 1,
+   "fieldname": "thickness_without_padding_1",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Thickness without padding"
+  },
+  {
+   "columns": 1,
+   "fieldname": "thickness_with_padding_1",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Thickness with Padding"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-01-22 01:19:18.296943",
+ "modified": "2025-02-11 18:02:31.402233",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Width And Thickness Details QI",

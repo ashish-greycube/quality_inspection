@@ -23,7 +23,7 @@
  "modified": "2024-12-29 22:04:24.241129",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
- "name": "Edge Profile TAS",
+ "name": "Edge Profile QI",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [

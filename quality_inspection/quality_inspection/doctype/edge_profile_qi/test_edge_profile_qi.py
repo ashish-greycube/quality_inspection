@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestEquipmentTAS(FrappeTestCase):
+class TestEdgeProfileQI(FrappeTestCase):
 	pass

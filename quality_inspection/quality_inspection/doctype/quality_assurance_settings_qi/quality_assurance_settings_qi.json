@@ -1,0 +1,50 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-09-17 16:02:05.469271",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "pallet_default_value",
+  "open_box_inspection"
+ ],
+ "fields": [
+  {
+   "description": "Minimum",
+   "fieldname": "pallet_default_value",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Pallet Default Value",
+   "reqd": 1
+  },
+  {
+   "description": "Guidelines",
+   "fieldname": "open_box_inspection",
+   "fieldtype": "Small Text",
+   "label": "Open Box Inspection"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2025-02-05 22:04:59.423455",
+ "modified_by": "Administrator",
+ "module": "Quality Inspection",
+ "name": "Quality Assurance Settings QI",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

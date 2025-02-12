@@ -1,29 +1,29 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:pallet_type",
- "creation": "2024-09-17 16:04:53.426657",
+ "autoname": "field:equipment",
+ "creation": "2024-09-17 16:06:10.509117",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "pallet_type"
+  "equipment"
  ],
  "fields": [
   {
-   "fieldname": "pallet_type",
+   "fieldname": "equipment",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Pallet Type",
+   "label": "Equipment",
    "reqd": 1,
    "unique": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-12-29 22:04:48.379507",
+ "modified": "2024-12-29 22:04:36.062564",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
- "name": "Pallet Type TAS",
+ "name": "Equipment QI",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
