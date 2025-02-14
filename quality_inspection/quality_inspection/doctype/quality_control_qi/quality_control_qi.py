@@ -15,7 +15,8 @@ class QualityControlQI(Document):
 
 	def validate(self):
 		self.set_attachments_details()
-		self.validate_over_wax_and_edge_paint_child_table()
+		self.set_color_count_for_color_match_and_embossing()
+		# self.validate_over_wax_and_edge_paint_child_table()
 		
 	def get_pallet_information_html(self):
 
@@ -26,7 +27,7 @@ class QualityControlQI(Document):
 		inner_outer_html = frappe.render_template(template_path,  
 										dict(total_attach=self.inner_total_attachment, pending=self.inner_pending_attachment, pass_ration=self.inner_pass_ration,color=None))
 		color_match_html = frappe.render_template(template_path,
-										dict(total_attach=self.color_total_attachment, pending=self.color_pending_attachment, pass_ration=self.color_pass_ration,color=2))
+										dict(total_attach=self.color_total_attachment, pending=self.color_pending_attachment, pass_ration=self.color_pass_ration,color=self.color_count))
 		over_wax_html = frappe.render_template(template_path,  
 										dict(total_attach=self.over_total_attachment, pending=self.over_pending_attachment, pass_ration=self.over_pass_ration,color=None))
 		gloss_level_html = frappe.render_template(template_path,  
@@ -137,11 +138,21 @@ class QualityControlQI(Document):
 		self.open_pass_ration = flt((open[2]), 2)
 
 		width = self.calculate_attachments_details("width_and_thickness_details_", 
-											 ['width', 'thickness_without_padding', 'thickness_with_padding', 'master_sample_and_matching_board'],
+											 ['finished_board_1', 'finished_board_2', 'finished_board_3', 'master_sample_matching_board'],
 											 ['manual_select'])
 		self.width_total_attachment = width[0]
 		self.width_pending_attachment = width[1]
 		self.width_pass_ration =flt(( width[2]), 2)
+
+	def set_color_count_for_color_match_and_embossing(self):
+		total_color = 0
+		if self.no_of_po > 0:
+			for i in range(self.no_of_po):
+				child_table_name="color_match_and_embossing_details_"+cstr(i+1)
+				if len(self.get(child_table_name)) > 0:
+					total_color = total_color + len(self.get(child_table_name))
+		
+		self.color_count = total_color
 
 	@frappe.whitelist()
 	def make_quality_control_item_using_tas_po_items(self, items):
@@ -154,6 +165,7 @@ class QualityControlQI(Document):
 			self.set(child_table_name,[])
 			self.set(parent_po_field_name,None)
 
+		# get tas po items
 		if items:
 			tas_po_list = frappe.db.get_list(
 				"TAS Purchase Order Item",

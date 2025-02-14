@@ -3,8 +3,42 @@
 
 frappe.ui.form.on("Quality Control QI", {
     refresh(frm) {
+        set_html_details(frm)
+        // set_button_color_in_pallet_info(frm)
 
-        set_button_color_in_pallet_info(frm)
+        // let pallet = frm.doc.pallet_details
+        // let pallet_name = frm.fields_dict.pallet_details.grid.wrapper
+        // let pallet_select_field = 'button_select'
+        // let pallet_fieldname1 = '[data-fieldname="status"].btn-xs'
+        // // console.log(table, '====table')
+        // set_button_css(frm, pallet, pallet_name, pallet_select_field,pallet_fieldname1)
+
+        // for (const table_name of create_child_table_list(frm, 'inner_and_outer_carton_details_')) {
+        //     let table = frm.doc[table_name]
+        //     let table_name_1 = frm.fields_dict[table_name].grid.wrapper
+
+        //     let hologram_fieldname = '[data-fieldname="hologram"].btn-xs'
+        //     let hologram_select_field = 'hologram_select'
+        //     set_button_css(frm, table, table_name_1, hologram_select_field,hologram_fieldname)
+
+        //     let carb_fieldname = '[data-fieldname="carb"].btn-xs'
+        //     let carb_select_field = 'carb_select'
+        //     set_button_css(frm, table, table_name_1, carb_select_field,carb_fieldname)
+
+        //     let floor_fieldname = '[data-fieldname="floor_score"].btn-xs'
+        //     let floor_select_field = 'floor_select'
+        //     set_button_css(frm, table, table_name_1, floor_select_field,floor_fieldname)
+
+        //     let shrink_wrap_fieldname = '[data-fieldname="shrink_wrap"].btn-xs'
+        //     let shrink_wrap_select_field = 'shink_wrap_select'
+        //     set_button_css(frm, table, table_name_1, shrink_wrap_select_field,shrink_wrap_fieldname)
+
+        //     let insert_sheet_fieldname = '[data-fieldname="insert_sheet"].btn-xs'
+        //     let insert_sheet_select_field = 'insert_sheet_select'
+        //     set_button_css(frm, table, table_name_1, insert_sheet_select_field,insert_sheet_fieldname)
+        // }
+       
+
         if (!frm.is_new()) {
             frm.add_custom_button(__("TAS Po"), function () {
 
@@ -37,7 +71,7 @@ frappe.ui.form.on("Quality Control QI", {
                                     args: args.filtered_children,
                                 })
                                 .then(() => {
-                                    console.log("--data--")
+                                    // console.log("--data--")
                                     refresh_field("tas_po_name_1");
                                 });
                             }
@@ -49,14 +83,14 @@ frappe.ui.form.on("Quality Control QI", {
                                     args: selections,
                                 })
                                 .then(() => {
-                                    console.log("--data11111111--")
+                                    // console.log("--data11111111--")
                                     refresh_field("quality_control_item_1");
                                 });
                             }
 
 				            cur_dialog.hide();
-                            console.log(selections, '====selections')
-                            console.log(args, '====args')
+                            // console.log(selections, '====selections')
+                            // console.log(args, '====args')
                             // console.log(args.filtered_children); // list of selected item names
                         }
                     });
@@ -85,6 +119,41 @@ frappe.ui.form.on("Quality Control QI", {
 
         // }, 100);
         
+    },
+
+    onload_post_render: function (frm) {
+        test()
+        let pallet = frm.doc.pallet_details
+        let pallet_name = frm.fields_dict.pallet_details.grid.wrapper
+        let pallet_select_field = 'button_select'
+        let pallet_fieldname1 = '[data-fieldname="status"].btn-xs'
+        // console.log(table, '====table')
+        set_button_css(frm, pallet, pallet_name, pallet_select_field,pallet_fieldname1)
+
+        for (const table_name of create_child_table_list(frm, 'inner_and_outer_carton_details_')) {
+            let table = frm.doc[table_name]
+            let table_name_1 = frm.fields_dict[table_name].grid.wrapper
+
+            let hologram_fieldname = '[data-fieldname="hologram"].btn-xs'
+            let hologram_select_field = 'hologram_select'
+            set_button_css(frm, table, table_name_1, hologram_select_field,hologram_fieldname)
+
+            let carb_fieldname = '[data-fieldname="carb"].btn-xs'
+            let carb_select_field = 'carb_select'
+            set_button_css(frm, table, table_name_1, carb_select_field,carb_fieldname)
+
+            let floor_fieldname = '[data-fieldname="floor_score"].btn-xs'
+            let floor_select_field = 'floor_select'
+            set_button_css(frm, table, table_name_1, floor_select_field,floor_fieldname)
+
+            let shrink_wrap_fieldname = '[data-fieldname="shrink_wrap"].btn-xs'
+            let shrink_wrap_select_field = 'shink_wrap_select'
+            set_button_css(frm, table, table_name_1, shrink_wrap_select_field,shrink_wrap_fieldname)
+
+            let insert_sheet_fieldname = '[data-fieldname="insert_sheet"].btn-xs'
+            let insert_sheet_select_field = 'insert_sheet_select'
+            set_button_css(frm, table, table_name_1, insert_sheet_select_field,insert_sheet_fieldname)
+        }
     }
 });
 
@@ -104,7 +173,6 @@ let make_html =  function(frm, field_name, html_details){
 
 
 let set_html_details = function(frm){
-
     make_html(frm, "pallet", "pallet_html")
     make_html(frm, "inner", "inner_outer_html")
     make_html(frm, "color", "color_match_html")
@@ -113,18 +181,22 @@ let set_html_details = function(frm){
     make_html(frm, "moisture", "moisture_html")
     make_html(frm, "open_box", "open_box_html")
     make_html(frm, "width_thick", "width_thickness_html")
-    
 }
 
 
 frappe.ui.form.on("Pallet Information QI", {
     pallet_details_add: function (frm, cdt, cdn) {
         setTimeout(() => {
-            console.log("click")
-            frm.fields_dict.pallet_details.grid.wrapper.find('.editable-row').click()
-        }, 100);
+            frm.fields_dict.pallet_details.grid.wrapper.find('[data-fieldname="status"]').click()
+        }, 1000);
 
-        set_button_color_in_pallet_info(frm, cdt, cdn)
+        let row = locals[cdt][cdn]
+        let table = frm.doc.pallet_details
+        let table_name = frm.fields_dict.pallet_details.grid.wrapper
+        let select_field = 'button_select'
+        let fieldname1 = '[data-fieldname="status"].btn-xs'
+
+        set_button_css(frm, table, table_name, select_field, fieldname1, cdt, cdn,)
     },
     status: function (frm, cdt, cdn) {
         let row = locals[cdt][cdn]
@@ -132,165 +204,154 @@ frappe.ui.form.on("Pallet Information QI", {
         let button_select = row.button_select
         let row_idx = row.idx
         let fieldname1 = '[data-fieldname="status"].btn-xs'
-        // change_button_status_in_pallet_info(frm, cdt, cdn)
-        // row.click()
-        change_button_css(frm, cdt, cdn, table_name, button_select, row_idx, fieldname1)
+        let select_field = 'button_select'
+        change_button_css(frm, cdt, cdn, table_name, button_select, row_idx, fieldname1, select_field)
     },
     form_render(frm, cdt, cdn) {
-        let row = locals[cdt][cdn]
-        console.log(row, '---row')
-
-        // let button_select = row.button_select
         setTimeout(() => {
             frm.fields_dict.pallet_details.grid.wrapper.find('.form-in-grid').click()
         }, 100);
     }
 })
 
-let change_button_status_in_pallet_info = function (frm, cdt, cdn) {
-    let row = locals[cdt][cdn]
-    let button_select = row.button_select
+let create_child_table_list = function(frm, child_table){
+    let child_table_list = []
+    if(frm.doc.no_of_po > 0){
+        for (let i = 0; i < frm.doc.no_of_po; i++) {
+            let child_table_name = child_table + (i + 1)
+            child_table_list.push(child_table_name)
+        }
+    }
+    console.log(child_table_list, '====child_table_list')
+    return child_table_list
+}
 
-    let row_idx = row.idx
-    let fieldname1 = '[data-fieldname="status"].btn-xs'
+let inner_list = [
+    {   'table_name':"Inner and Outer Carton Details QI",
+        'table_fieldname': 'inner_and_outer_carton_details_',
+        'table_button_details': [
+            {'button': 'hologram', 'select': 'hologram_select', 'fieldname': '[data-fieldname="hologram"].btn-xs'}, 
+            {'button': 'carb', 'select': 'carb_select', 'fieldname': '[data-fieldname="carb"].btn-xs'}, 
+            {'button': 'floor_score', 'select': 'floor_select', 'fieldname': '[data-fieldname="floor_score"].btn-xs'}, 
+            {'button': 'shrink_wrap', 'select': 'shink_wrap_select', 'fieldname': '[data-fieldname="shrink_wrap"].btn-xs'}, 
+            {'button': 'insert_sheet', 'select': 'insert_sheet_select', 'fieldname': '[data-fieldname="insert_sheet"].btn-xs'},
+        ],
+    }]
 
-    setTimeout(() => {
-        frm.fields_dict.pallet_details.grid.wrapper.find('.grid-row').click()
-    }, 100);
+let test = function(){
+    for(const a of inner_list){
+        let table_name = a.table_name
+        let buttons = a.table_button_details
+        for(let b of buttons) {
+            frappe.ui.form.on(table_name, b.button, function (frm, cdt, cdn) {
+                let row = locals[cdt][cdn]
+                // for (const table_name of create_child_table_list(frm, a.table_fieldname)) {
+                //     if (row.parentfield == table_name){
+                        let table_name_1 = frm.fields_dict[row.parentfield].grid.wrapper
+                        let button_select = row[b.select]
+                        let row_idx = row.idx
+                        let fieldname1 = b.fieldname
+                        let select_field = b.select
 
-    console.log(button_select, '----------button_select')
-    switch (button_select) {
-        case "To Do":
-            frm.fields_dict.pallet_details.grid.wrapper.on('click', '.grid-row', function (event) {
-                $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("background-color", "#76885B");
-                $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("color", "white");
-                $(`div [data-idx="${row_idx}"]`).find(fieldname1).text("Pass");
-            });
-            frappe.model.set_value(cdt, cdn, 'button_select', 'Pass')
-            // frm.refresh()
-            break;
-        case "Pass":
-            frm.fields_dict.pallet_details.grid.wrapper.on('click', '.grid-row', function (event) {
-                $(`div [data-idx="${row.idx}"]`).find('[data-fieldname="status"].btn-xs').css("background-color", "#CB80AB");
-                $(`div [data-idx="${row.idx}"]`).find('[data-fieldname="status"].btn-xs').css("color", "white");
-                $(`div [data-idx="${row.idx}"]`).find('[data-fieldname="status"].btn-xs').text("Fail - Minor");
-            });
-            frappe.model.set_value(cdt, cdn, 'button_select', 'Fail - Minor')
-            // frm.refresh()
-            break;
-        case "Fail - Minor":
-            frm.fields_dict.pallet_details.grid.wrapper.on('click', '.grid-row', function (event) {
-                $(`div [data-idx="${row.idx}"]`).find('[data-fieldname="status"].btn-xs').css("background-color", "#FF8343");
-                $(`div [data-idx="${row.idx}"]`).find('[data-fieldname="status"].btn-xs').css("color", "white");
-                $(`div [data-idx="${row.idx}"]`).find('[data-fieldname="status"].btn-xs').text("Fail - Major");
-            });
-            frappe.model.set_value(cdt, cdn, 'button_select', 'Fail - Major')
-            // frm.refresh()
-            break;
-        case "Fail - Major":
-            frm.fields_dict.pallet_details.grid.wrapper.on('click', '.grid-row', function (event) {
-                $(`div [data-idx="${row.idx}"]`).find('[data-fieldname="status"].btn-xs').css("background-color", "#B43F3F");
-                $(`div [data-idx="${row.idx}"]`).find('[data-fieldname="status"].btn-xs').css("color", "white");
-                $(`div [data-idx="${row.idx}"]`).find('[data-fieldname="status"].btn-xs').text("Fail - Critical");
-            });
-            frappe.model.set_value(cdt, cdn, 'button_select', 'Fail - Critical')
-            // frm.refresh()
-            break;
-        case "Fail - Critical":
-            frm.fields_dict.pallet_details.grid.wrapper.on('click', '.grid-row', function (event) {
-                $(`div [data-idx="${row.idx}"]`).find('[data-fieldname="status"].btn-xs').css("background-color", "#FABC3F");
-                $(`div [data-idx="${row.idx}"]`).find('[data-fieldname="status"].btn-xs').css("color", "white");
-                $(`div [data-idx="${row.idx}"]`).find('[data-fieldname="status"].btn-xs').text("Undetermined");
-            });
-            frappe.model.set_value(cdt, cdn, 'button_select', 'Undetermined')
-            // frm.refresh()
-            break;
-        case "Undetermined":
-            frm.fields_dict.pallet_details.grid.wrapper.on('click', '.grid-row', function (event) {
-                $(`div [data-idx="${row.idx}"]`).find('[data-fieldname="status"].btn-xs').css("background-color", "#758694");
-                $(`div [data-idx="${row.idx}"]`).find('[data-fieldname="status"].btn-xs').css("color", "white");
-                $(`div [data-idx="${row.idx}"]`).find('[data-fieldname="status"].btn-xs').text("To Do");
-            });
-            frappe.model.set_value(cdt, cdn, 'button_select', 'To Do')
-            // frm.refresh()
-            break;
-        default:
-            frm.fields_dict.pallet_details.grid.wrapper.on('click', '.grid-row', function (event) {
-                $(`div [data-idx="${row.idx}"]`).find('[data-fieldname="status"].btn-xs').css("background-color", "#758694");
-                $(`div [data-idx="${row.idx}"]`).find('[data-fieldname="status"].btn-xs').css("color", "white");
-                $(`div [data-idx="${row.idx}"]`).find('[data-fieldname="status"].btn-xs').text("To Do");
-            });
-            frappe.model.set_value(cdt, cdn, 'button_select', 'To Do')
-        // frm.refresh()
+                        console.log("======function called=====")
+                        console.log(row.parentfield, '====row.parentfield')
+                        change_button_css(frm, cdt, cdn, table_name_1, button_select, row_idx, fieldname1, select_field)
+    
+                //         break
+                //     }
+                // }
+                // console.log(b, '====b')
+                // console.log(table_name, '====table_name')
+            })
+        }
     }
 }
 
-let set_button_color_in_pallet_info = function (frm, cdt = undefined, cdn = undefined) {
-    frm.doc.pallet_details.forEach(row => {
-        // frm.fields_dict.pallet_details.grid.wrapper.find('.grid-row').addClass('editable-row')
+// frappe.ui.form.on("Inner and Outer Carton Details QI", {
+//     hologram: function (frm, cdt, cdn) {
+//         let row = locals[cdt][cdn]
+//         for (const table_name of create_child_table_list(frm, 'inner_and_outer_carton_details_')) {
+//             if (row.parentfield == table_name){
+//                 let table_name_1 = frm.fields_dict[table_name].grid.wrapper
+//                 let button_select = row.hologram_select
+//                 let row_idx = row.idx
+//                 let fieldname1 = '[data-fieldname="hologram"].btn-xs'
+//                 let select_field = 'hologram_select'
+//                 change_button_css(frm, cdt, cdn, table_name_1, button_select, row_idx, fieldname1, select_field)
+//             }
+//         }
+        
+//     },
+//     carb: function (frm, cdt, cdn) {
+//         let row = locals[cdt][cdn]
+//         for (const table_name of create_child_table_list(frm, 'inner_and_outer_carton_details_')) {
+//             if (row.parentfield == table_name){
+//                 let table_name_1 = frm.fields_dict[table_name].grid.wrapper
+//                 let button_select = row.carb_select
+//                 let row_idx = row.idx
+//                 let fieldname1 = '[data-fieldname="carb"].btn-xs'
+//                 let select_field = 'carb_select'
+//                 change_button_css(frm, cdt, cdn, table_name_1, button_select, row_idx, fieldname1, select_field)
+//             }
+//         }
+//     },
 
-        console.log(row.button_select, '-=== name')
-        let button_select = row.button_select
+//     floor_score: function (frm, cdt, cdn) {
+//         let row = locals[cdt][cdn]
+//         for (const table_name of create_child_table_list(frm, 'inner_and_outer_carton_details_')) {
+//             if (row.parentfield == table_name){
+//                 let table_name_1 = frm.fields_dict[table_name].grid.wrapper
+//                 let button_select = row.floor_select
+//                 let row_idx = row.idx
+//                 let fieldname1 = '[data-fieldname="floor_score"].btn-xs'
+//                 let select_field = 'floor_select'
+//                 change_button_css(frm, cdt, cdn, table_name_1, button_select, row_idx, fieldname1, select_field)
+//             }
+//         }
+//     },
 
-        switch (button_select) {
-            case "To Do":
-                frm.fields_dict.pallet_details.grid.wrapper.on('click', '.grid-row', function (event) {
-                    $(`div [data-idx="${row.idx}"]`).find('[data-fieldtype="Button"].btn-xs').css("background-color", "#758694");
-                    $(`div [data-idx="${row.idx}"]`).find('[data-fieldtype="Button"].btn-xs').css("color", "white");
-                    $(`div [data-idx="${row.idx}"]`).find('[data-fieldtype="Button"].btn-xs').text("To Do");
-                });
-                // frappe.model.set_value(row.cdt, row.cdn, 'task', 'Pass')
-                break;
-            case "Pass":
-                console.log(row.task, '+++++++++= Pass')
-                frm.fields_dict.pallet_details.grid.wrapper.on('click', '.grid-row', function (event) {
-                    $(`div [data-idx="${row.idx}"]`).find('[data-fieldtype="Button"].btn-xs').css("background-color", "#76885B");
-                    $(`div [data-idx="${row.idx}"]`).find('[data-fieldtype="Button"].btn-xs').css("color", "white");
-                    $(`div [data-idx="${row.idx}"]`).find('[data-fieldtype="Button"].btn-xs').text("Pass");
-                });
-                break;
-            case "Fail - Minor":
-                frm.fields_dict.pallet_details.grid.wrapper.on('click', '.grid-row', function (event) {
-                    $(`div [data-idx="${row.idx}"]`).find('[data-fieldtype="Button"].btn-xs').css("background-color", "#CB80AB");
-                    $(`div [data-idx="${row.idx}"]`).find('[data-fieldtype="Button"].btn-xs').css("color", "white");
-                    $(`div [data-idx="${row.idx}"]`).find('[data-fieldtype="Button"].btn-xs').text("Fail - Minor");
-                });
-                break;
-            case "Fail - Major":
-                frm.fields_dict.pallet_details.grid.wrapper.on('click', '.grid-row', function (event) {
-                    $(`div [data-idx="${row.idx}"]`).find('[data-fieldtype="Button"].btn-xs').css("background-color", "#FF8343");
-                    $(`div [data-idx="${row.idx}"]`).find('[data-fieldtype="Button"].btn-xs').css("color", "white");
-                    $(`div [data-idx="${row.idx}"]`).find('[data-fieldtype="Button"].btn-xs').text("Fail - Major");
-                });
-                break;
-            case "Fail - Critical":
-                frm.fields_dict.pallet_details.grid.wrapper.on('click', '.grid-row', function (event) {
-                    $(`div [data-idx="${row.idx}"]`).find('[data-fieldtype="Button"].btn-xs').css("background-color", "#B43F3F");
-                    $(`div [data-idx="${row.idx}"]`).find('[data-fieldtype="Button"].btn-xs').css("color", "white");
-                    $(`div [data-idx="${row.idx}"]`).find('[data-fieldtype="Button"].btn-xs').text("Fail - Critical");
-                });
-                break;
-            case "Undetermined":
-                frm.fields_dict.pallet_details.grid.wrapper.on('click', '.grid-row', function (event) {
-                    $(`div [data-idx="${row.idx}"]`).find('[data-fieldtype="Button"].btn-xs').css("background-color", "#FABC3F");
-                    $(`div [data-idx="${row.idx}"]`).find('[data-fieldtype="Button"].btn-xs').css("color", "white");
-                    $(`div [data-idx="${row.idx}"]`).find('[data-fieldtype="Button"].btn-xs').text("Undetermined");
+//     shrink_wrap: function (frm, cdt, cdn) {
+//         let row = locals[cdt][cdn]
+//         for (const table_name of create_child_table_list(frm, 'inner_and_outer_carton_details_')) {
+//             if (row.parentfield == table_name){
+//                 let table_name_1 = frm.fields_dict[table_name].grid.wrapper
+//                 let button_select = row.shink_wrap_select
+//                 let row_idx = row.idx
+//                 let fieldname1 = '[data-fieldname="shrink_wrap"].btn-xs'
+//                 let select_field = 'shink_wrap_select'
+//                 change_button_css(frm, cdt, cdn, table_name_1, button_select, row_idx, fieldname1, select_field)
+//             }
+//         }
+//     },
 
-                });
-                break;
-            default:
-                frm.fields_dict.pallet_details.grid.wrapper.on('click', '.grid-row', function (event) {
-                    $(`div [data-idx="${row.idx}"]`).find('[data-fieldtype="Button"].btn-xs').css("background-color", "#758694");
-                    $(`div [data-idx="${row.idx}"]`).find('[data-fieldtype="Button"].btn-xs').css("color", "white");
-                    $(`div [data-idx="${row.idx}"]`).find('[data-fieldtype="Button"].btn-xs').text("To Do");
+//     insert_sheet: function (frm, cdt, cdn) {
+//         let row = locals[cdt][cdn]
+//         for (const table_name of create_child_table_list(frm, 'inner_and_outer_carton_details_')) {
+//             if (row.parentfield == table_name){
+//                 let table_name_1 = frm.fields_dict[table_name].grid.wrapper
+//                 let button_select = row.insert_sheet_select
+//                 let row_idx = row.idx
+//                 let fieldname1 = ''
+//                 let select_field = 'insert_sheet_select'
+//                 change_button_css(frm, cdt, cdn, table_name_1, button_select, row_idx, fieldname1, select_field)
+//             }
+//         }
+//     },
 
-                });
-        }
-    });
-}
+//     form_render(frm, cdt, cdn) {
+//         setTimeout(() => {
+//             let row = locals[cdt][cdn]
+//             for (const table_name of create_child_table_list(frm, 'inner_and_outer_carton_details_')) {
+//                 if (row.parentfield == table_name){
+//                     frm.fields_dict[table_name].grid.wrapper.find('.form-in-grid').click()
+//                 }}
+//         }, 500);
+//     }
+// })
 
-let change_button_css = function(frm, cdt, cdn, table_name, button_select, row_idx, fieldname1){
-    // console.log(table_name, '---table_name')
+
+let change_button_css = function(frm, cdt, cdn, table_name, button_select, row_idx, fieldname1, select_field){
+    console.log("====change_button_css====")
     switch (button_select) {
         case "To Do":
             table_name.on('click', '.grid-row', function (event) {
@@ -298,7 +359,7 @@ let change_button_css = function(frm, cdt, cdn, table_name, button_select, row_i
                 $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("color", "white");
                 $(`div [data-idx="${row_idx}"]`).find(fieldname1).text("Pass");
             });
-            frappe.model.set_value(cdt, cdn, 'button_select', 'Pass')
+            frappe.model.set_value(cdt, cdn, select_field, 'Pass')
             // frm.refresh()
             break;
         case "Pass":
@@ -307,7 +368,7 @@ let change_button_css = function(frm, cdt, cdn, table_name, button_select, row_i
                 $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("color", "white");
                 $(`div [data-idx="${row_idx}"]`).find(fieldname1).text("Fail - Minor");
             });
-            frappe.model.set_value(cdt, cdn, 'button_select', 'Fail - Minor')
+            frappe.model.set_value(cdt, cdn, select_field, 'Fail - Minor')
             // frm.refresh()
             break;
         case "Fail - Minor":
@@ -316,7 +377,7 @@ let change_button_css = function(frm, cdt, cdn, table_name, button_select, row_i
                 $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("color", "white");
                 $(`div [data-idx="${row_idx}"]`).find(fieldname1).text("Fail - Major");
             });
-            frappe.model.set_value(cdt, cdn, 'button_select', 'Fail - Major')
+            frappe.model.set_value(cdt, cdn, select_field, 'Fail - Major')
             // frm.refresh()
             break;
         case "Fail - Major":
@@ -325,7 +386,7 @@ let change_button_css = function(frm, cdt, cdn, table_name, button_select, row_i
                 $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("color", "white");
                 $(`div [data-idx="${row_idx}"]`).find(fieldname1).text("Fail - Critical");
             });
-            frappe.model.set_value(cdt, cdn, 'button_select', 'Fail - Critical')
+            frappe.model.set_value(cdt, cdn, select_field, 'Fail - Critical')
             // frm.refresh()
             break;
         case "Fail - Critical":
@@ -334,7 +395,7 @@ let change_button_css = function(frm, cdt, cdn, table_name, button_select, row_i
                 $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("color", "white");
                 $(`div [data-idx="${row_idx}"]`).find(fieldname1).text("Undetermined");
             });
-            frappe.model.set_value(cdt, cdn, 'button_select', 'Undetermined')
+            frappe.model.set_value(cdt, cdn, select_field, 'Undetermined')
             // frm.refresh()
             break;
         case "Undetermined":
@@ -343,7 +404,7 @@ let change_button_css = function(frm, cdt, cdn, table_name, button_select, row_i
                 $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("color", "white");
                 $(`div [data-idx="${row_idx}"]`).find(fieldname1).text("To Do");
             });
-            frappe.model.set_value(cdt, cdn, 'button_select', 'To Do')
+            frappe.model.set_value(cdt, cdn, select_field, 'To Do')
             // frm.refresh()
             break;
         default:
@@ -352,6 +413,65 @@ let change_button_css = function(frm, cdt, cdn, table_name, button_select, row_i
                 $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("color", "white");
                 $(`div [data-idx="${row_idx}"]`).find(fieldname1).text("To Do");
             });
-            frappe.model.set_value(cdt, cdn, 'button_select', 'To Do')
+            frappe.model.set_value(cdt, cdn, select_field, 'To Do')
     }
+}
+
+let set_button_css = function(frm, table, table_name, select_field,fieldname1, cdt = undefined, cdn = undefined){
+    console.log("====set_button_css====")
+    table.forEach(row => {
+        let row_idx = row.idx
+        let button_select = row[select_field]
+        
+        switch (button_select) {
+            case "To Do":
+                table_name.on('click', '.grid-row', function (event) {
+                    $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("background-color", "#758694");
+                    $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("color", "white");
+                    $(`div [data-idx="${row_idx}"]`).find(fieldname1).text("To Do");
+                });
+                break;
+            case "Pass":
+                table_name.on('click', '.grid-row', function (event) {
+                    $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("background-color", "#76885B");
+                    $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("color", "white");
+                    $(`div [data-idx="${row_idx}"]`).find(fieldname1).text("Pass");
+                });
+                break;
+            case "Fail - Minor":
+                table_name.on('click', '.grid-row', function (event) {
+                    $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("background-color", "#CB80AB");
+                    $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("color", "white");
+                    $(`div [data-idx="${row_idx}"]`).find(fieldname1).text("Fail - Minor");
+                });
+                break;
+            case "Fail - Major":
+                table_name.on('click', '.grid-row', function (event) {
+                    $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("background-color", "#FF8343");
+                    $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("color", "white");
+                    $(`div [data-idx="${row_idx}"]`).find(fieldname1).text("Fail - Major");
+                });
+                break;
+            case "Fail - Critical":
+                table_name.on('click', '.grid-row', function (event) {
+                    $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("background-color", "#B43F3F");
+                    $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("color", "white");
+                    $(`div [data-idx="${row_idx}"]`).find(fieldname1).text("Fail - Critical");
+                });
+                break;
+            case "Undetermined":
+                table_name.on('click', '.grid-row', function (event) {
+                    $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("background-color", "#FABC3F");
+                    $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("color", "white");
+                    $(`div [data-idx="${row_idx}"]`).find(fieldname1).text("Undetermined");
+                });
+                break;
+            default:
+                table_name.on('click', '.grid-row', function (event) {
+                    $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("background-color", "#758694");
+                    $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("color", "white");
+                    $(`div [data-idx="${row_idx}"]`).find(fieldname1).text("To Do");
+                });
+        }
+    });
 }

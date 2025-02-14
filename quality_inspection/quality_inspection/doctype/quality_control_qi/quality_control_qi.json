@@ -72,6 +72,7 @@
   "color_total_attachment",
   "color_pending_attachment",
   "color_pass_ration",
+  "color_count",
   "po_color_1",
   "color_match_and_embossing_details_1",
   "po_color_2",
@@ -1573,11 +1574,16 @@
    "fieldtype": "Table",
    "label": "Gloss Level Details",
    "options": "Gloss Level Details QI"
+  },
+  {
+   "fieldname": "color_count",
+   "fieldtype": "Int",
+   "label": "color_count"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-11 02:11:55.280985",
+ "modified": "2025-02-11 22:06:39.974582",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Quality Control QI",
