@@ -55,7 +55,7 @@ class QualityControlQI(Document):
 		total_pass = 0
 		pass_ration = 0
 
-		if self.no_of_po > 0:
+		if self.get("no_of_po") and self.get("no_of_po") > 0:
 			if child_table == "pallet_details":
 				total_select_fields = len(self.pallet_details)	
 
@@ -146,7 +146,7 @@ class QualityControlQI(Document):
 
 	def set_color_count_for_color_match_and_embossing(self):
 		total_color = 0
-		if self.no_of_po > 0:
+		if self.get("no_of_po") and self.no_of_po > 0:
 			for i in range(self.no_of_po):
 				child_table_name="color_match_and_embossing_details_"+cstr(i+1)
 				if len(self.get(child_table_name)) > 0:
@@ -322,7 +322,7 @@ class QualityControlQI(Document):
 
 
 	def validate_over_wax_and_edge_paint_child_table(self):
-		if self.no_of_po > 0:
+		if self.get("no_of_po") and self.no_of_po > 0:
 			for i in range(self.no_of_po):
 				child_table_name="over_wax_and_edge_paint_"+cstr(i+1)
 				if len(self.get(child_table_name)) > 0:
