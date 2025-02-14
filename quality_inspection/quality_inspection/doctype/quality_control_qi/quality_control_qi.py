@@ -14,6 +14,7 @@ class QualityControlQI(Document):
 		self.get_pallet_information_html()
 
 	def validate(self):
+		self.set_pallet_and_moisture_default_value()
 		self.set_attachments_details()
 		self.set_color_count_for_color_match_and_embossing()
 		# self.validate_over_wax_and_edge_paint_child_table()
@@ -73,12 +74,13 @@ class QualityControlQI(Document):
 				print(total_pass, '---total_pass', total_select_fields, '---total_select_fields')
 				pass_ration = (total_pass * 100/ total_select_fields) 
 
-			else:	
-				total_select_fields = self.no_of_po * len(select_field_list)
+			else:
 
 				for i in range(self.no_of_po):
 					child_table_name=child_table+cstr(i+1)
+					table_length = 0
 					if len(self.get(child_table_name)) > 0:
+						table_length = table_length +  len(self.get(child_table_name))
 						for row in self.get(child_table_name):
 
 							for attach in attach_field_list:
@@ -89,6 +91,10 @@ class QualityControlQI(Document):
 							for select in select_field_list:
 								if row.get(select) in PASS_STATUS:
 									total_pass = total_pass + 1
+
+				print(total_pass, "=======total_pass======")
+
+				total_select_fields = table_length * len(select_field_list)
 
 				pass_ration = (total_pass * 100/ total_select_fields) 
 		
@@ -196,6 +202,7 @@ class QualityControlQI(Document):
 						po1 = self.append(child_table_name, {})
 						po1.item = po.item_no
 						po1.item_name = po.item_desc
+						po1.qty = po.qty
 						po1.color = po.color
 						po1.amount = po.cost
 						po1.item_color = cstr(po.item_no) + (cstr(po.color) or 'red')
@@ -258,6 +265,7 @@ class QualityControlQI(Document):
 							po1 = self.append(child_table_name, {})
 							po1.item = item.item_no
 							po1.item_name = item.item_desc
+							po1.qty = item.qty
 							po1.color = item.color
 							po1.amount = item.cost
 							po1.item_color = cstr(item.item_no) + "-" + (cstr(item.color) or 'red')
@@ -287,17 +295,6 @@ class QualityControlQI(Document):
 			qi_items_table = "quality_control_item_"+cstr(idx+1)
 			child_table_name=child_table+cstr(idx+1)
 
-			# moisture equipment default value
-			defauly_value = ""
-			if len(self.moisture_equipment) > 0:
-				for e in self.moisture_equipment:
-					if e.equipment == "Pin Meter":
-						defauly_value = "6-9%"
-						break
-					elif e.equipment == "Surface Meter":
-						defauly_value = "9-12%"
-						break
-
 			# clear child table
 			self.get(child_table_name).clear()
 
@@ -307,18 +304,31 @@ class QualityControlQI(Document):
 					row = self.append(child_table_name, {})
 					row.item_color = item.item_color
 
-					if child_table_name == "moisture_content_details_" + cstr(idx+1):
-						row.default_moisture = defauly_value
-
 	def set_pallet_details_table(self, po_list):
-		pallet_default_value = frappe.db.get_single_value('Quality Assurance Settings QI', 'pallet_default_value')
-
 		if len(po_list) > 0:
 			self.pallet_details = []
 			for po in po_list:
 				row = self.append("pallet_details")
 				row.tas_po = po
-				row.default_width = ">=" + cstr(pallet_default_value)
+
+
+	def set_pallet_and_moisture_default_value(self):
+		pallet_default_value = frappe.db.get_single_value('Quality Assurance Settings QI', 'pallet_default_value')
+		open_box_guidelines = frappe.db.get_single_value('Quality Assurance Settings QI', 'open_box_inspection')
+
+		if pallet_default_value:
+			self.default_corner_width = ">=" + cstr(pallet_default_value)
+
+		# moisture equipment default value
+		default_value = ""
+		if len(self.moisture_equipment) > 0:
+			default_value = frappe.db.get_value('Equipment QI', self.moisture_equipment[0].equipment, 'equipment_default_value')
+		
+		self.default_moisture = default_value
+
+		if open_box_guidelines:
+			self.guidelines = open_box_guidelines
+			
 
 
 	def validate_over_wax_and_edge_paint_child_table(self):

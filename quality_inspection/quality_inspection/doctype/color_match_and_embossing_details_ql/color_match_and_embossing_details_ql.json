@@ -3,14 +3,19 @@
  "allow_rename": 1,
  "creation": "2025-01-20 19:31:53.754812",
  "doctype": "DocType",
- "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "item_color",
+  "section_break_emkc",
+  "color_match_column",
   "master_sample",
   "finished_board",
+  "results_column",
+  "results_html",
   "results",
   "results_select",
+  "column_break_bkki",
+  "embossing_html",
   "embossing",
   "embossing_select"
  ],
@@ -18,37 +23,35 @@
   {
    "fieldname": "master_sample",
    "fieldtype": "Attach",
-   "in_list_view": 1,
    "label": "Master Sample"
   },
   {
    "fieldname": "finished_board",
    "fieldtype": "Attach",
-   "in_list_view": 1,
    "label": "Finished Board"
   },
   {
    "fieldname": "results",
    "fieldtype": "Button",
-   "in_list_view": 1,
    "label": "Results"
   },
   {
    "fieldname": "embossing",
    "fieldtype": "Button",
-   "in_list_view": 1,
    "label": "Embossing"
   },
   {
    "fieldname": "results_select",
    "fieldtype": "Select",
-   "label": "Results Select",
+   "in_list_view": 1,
+   "label": "Results",
    "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
   },
   {
    "fieldname": "embossing_select",
    "fieldtype": "Select",
-   "label": "Embossing Select",
+   "in_list_view": 1,
+   "label": "Embossing",
    "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
   },
   {
@@ -56,12 +59,43 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Item Color"
+  },
+  {
+   "fieldname": "section_break_emkc",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "results_html",
+   "fieldtype": "HTML",
+   "label": "Results",
+   "options": "Results"
+  },
+  {
+   "fieldname": "column_break_bkki",
+   "fieldtype": "Column Break",
+   "label": "Embossing"
+  },
+  {
+   "fieldname": "embossing_html",
+   "fieldtype": "HTML",
+   "label": "Embossing",
+   "options": "Embossing"
+  },
+  {
+   "fieldname": "color_match_column",
+   "fieldtype": "Column Break",
+   "label": "Color Match"
+  },
+  {
+   "fieldname": "results_column",
+   "fieldtype": "Column Break",
+   "label": "Results"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-02-07 00:14:35.819788",
+ "modified": "2025-02-13 21:53:45.534165",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Color Match and Embossing Details Ql",

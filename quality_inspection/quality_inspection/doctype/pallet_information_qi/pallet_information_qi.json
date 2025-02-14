@@ -3,16 +3,18 @@
  "allow_rename": 1,
  "creation": "2025-01-20 18:12:57.863422",
  "doctype": "DocType",
- "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "tas_po",
   "pallet_type",
-  "default_width",
+  "section_break_htuq",
+  "corner_width_column",
   "current_width",
+  "width",
+  "button_html",
   "status",
   "button_select",
-  "width",
+  "height_column",
   "height_reading",
   "height"
  ],
@@ -27,31 +29,22 @@
   },
   {
    "columns": 1,
-   "fieldname": "default_width",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Default Width Of Corner",
-   "read_only": 1
-  },
-  {
-   "columns": 1,
    "fieldname": "current_width",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Current Width Of Corner"
+   "label": "Cur Corner Width"
   },
   {
    "columns": 2,
    "fieldname": "status",
    "fieldtype": "Button",
-   "in_list_view": 1
+   "label": "Corner Width Status"
   },
   {
    "columns": 1,
    "fieldname": "width",
    "fieldtype": "Attach",
-   "in_list_view": 1,
-   "label": "Width"
+   "label": "Corner Width"
   },
   {
    "columns": 1,
@@ -68,10 +61,12 @@
    "label": "Height"
   },
   {
+   "columns": 1,
    "default": "To Do",
    "fieldname": "button_select",
    "fieldtype": "Select",
-   "label": "button select",
+   "in_list_view": 1,
+   "label": "Corner Width Status",
    "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
@@ -82,12 +77,32 @@
    "in_list_view": 1,
    "label": "TAS PO",
    "read_only": 1
+  },
+  {
+   "fieldname": "section_break_htuq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "corner_width_column",
+   "fieldtype": "Column Break",
+   "label": "Corner Width"
+  },
+  {
+   "fieldname": "height_column",
+   "fieldtype": "Column Break",
+   "label": "Height"
+  },
+  {
+   "fieldname": "button_html",
+   "fieldtype": "HTML",
+   "label": "Corner Width Status",
+   "options": "Corner Width Status"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-02-05 23:52:32.839304",
+ "modified": "2025-02-13 20:58:04.070728",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Pallet Information QI",

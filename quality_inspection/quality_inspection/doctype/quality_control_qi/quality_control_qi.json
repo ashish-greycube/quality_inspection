@@ -8,11 +8,11 @@
  "field_order": [
   "naming_series",
   "date_of_inspection",
+  "no_of_po",
   "column_break_fvru",
   "vendor",
   "flooring_class",
   "section_break_gvfx",
-  "no_of_po",
   "tas_po_name_1",
   "quality_control_item_1",
   "tas_po_name_2",
@@ -35,17 +35,22 @@
   "quality_control_item_10",
   "tab_2_tab",
   "pallet",
+  "column_break_swtq",
   "pallet_equipment",
   "pallet_total_attachment",
   "pallet_pending_attachment",
   "pallet_pass_ration",
+  "default_corner_width",
+  "section_break_wxpv",
   "pallet_details",
   "tab_3_tab",
   "inner",
+  "column_break_ouoo",
   "inner_equipment",
   "inner_total_attachment",
   "inner_pending_attachment",
   "inner_pass_ration",
+  "section_break_jccn",
   "carton_po_1",
   "inner_and_outer_carton_details_1",
   "carton_po_2",
@@ -68,11 +73,13 @@
   "inner_and_outer_carton_details_10",
   "tab_4_tab",
   "color",
+  "column_break_vtdm",
   "color_equipment",
   "color_total_attachment",
   "color_pending_attachment",
   "color_pass_ration",
   "color_count",
+  "section_break_newx",
   "po_color_1",
   "color_match_and_embossing_details_1",
   "po_color_2",
@@ -95,10 +102,12 @@
   "color_match_and_embossing_details_10",
   "tab_5_tab",
   "over_wax",
+  "column_break_gdol",
   "over_equipment",
   "over_total_attachment",
   "over_pending_attachment",
   "over_pass_ration",
+  "section_break_jznz",
   "po_over_1",
   "over_wax_and_edge_paint_1",
   "po_over_2",
@@ -121,10 +130,12 @@
   "over_wax_and_edge_paint_10",
   "tab_9_tab",
   "gloss_level",
+  "column_break_dykx",
   "gloss_equipment",
   "gloss_total_attachment",
   "gloss_pending_attachment",
   "gloss_pass_ration",
+  "section_break_trlm",
   "po_gloss_1",
   "gloss_level_details_1",
   "po_gloss_2",
@@ -147,10 +158,13 @@
   "gloss_level_details_10",
   "tab_6_tab",
   "moisture",
+  "column_break_xefu",
   "moisture_equipment",
   "moisture_total_attachment",
   "moisture_pending_attachment",
   "moisture_pass_ration",
+  "default_moisture",
+  "section_break_brmr",
   "po_moisture_1",
   "moisture_content_details_1",
   "po_moisture_2",
@@ -173,10 +187,14 @@
   "moisture_content_details_10",
   "tab_7_tab",
   "open_box",
+  "column_break_fkkn",
   "equipment_in_use",
   "open_total_attachment",
   "open_pending_attachment",
   "open_pass_ration",
+  "section_break_ltwz",
+  "guidelines",
+  "section_break_ckig",
   "po_open_1",
   "open_box_inspection_details_1",
   "po_open_2",
@@ -199,10 +217,12 @@
   "open_box_inspection_details_10",
   "tab_8_tab",
   "width_thick",
+  "column_break_xmti",
   "width_equipment",
   "width_total_attachment",
   "width_pending_attachment",
   "width_pass_ration",
+  "section_break_tnra",
   "po_width_1",
   "width_and_thickness_details_1",
   "po_width_2",
@@ -259,9 +279,11 @@
    "label": "Pallet Information"
   },
   {
+   "bold": 1,
    "fieldname": "no_of_po",
    "fieldtype": "Int",
-   "label": "No of PO"
+   "label": "No of PO",
+   "read_only": 1
   },
   {
    "fieldname": "tab_3_tab",
@@ -306,470 +328,471 @@
    "depends_on": "eval:doc.no_of_po>0",
    "fieldname": "quality_control_item_1",
    "fieldtype": "Table",
-   "label": "Quality Control Item",
-   "options": "Quality Control Item QI"
+   "options": "Quality Control Item QI",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "quality_control_item_2",
    "fieldtype": "Table",
-   "label": "Quality Control Item",
    "options": "Quality Control Item QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "quality_control_item_3",
    "fieldtype": "Table",
-   "label": "Quality Control Item",
    "options": "Quality Control Item QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "quality_control_item_4",
    "fieldtype": "Table",
-   "label": "Quality Control Item",
    "options": "Quality Control Item QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "quality_control_item_5",
    "fieldtype": "Table",
-   "label": "Quality Control Item",
    "options": "Quality Control Item QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "quality_control_item_6",
    "fieldtype": "Table",
-   "label": "Quality Control Item",
    "options": "Quality Control Item QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "quality_control_item_7",
    "fieldtype": "Table",
-   "label": "Quality Control Item",
    "options": "Quality Control Item QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "quality_control_item_8",
    "fieldtype": "Table",
-   "label": "Quality Control Item",
    "options": "Quality Control Item QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "quality_control_item_9",
    "fieldtype": "Table",
-   "label": "Quality Control Item",
    "options": "Quality Control Item QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "quality_control_item_10",
    "fieldtype": "Table",
-   "label": "Quality Control Item",
    "options": "Quality Control Item QI"
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>0",
    "fieldname": "tas_po_name_1",
    "fieldtype": "Data",
-   "label": "tas_po_name_1",
+   "label": "&nbsp;TAS PO",
    "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "tas_po_name_2",
    "fieldtype": "Data",
-   "label": "tas_po_name_2",
+   "label": "&nbsp;TAS PO",
    "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "tas_po_name_3",
    "fieldtype": "Data",
-   "label": "tas_po_name_3",
+   "label": "&nbsp;TAS PO",
    "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "tas_po_name_4",
    "fieldtype": "Data",
-   "label": "tas_po_name_4",
+   "label": "&nbsp;TAS PO",
    "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "tas_po_name_5",
    "fieldtype": "Data",
-   "label": "tas_po_name_5",
+   "label": "&nbsp;TAS PO",
    "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "tas_po_name_6",
    "fieldtype": "Data",
-   "label": "tas_po_name_6",
+   "label": "&nbsp;TAS PO",
    "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "tas_po_name_7",
    "fieldtype": "Data",
-   "label": "tas_po_name_7",
+   "label": "&nbsp;TAS PO",
    "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "tas_po_name_8",
    "fieldtype": "Data",
-   "label": "tas_po_name_8",
+   "label": "&nbsp;TAS PO",
    "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "tas_po_name_9",
    "fieldtype": "Data",
-   "label": "tas_po_name_9",
+   "label": "&nbsp;TAS PO",
    "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "tas_po_name_10",
    "fieldtype": "Data",
-   "label": "tas_po_name_10",
+   "label": "&nbsp;TAS PO",
    "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>0",
    "fieldname": "inner_and_outer_carton_details_1",
    "fieldtype": "Table",
-   "label": "Inner and Outer Carton Details",
    "options": "Inner and Outer Carton Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "inner_and_outer_carton_details_2",
    "fieldtype": "Table",
-   "label": "Inner and Outer Carton Details",
    "options": "Inner and Outer Carton Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "inner_and_outer_carton_details_3",
    "fieldtype": "Table",
-   "label": "Inner and Outer Carton Details",
    "options": "Inner and Outer Carton Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "inner_and_outer_carton_details_4",
    "fieldtype": "Table",
-   "label": "Inner and Outer Carton Details",
    "options": "Inner and Outer Carton Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "inner_and_outer_carton_details_5",
    "fieldtype": "Table",
-   "label": "Inner and Outer Carton Details",
    "options": "Inner and Outer Carton Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "inner_and_outer_carton_details_6",
    "fieldtype": "Table",
-   "label": "Inner and Outer Carton Details",
    "options": "Inner and Outer Carton Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "inner_and_outer_carton_details_7",
    "fieldtype": "Table",
-   "label": "Inner and Outer Carton Details",
    "options": "Inner and Outer Carton Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "inner_and_outer_carton_details_8",
    "fieldtype": "Table",
-   "label": "Inner and Outer Carton Details",
    "options": "Inner and Outer Carton Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "inner_and_outer_carton_details_9",
    "fieldtype": "Table",
-   "label": "Inner and Outer Carton Details",
    "options": "Inner and Outer Carton Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "inner_and_outer_carton_details_10",
    "fieldtype": "Table",
-   "label": "Inner and Outer Carton Details",
    "options": "Inner and Outer Carton Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>0",
    "fieldname": "color_match_and_embossing_details_1",
    "fieldtype": "Table",
-   "label": "Color Match and Embossing Details",
    "options": "Color Match and Embossing Details Ql"
   },
   {
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "color_match_and_embossing_details_2",
    "fieldtype": "Table",
-   "label": "Color Match and Embossing Details",
    "options": "Color Match and Embossing Details Ql"
   },
   {
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "color_match_and_embossing_details_3",
    "fieldtype": "Table",
-   "label": "Color Match and Embossing Details",
    "options": "Color Match and Embossing Details Ql"
   },
   {
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "color_match_and_embossing_details_4",
    "fieldtype": "Table",
-   "label": "Color Match and Embossing Details",
    "options": "Color Match and Embossing Details Ql"
   },
   {
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "color_match_and_embossing_details_5",
    "fieldtype": "Table",
-   "label": "Color Match and Embossing Details",
    "options": "Color Match and Embossing Details Ql"
   },
   {
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "color_match_and_embossing_details_6",
    "fieldtype": "Table",
-   "label": "Color Match and Embossing Details",
    "options": "Color Match and Embossing Details Ql"
   },
   {
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "color_match_and_embossing_details_7",
    "fieldtype": "Table",
-   "label": "Color Match and Embossing Details",
    "options": "Color Match and Embossing Details Ql"
   },
   {
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "color_match_and_embossing_details_8",
    "fieldtype": "Table",
-   "label": "Color Match and Embossing Details",
    "options": "Color Match and Embossing Details Ql"
   },
   {
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "color_match_and_embossing_details_9",
    "fieldtype": "Table",
-   "label": "Color Match and Embossing Details",
    "options": "Color Match and Embossing Details Ql"
   },
   {
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "color_match_and_embossing_details_10",
    "fieldtype": "Table",
-   "label": "Color Match and Embossing Details",
    "options": "Color Match and Embossing Details Ql"
   },
   {
    "depends_on": "eval:doc.no_of_po>0",
    "fieldname": "over_wax_and_edge_paint_1",
    "fieldtype": "Table",
-   "label": "Over Wax and Edge Paint",
    "options": "Over Wax and Edge Paint Ql"
   },
   {
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "over_wax_and_edge_paint_2",
    "fieldtype": "Table",
-   "label": "Over Wax and Edge Paint",
    "options": "Over Wax and Edge Paint Ql"
   },
   {
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "over_wax_and_edge_paint_3",
    "fieldtype": "Table",
-   "label": "Over Wax and Edge Paint",
    "options": "Over Wax and Edge Paint Ql"
   },
   {
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "over_wax_and_edge_paint_4",
    "fieldtype": "Table",
-   "label": "Over Wax and Edge Paint",
    "options": "Over Wax and Edge Paint Ql"
   },
   {
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "over_wax_and_edge_paint_5",
    "fieldtype": "Table",
-   "label": "Over Wax and Edge Paint",
    "options": "Over Wax and Edge Paint Ql"
   },
   {
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "over_wax_and_edge_paint_7",
    "fieldtype": "Table",
-   "label": "Over Wax and Edge Paint",
    "options": "Over Wax and Edge Paint Ql"
   },
   {
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "over_wax_and_edge_paint_8",
    "fieldtype": "Table",
-   "label": "Over Wax and Edge Paint",
    "options": "Over Wax and Edge Paint Ql"
   },
   {
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "over_wax_and_edge_paint_9",
    "fieldtype": "Table",
-   "label": "Over Wax and Edge Paint",
    "options": "Over Wax and Edge Paint Ql"
   },
   {
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "over_wax_and_edge_paint_10",
    "fieldtype": "Table",
-   "label": "Over Wax and Edge Paint",
    "options": "Over Wax and Edge Paint Ql"
   },
   {
    "fieldname": "pallet_details",
    "fieldtype": "Table",
-   "label": "Pallet Details",
    "options": "Pallet Information QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>0",
    "fieldname": "carton_po_1",
    "fieldtype": "Data",
-   "label": "carton_po_1"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "carton_po_2",
    "fieldtype": "Data",
-   "label": "carton_po_2"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "carton_po_3",
    "fieldtype": "Data",
-   "label": "carton_po_3"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "carton_po_4",
    "fieldtype": "Data",
-   "label": "carton_po_4"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "carton_po_5",
    "fieldtype": "Data",
-   "label": "carton_po_5"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "carton_po_6",
    "fieldtype": "Data",
-   "label": "carton_po_6"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "carton_po_7",
    "fieldtype": "Data",
-   "label": "carton_po_7"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "carton_po_8",
    "fieldtype": "Data",
-   "label": "carton_po_8"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "carton_po_9",
    "fieldtype": "Data",
-   "label": "carton_po_9"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "carton_po_10",
    "fieldtype": "Data",
-   "label": "carton_po_10"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>0",
    "fieldname": "po_color_1",
    "fieldtype": "Data",
-   "label": "po_color_1"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "po_color_2",
    "fieldtype": "Data",
-   "label": "po_color_2"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "po_color_3",
    "fieldtype": "Data",
-   "label": "po_color_3"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "po_color_4",
    "fieldtype": "Data",
-   "label": "po_color_4"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "po_color_5",
    "fieldtype": "Data",
-   "label": "po_color_5"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "po_color_6",
    "fieldtype": "Data",
-   "label": "po_color_6"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "po_color_7",
    "fieldtype": "Data",
-   "label": "po_color_7"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "po_color_8",
    "fieldtype": "Data",
-   "label": "po_color_8"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "po_color_9",
    "fieldtype": "Data",
-   "label": "po_color_9"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "po_color_10",
    "fieldtype": "Data",
-   "label": "po_color_10"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "fieldname": "inner_equipment",
@@ -819,532 +842,595 @@
    "label": "Inner"
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>0",
    "fieldname": "po_over_1",
    "fieldtype": "Data",
-   "label": "po_over_1"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "po_over_2",
    "fieldtype": "Data",
-   "label": "po_over_2"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "po_over_3",
    "fieldtype": "Data",
-   "label": "po_over_3"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "po_over_4",
    "fieldtype": "Data",
-   "label": "po_over_4"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "po_over_5",
    "fieldtype": "Data",
-   "label": "po_over_5"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "po_over_6",
    "fieldtype": "Data",
-   "label": "po_over_6"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "po_over_7",
    "fieldtype": "Data",
-   "label": "po_over_7"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "po_over_8",
    "fieldtype": "Data",
-   "label": "po_over_8"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "po_over_9",
    "fieldtype": "Data",
-   "label": "po_over_9"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "po_over_10",
    "fieldtype": "Data",
-   "label": "po_over_10"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "over_wax_and_edge_paint_6",
    "fieldtype": "Table",
-   "label": "Over Wax and Edge Paint",
    "options": "Over Wax and Edge Paint Ql"
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>0",
    "fieldname": "po_moisture_1",
    "fieldtype": "Data",
-   "label": "po_moisture_1"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "po_moisture_2",
    "fieldtype": "Data",
-   "label": "po_moisture_2"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "po_moisture_3",
    "fieldtype": "Data",
-   "label": "po_moisture_3"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "po_moisture_4",
    "fieldtype": "Data",
-   "label": "po_moisture_4"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "po_moisture_5",
    "fieldtype": "Data",
-   "label": "po_moisture_5"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "po_moisture_6",
    "fieldtype": "Data",
-   "label": "po_moisture_6"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "po_moisture_7",
    "fieldtype": "Data",
-   "label": "po_moisture_7"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "po_moisture_8",
    "fieldtype": "Data",
-   "label": "po_moisture_8"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "po_moisture_9",
    "fieldtype": "Data",
-   "label": "po_moisture_9"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "po_moisture_10",
    "fieldtype": "Data",
-   "label": "po_moisture_10"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>0",
    "fieldname": "moisture_content_details_1",
    "fieldtype": "Table",
-   "label": "Moisture Content Details",
    "options": "Moisture Content Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "moisture_content_details_2",
    "fieldtype": "Table",
-   "label": "Moisture Content Details",
    "options": "Moisture Content Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "moisture_content_details_3",
    "fieldtype": "Table",
-   "label": "Moisture Content Details",
    "options": "Moisture Content Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "moisture_content_details_4",
    "fieldtype": "Table",
-   "label": "Moisture Content Details",
    "options": "Moisture Content Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "moisture_content_details_5",
    "fieldtype": "Table",
-   "label": "Moisture Content Details",
    "options": "Moisture Content Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "moisture_content_details_6",
    "fieldtype": "Table",
-   "label": "Moisture Content Details",
    "options": "Moisture Content Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "moisture_content_details_7",
    "fieldtype": "Table",
-   "label": "Moisture Content Details",
    "options": "Moisture Content Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "moisture_content_details_8",
    "fieldtype": "Table",
-   "label": "Moisture Content Details",
    "options": "Moisture Content Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "moisture_content_details_9",
    "fieldtype": "Table",
-   "label": "Moisture Content Details",
    "options": "Moisture Content Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "moisture_content_details_10",
    "fieldtype": "Table",
-   "label": "Moisture Content Details",
    "options": "Moisture Content Details QI"
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>0",
    "fieldname": "po_open_1",
    "fieldtype": "Data",
-   "label": "po_open_1"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "po_open_2",
    "fieldtype": "Data",
-   "label": "po_open_2"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "po_open_3",
    "fieldtype": "Data",
-   "label": "po_open_3"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "po_open_4",
    "fieldtype": "Data",
-   "label": "po_open_4"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "po_open_5",
    "fieldtype": "Data",
-   "label": "po_open_5"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "po_open_6",
    "fieldtype": "Data",
-   "label": "po_open_6"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "po_open_7",
    "fieldtype": "Data",
-   "label": "po_open_7"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "po_open_8",
    "fieldtype": "Data",
-   "label": "po_open_8"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "po_open_9",
    "fieldtype": "Data",
-   "label": "po_open_9"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "po_open_10",
    "fieldtype": "Data",
-   "label": "po_open_10"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>0",
    "fieldname": "open_box_inspection_details_1",
    "fieldtype": "Table",
-   "label": "Open Box Inspection Details",
    "options": "Open Box Inspection Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "open_box_inspection_details_2",
    "fieldtype": "Table",
-   "label": "Open Box Inspection Details",
    "options": "Open Box Inspection Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "open_box_inspection_details_3",
    "fieldtype": "Table",
-   "label": "Open Box Inspection Details",
    "options": "Open Box Inspection Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "open_box_inspection_details_4",
    "fieldtype": "Table",
-   "label": "Open Box Inspection Details",
    "options": "Open Box Inspection Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "open_box_inspection_details_5",
    "fieldtype": "Table",
-   "label": "Open Box Inspection Details",
    "options": "Open Box Inspection Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "open_box_inspection_details_6",
    "fieldtype": "Table",
-   "label": "Open Box Inspection Details",
    "options": "Open Box Inspection Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "open_box_inspection_details_7",
    "fieldtype": "Table",
-   "label": "Open Box Inspection Details",
    "options": "Open Box Inspection Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "open_box_inspection_details_8",
    "fieldtype": "Table",
-   "label": "Open Box Inspection Details",
    "options": "Open Box Inspection Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "open_box_inspection_details_9",
    "fieldtype": "Table",
-   "label": "Open Box Inspection Details",
    "options": "Open Box Inspection Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "open_box_inspection_details_10",
    "fieldtype": "Table",
-   "label": "Open Box Inspection Details",
    "options": "Open Box Inspection Details QI"
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>0",
    "fieldname": "po_width_1",
    "fieldtype": "Data",
-   "label": "po_width_1"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>0",
    "fieldname": "width_and_thickness_details_1",
    "fieldtype": "Table",
-   "label": "Width And Thickness Details",
    "options": "Width And Thickness Details QI"
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "po_width_2",
    "fieldtype": "Data",
-   "label": "po_width_2"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "po_width_3",
    "fieldtype": "Data",
-   "label": "po_width_3"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "po_width_4",
    "fieldtype": "Data",
-   "label": "po_width_4"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "po_width_5",
    "fieldtype": "Data",
-   "label": "po_width_5"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "po_width_6",
    "fieldtype": "Data",
-   "label": "po_width_6"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "po_width_7",
    "fieldtype": "Data",
-   "label": "po_width_7"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "po_width_8",
    "fieldtype": "Data",
-   "label": "po_width_8"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "po_width_9",
    "fieldtype": "Data",
-   "label": "po_width_9"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "po_width_10",
    "fieldtype": "Data",
-   "label": "po_width_10"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "width_and_thickness_details_2",
    "fieldtype": "Table",
-   "label": "Width And Thickness Details",
    "options": "Width And Thickness Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "width_and_thickness_details_3",
    "fieldtype": "Table",
-   "label": "Width And Thickness Details",
    "options": "Width And Thickness Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "width_and_thickness_details_4",
    "fieldtype": "Table",
-   "label": "Width And Thickness Details",
    "options": "Width And Thickness Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "width_and_thickness_details_5",
    "fieldtype": "Table",
-   "label": "Width And Thickness Details",
    "options": "Width And Thickness Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "width_and_thickness_details_6",
    "fieldtype": "Table",
-   "label": "Width And Thickness Details",
    "options": "Width And Thickness Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "width_and_thickness_details_7",
    "fieldtype": "Table",
-   "label": "Width And Thickness Details",
    "options": "Width And Thickness Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "width_and_thickness_details_8",
    "fieldtype": "Table",
-   "label": "Width And Thickness Details",
    "options": "Width And Thickness Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "width_and_thickness_details_9",
    "fieldtype": "Table",
-   "label": "Width And Thickness Details",
    "options": "Width And Thickness Details QI"
   },
   {
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "width_and_thickness_details_10",
    "fieldtype": "Table",
-   "label": "Width And Thickness Details",
    "options": "Width And Thickness Details QI"
   },
   {
    "default": "0",
    "fieldname": "pallet_total_attachment",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "pallet_total_attachment"
   },
   {
    "default": "0",
    "fieldname": "pallet_pending_attachment",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "pallet_pending_attachment"
   },
   {
    "fieldname": "inner_total_attachment",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "inner_total_attachment"
   },
   {
    "fieldname": "color_total_attachment",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "color_total_attachment"
   },
   {
    "fieldname": "over_total_attachment",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "over_total_attachment"
   },
   {
    "fieldname": "moisture_total_attachment",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "moisture_total_attachment"
   },
   {
    "fieldname": "open_total_attachment",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "open_total_attachment"
   },
   {
    "fieldname": "width_total_attachment",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "width_total_attachment"
   },
   {
    "fieldname": "inner_pending_attachment",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "inner_pending_attachment"
   },
   {
    "fieldname": "color_pending_attachment",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "color_pending_attachment"
   },
   {
    "fieldname": "over_pending_attachment",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "over_pending_attachment"
   },
   {
    "fieldname": "moisture_pending_attachment",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "moisture_pending_attachment"
   },
   {
    "fieldname": "open_pending_attachment",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "open_pending_attachment"
   },
   {
    "fieldname": "width_pending_attachment",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "width_pending_attachment"
   },
   {
@@ -1375,42 +1461,49 @@
   {
    "fieldname": "pallet_pass_ration",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "pallet_pass_ration",
    "precision": "2"
   },
   {
    "fieldname": "inner_pass_ration",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "inner_pass_ration",
    "precision": "2"
   },
   {
    "fieldname": "color_pass_ration",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "color_pass_ration",
    "precision": "2"
   },
   {
    "fieldname": "over_pass_ration",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "over_pass_ration",
    "precision": "2"
   },
   {
    "fieldname": "moisture_pass_ration",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "moisture_pass_ration",
    "precision": "2"
   },
   {
    "fieldname": "open_pass_ration",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "open_pass_ration",
    "precision": "2"
   },
   {
    "fieldname": "width_pass_ration",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "width_pass_ration",
    "precision": "2"
   },
@@ -1433,157 +1526,260 @@
   {
    "fieldname": "gloss_total_attachment",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "gloss_total_attachment"
   },
   {
    "fieldname": "gloss_pending_attachment",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "gloss_pending_attachment"
   },
   {
    "fieldname": "gloss_pass_ration",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "gloss_pass_ration"
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>0",
    "fieldname": "po_gloss_1",
    "fieldtype": "Data",
-   "label": "po_gloss_1"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>0",
    "fieldname": "gloss_level_details_1",
    "fieldtype": "Table",
-   "label": "Gloss Level Details",
    "options": "Gloss Level Details QI"
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "po_gloss_2",
    "fieldtype": "Data",
-   "label": "po_gloss_2"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "gloss_level_details_2",
    "fieldtype": "Table",
-   "label": "Gloss Level Details",
    "options": "Gloss Level Details QI"
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "po_gloss_3",
    "fieldtype": "Data",
-   "label": "po_gloss_3"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "gloss_level_details_3",
    "fieldtype": "Table",
-   "label": "Gloss Level Details",
    "options": "Gloss Level Details QI"
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "po_gloss_4",
    "fieldtype": "Data",
-   "label": "po_gloss_4"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "gloss_level_details_4",
    "fieldtype": "Table",
-   "label": "Gloss Level Details",
    "options": "Gloss Level Details QI"
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "po_gloss_5",
    "fieldtype": "Data",
-   "label": "po_gloss_5"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "gloss_level_details_5",
    "fieldtype": "Table",
-   "label": "Gloss Level Details",
    "options": "Gloss Level Details QI"
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "po_gloss_6",
    "fieldtype": "Data",
-   "label": "po_gloss_6"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "gloss_level_details_6",
    "fieldtype": "Table",
-   "label": "Gloss Level Details",
    "options": "Gloss Level Details QI"
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "po_gloss_7",
    "fieldtype": "Data",
-   "label": "po_gloss_7"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "gloss_level_details_7",
    "fieldtype": "Table",
-   "label": "Gloss Level Details",
    "options": "Gloss Level Details QI"
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "po_gloss_8",
    "fieldtype": "Data",
-   "label": "po_gloss_8"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "gloss_level_details_8",
    "fieldtype": "Table",
-   "label": "Gloss Level Details",
    "options": "Gloss Level Details QI"
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "po_gloss_9",
    "fieldtype": "Data",
-   "label": "po_gloss_9"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "gloss_level_details_9",
    "fieldtype": "Table",
-   "label": "Gloss Level Details",
    "options": "Gloss Level Details QI"
   },
   {
+   "bold": 1,
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "po_gloss_10",
    "fieldtype": "Data",
-   "label": "po_gloss_10"
+   "label": "&nbsp;TAS PO",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "gloss_level_details_10",
    "fieldtype": "Table",
-   "label": "Gloss Level Details",
    "options": "Gloss Level Details QI"
   },
   {
    "fieldname": "color_count",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "color_count"
+  },
+  {
+   "fieldname": "column_break_swtq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_wxpv",
+   "fieldtype": "Section Break"
+  },
+  {
+   "bold": 1,
+   "fieldname": "default_corner_width",
+   "fieldtype": "Data",
+   "label": "Default Corner Width",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_jccn",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_ouoo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_newx",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_vtdm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_gdol",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_jznz",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_dykx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_trlm",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_xefu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_brmr",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_fkkn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_ckig",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_xmti",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_tnra",
+   "fieldtype": "Section Break"
+  },
+  {
+   "description": "%",
+   "fieldname": "default_moisture",
+   "fieldtype": "Data",
+   "label": "Default Moisture",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_ltwz",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "guidelines",
+   "fieldtype": "Small Text",
+   "label": "Guidelines",
+   "read_only": 1
   }
  ],
+ "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-11 22:06:39.974582",
+ "modified": "2025-02-14 00:06:15.945414",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Quality Control QI",

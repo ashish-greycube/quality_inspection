@@ -5,7 +5,9 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "defaults_tab",
   "pallet_default_value",
+  "tab_break_iiih",
   "open_box_inspection"
  ],
  "fields": [
@@ -22,12 +24,22 @@
    "fieldname": "open_box_inspection",
    "fieldtype": "Small Text",
    "label": "Open Box Inspection"
+  },
+  {
+   "fieldname": "tab_break_iiih",
+   "fieldtype": "Tab Break",
+   "label": "Guidelines"
+  },
+  {
+   "fieldname": "defaults_tab",
+   "fieldtype": "Tab Break",
+   "label": "Defaults"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-02-05 22:04:59.423455",
+ "modified": "2025-02-13 20:41:03.322690",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Quality Assurance Settings QI",

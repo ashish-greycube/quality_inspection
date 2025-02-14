@@ -15,6 +15,7 @@
   "column_break_msgs",
   "fb_gl_1",
   "column_break_pbok",
+  "results_html_1",
   "results_1",
   "results_select_1",
   "section_break_codi",
@@ -22,6 +23,7 @@
   "column_break_erqq",
   "fb_gl_2",
   "column_break_otyj",
+  "results_html_2",
   "results_2",
   "results_select_2",
   "section_break_rzfd",
@@ -29,6 +31,7 @@
   "column_break_kqil",
   "fb_gl_3",
   "column_break_zypg",
+  "results_html_3",
   "results_3",
   "results_select_3",
   "section_break_oott",
@@ -36,6 +39,7 @@
   "column_break_uwpj",
   "fb_gl_4",
   "column_break_nglr",
+  "results_html_4",
   "results_4",
   "results_select_4"
  ],
@@ -43,10 +47,10 @@
   {
    "fieldname": "master_sample",
    "fieldtype": "Attach",
-   "in_list_view": 1,
    "label": "Master Sample"
   },
   {
+   "columns": 1,
    "fieldname": "item_color",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -57,6 +61,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "columns": 1,
    "fieldname": "master_gl",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -71,7 +76,6 @@
   {
    "fieldname": "finished_board_1",
    "fieldtype": "Attach",
-   "in_list_view": 1,
    "label": "Finished Board"
   },
   {
@@ -79,6 +83,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "columns": 1,
    "fieldname": "fb_gl_1",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -91,13 +96,14 @@
   {
    "fieldname": "results_1",
    "fieldtype": "Button",
-   "in_list_view": 1,
    "label": "Results"
   },
   {
+   "columns": 1,
    "fieldname": "results_select_1",
    "fieldtype": "Select",
-   "label": "Results Select",
+   "in_list_view": 1,
+   "label": "Results",
    "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
   },
   {
@@ -108,15 +114,18 @@
   },
   {
    "fieldname": "finished_board_2",
-   "fieldtype": "Attach"
+   "fieldtype": "Attach",
+   "label": "Finished Board"
   },
   {
    "fieldname": "column_break_erqq",
    "fieldtype": "Column Break"
   },
   {
+   "columns": 1,
    "fieldname": "fb_gl_2",
    "fieldtype": "Float",
+   "in_list_view": 1,
    "label": "Gloss Level"
   },
   {
@@ -129,10 +138,13 @@
    "label": "Results"
   },
   {
+   "columns": 1,
    "fieldname": "results_select_2",
    "fieldtype": "Select",
-   "label": "Results Select",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
+   "in_list_view": 1,
+   "label": "Results",
+   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
+   "read_only": 1
   },
   {
    "description": "Lowest reading found on the finished board used for (1)",
@@ -142,15 +154,18 @@
   },
   {
    "fieldname": "finished_board_3",
-   "fieldtype": "Attach"
+   "fieldtype": "Attach",
+   "label": "Finished Board"
   },
   {
    "fieldname": "column_break_kqil",
    "fieldtype": "Column Break"
   },
   {
+   "columns": 1,
    "fieldname": "fb_gl_3",
    "fieldtype": "Float",
+   "in_list_view": 1,
    "label": "Gloss Level"
   },
   {
@@ -163,10 +178,13 @@
    "label": "Results"
   },
   {
+   "columns": 1,
    "fieldname": "results_select_3",
    "fieldtype": "Select",
-   "label": "Results Select",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
+   "in_list_view": 1,
+   "label": "Results",
+   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
+   "read_only": 1
   },
   {
    "description": "2 average readings from 2 different planks",
@@ -176,15 +194,18 @@
   },
   {
    "fieldname": "finished_board_4",
-   "fieldtype": "Attach"
+   "fieldtype": "Attach",
+   "label": "Finished Board"
   },
   {
    "fieldname": "column_break_uwpj",
    "fieldtype": "Column Break"
   },
   {
+   "columns": 1,
    "fieldname": "fb_gl_4",
    "fieldtype": "Float",
+   "in_list_view": 1,
    "label": "Gloss Level"
   },
   {
@@ -197,16 +218,43 @@
    "label": "Results"
   },
   {
+   "columns": 1,
    "fieldname": "results_select_4",
    "fieldtype": "Select",
-   "label": "Results Select",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
+   "in_list_view": 1,
+   "label": "Results",
+   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
+   "read_only": 1
+  },
+  {
+   "fieldname": "results_html_1",
+   "fieldtype": "HTML",
+   "label": "Results",
+   "options": "Results"
+  },
+  {
+   "fieldname": "results_html_2",
+   "fieldtype": "HTML",
+   "label": "Results",
+   "options": "Results"
+  },
+  {
+   "fieldname": "results_html_3",
+   "fieldtype": "HTML",
+   "label": "Results",
+   "options": "Results"
+  },
+  {
+   "fieldname": "results_html_4",
+   "fieldtype": "HTML",
+   "label": "Results",
+   "options": "Results"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-02-11 02:29:42.857447",
+ "modified": "2025-02-13 23:32:14.057544",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Gloss Level Details QI",

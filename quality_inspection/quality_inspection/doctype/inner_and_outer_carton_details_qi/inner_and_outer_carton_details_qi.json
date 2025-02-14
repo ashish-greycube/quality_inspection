@@ -3,20 +3,26 @@
  "allow_rename": 1,
  "creation": "2025-01-20 18:53:57.669230",
  "doctype": "DocType",
- "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "item_color",
+  "section_break_lohi",
+  "hologram_html",
   "hologram",
   "hologram_select",
+  "carb_html",
   "carb",
   "carb_select",
+  "floor_html",
   "floor_score",
   "floor_select",
+  "shink_wrap_html",
   "shrink_wrap",
   "shink_wrap_select",
+  "insert_sheet_html",
   "insert_sheet",
   "insert_sheet_select",
+  "column_break_ejvm",
   "carton_weight",
   "production_date",
   "country_of_origin",
@@ -27,35 +33,30 @@
    "columns": 1,
    "fieldname": "hologram",
    "fieldtype": "Button",
-   "in_list_view": 1,
-   "label": "Hologram(if applicable))"
+   "label": "Hologram(optional)"
   },
   {
    "columns": 1,
    "fieldname": "carb",
    "fieldtype": "Button",
-   "in_list_view": 1,
    "label": "Carb II"
   },
   {
    "columns": 1,
    "fieldname": "floor_score",
    "fieldtype": "Button",
-   "in_list_view": 1,
-   "label": "Floor Score(if applicable))"
+   "label": "Floor Score(optional)"
   },
   {
    "columns": 1,
    "fieldname": "shrink_wrap",
    "fieldtype": "Button",
-   "in_list_view": 1,
    "label": "Inner/Outer Shrink wrap"
   },
   {
    "columns": 1,
    "fieldname": "insert_sheet",
    "fieldtype": "Button",
-   "in_list_view": 1,
    "label": "Insert Sheet"
   },
   {
@@ -88,33 +89,43 @@
    "label": "End Label"
   },
   {
+   "columns": 1,
    "fieldname": "hologram_select",
    "fieldtype": "Select",
-   "label": "Hologram Select",
+   "in_list_view": 1,
+   "label": "Hologram (optional)",
    "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
   },
   {
+   "columns": 1,
    "fieldname": "carb_select",
    "fieldtype": "Select",
-   "label": "Carb Select",
+   "in_list_view": 1,
+   "label": "Carb II",
    "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
   },
   {
+   "columns": 1,
    "fieldname": "floor_select",
    "fieldtype": "Select",
-   "label": "Floor Select",
+   "in_list_view": 1,
+   "label": "Floor Score(optional)",
    "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
   },
   {
+   "columns": 1,
    "fieldname": "shink_wrap_select",
    "fieldtype": "Select",
-   "label": "Shink Wrap Select",
+   "in_list_view": 1,
+   "label": "Inner/Outer Shrink wrap",
    "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
   },
   {
+   "columns": 1,
    "fieldname": "insert_sheet_select",
    "fieldtype": "Select",
-   "label": "Insert Sheet Select",
+   "in_list_view": 1,
+   "label": "Insert Sheet",
    "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
   },
   {
@@ -123,12 +134,50 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Item Color"
+  },
+  {
+   "fieldname": "section_break_lohi",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_ejvm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "hologram_html",
+   "fieldtype": "HTML",
+   "label": "Hologram (optional)",
+   "options": "Hologram(optional)"
+  },
+  {
+   "fieldname": "carb_html",
+   "fieldtype": "HTML",
+   "label": "Carb II",
+   "options": "Carb II"
+  },
+  {
+   "fieldname": "floor_html",
+   "fieldtype": "HTML",
+   "label": "Floor Score(optional)",
+   "options": "Floor Score(optional)"
+  },
+  {
+   "fieldname": "shink_wrap_html",
+   "fieldtype": "HTML",
+   "label": "Inner/Outer Shrink wrap",
+   "options": "Inner/Outer Shrink wrap"
+  },
+  {
+   "fieldname": "insert_sheet_html",
+   "fieldtype": "HTML",
+   "label": "Insert Sheet",
+   "options": "Insert Sheet"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-02-07 00:14:14.124385",
+ "modified": "2025-02-13 21:02:53.551744",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Inner and Outer Carton Details QI",

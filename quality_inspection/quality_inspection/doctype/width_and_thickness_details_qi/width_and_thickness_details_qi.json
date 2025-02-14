@@ -23,6 +23,7 @@
   "section_break_twal",
   "master_sample_matching_board",
   "column_break_ioto",
+  "manual_html",
   "manual_pull_test",
   "manual_select"
  ],
@@ -31,17 +32,19 @@
    "columns": 1,
    "fieldname": "manual_pull_test",
    "fieldtype": "Button",
-   "in_list_view": 1,
    "label": "Manual Pull Test"
   },
   {
+   "columns": 2,
    "fieldname": "manual_select",
    "fieldtype": "Select",
-   "label": "Manual Select",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
+   "in_list_view": 1,
+   "label": "Manual Pull Test",
+   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
+   "read_only": 1
   },
   {
-   "columns": 1,
+   "columns": 2,
    "fieldname": "item_color",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -56,7 +59,6 @@
    "columns": 1,
    "fieldname": "finished_board_1",
    "fieldtype": "Attach",
-   "in_list_view": 1,
    "label": "Finished Board"
   },
   {
@@ -68,7 +70,6 @@
    "columns": 1,
    "fieldname": "finished_board_2",
    "fieldtype": "Attach",
-   "in_list_view": 1,
    "label": "Finished Board"
   },
   {
@@ -80,7 +81,6 @@
    "columns": 1,
    "fieldname": "finished_board_3",
    "fieldtype": "Attach",
-   "in_list_view": 1,
    "label": "Finished Board"
   },
   {
@@ -92,7 +92,6 @@
    "columns": 1,
    "fieldname": "master_sample_matching_board",
    "fieldtype": "Attach",
-   "in_list_view": 1,
    "label": "Master Sample & Matching Board"
   },
   {
@@ -116,31 +115,37 @@
    "fieldtype": "Column Break"
   },
   {
-   "columns": 1,
+   "columns": 2,
    "fieldname": "width_1",
    "fieldtype": "Float",
    "in_list_view": 1,
    "label": "Width"
   },
   {
-   "columns": 1,
+   "columns": 2,
    "fieldname": "thickness_without_padding_1",
    "fieldtype": "Float",
    "in_list_view": 1,
    "label": "Thickness without padding"
   },
   {
-   "columns": 1,
+   "columns": 2,
    "fieldname": "thickness_with_padding_1",
    "fieldtype": "Float",
    "in_list_view": 1,
    "label": "Thickness with Padding"
+  },
+  {
+   "fieldname": "manual_html",
+   "fieldtype": "HTML",
+   "label": "Manual Pull Test",
+   "options": "Manual Pull Test"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-02-11 18:02:31.402233",
+ "modified": "2025-02-13 23:42:22.760249",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Width And Thickness Details QI",
