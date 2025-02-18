@@ -25,27 +25,36 @@
  ],
  "fields": [
   {
+   "columns": 3,
    "fieldname": "bowing",
    "fieldtype": "Button",
+   "in_list_view": 1,
    "label": "Bowing"
   },
   {
+   "columns": 3,
    "fieldname": "squareness",
    "fieldtype": "Button",
+   "in_list_view": 1,
    "label": "Squareness"
   },
   {
+   "columns": 3,
    "fieldname": "ledging_overwood",
    "fieldtype": "Button",
-   "label": "Ledging Overwood"
+   "in_list_view": 1,
+   "label": "Ledging Overwood",
+   "read_only": 1
   },
   {
+   "columns": 3,
    "fieldname": "finished_board",
    "fieldtype": "Attach",
+   "in_list_view": 1,
    "label": "Finished Board "
   },
   {
-   "columns": 2,
+   "columns": 3,
    "fieldname": "bowing_select",
    "fieldtype": "Select",
    "in_list_view": 1,
@@ -54,7 +63,7 @@
    "read_only": 1
   },
   {
-   "columns": 2,
+   "columns": 3,
    "fieldname": "squareness_select",
    "fieldtype": "Select",
    "in_list_view": 1,
@@ -63,7 +72,7 @@
    "read_only": 1
   },
   {
-   "columns": 2,
+   "columns": 3,
    "fieldname": "ledging_overwood_select",
    "fieldtype": "Select",
    "in_list_view": 1,
@@ -72,7 +81,7 @@
    "read_only": 1
   },
   {
-   "columns": 2,
+   "columns": 3,
    "fieldname": "pad_away_select",
    "fieldtype": "Select",
    "in_list_view": 1,
@@ -81,7 +90,7 @@
    "read_only": 1
   },
   {
-   "columns": 2,
+   "columns": 3,
    "fieldname": "item_color",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -121,15 +130,17 @@
    "options": "Pad Away From Locking System"
   },
   {
+   "columns": 3,
    "fieldname": "pad_away",
    "fieldtype": "Button",
+   "in_list_view": 1,
    "label": "Pad Away From Locking System "
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-02-13 23:40:39.956544",
+ "modified": "2025-02-17 18:52:35.353166",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Open Box Inspection Details QI",

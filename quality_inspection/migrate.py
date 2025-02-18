@@ -31,13 +31,13 @@ def after_migrate():
 
     ### Equipment QI ###
 
-    if not frappe.db.exists("Equipment QI", "LOV", cache=True):
-        equipment = frappe.new_doc("Equipment QI")
-        equipment.equipment = "LOV"
-        equipment.save(ignore_permissions=True)
-        print("Equipment QI: LOV created")
-    else:
-        pass
+    # if not frappe.db.exists("Equipment QI", "LOV", cache=True):
+    #     equipment = frappe.new_doc("Equipment QI")
+    #     equipment.equipment = "LOV"
+    #     equipment.save(ignore_permissions=True)
+    #     print("Equipment QI: LOV created")
+    # else:
+    #     pass
 
     if not frappe.db.exists("Equipment QI", "Pin Meter", cache=True):
         equipment = frappe.new_doc("Equipment QI")

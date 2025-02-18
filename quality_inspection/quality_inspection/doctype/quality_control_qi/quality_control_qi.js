@@ -4,7 +4,7 @@
 frappe.ui.form.on("Quality Control QI", {
     refresh(frm) {
         set_html_details(frm)
-        set_table_button_css(frm)
+        // set_table_button_css(frm)
 
         if (!frm.is_new()) {
             frm.add_custom_button(__("TAS Po"), function () {
@@ -82,7 +82,7 @@ frappe.ui.form.on("Quality Control QI", {
     onload_post_render: function (frm) {
         $('button.grid-add-row').hide()
         change_table_button_css()
-        hide_select_fields()
+        // hide_select_fields()
         set_table_button_css(frm)
     }
 });
@@ -348,6 +348,7 @@ let set_button_css = function(frm, table, table_name, select_field,fieldname1, c
                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("background-color", "#758694");
                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("color", "white");
                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).text("To Do");
+                    $(`div [data-idx="${row_idx}"]`).find('.field-area').find(fieldname1).css("display", "");
                 });
                 break;
             case "Pass":
@@ -355,6 +356,7 @@ let set_button_css = function(frm, table, table_name, select_field,fieldname1, c
                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("background-color", "#76885B");
                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("color", "white");
                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).text("Pass");
+                    $(`div [data-idx="${row_idx}"]`).find('.field-area').find(fieldname1).css("display", "");
                 });
                 break;
             case "Fail - Minor":
@@ -362,6 +364,7 @@ let set_button_css = function(frm, table, table_name, select_field,fieldname1, c
                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("background-color", "#CB80AB");
                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("color", "white");
                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).text("Fail - Minor");
+                    $(`div [data-idx="${row_idx}"]`).find('.field-area').find(fieldname1).css("display", "");
                 });
                 break;
             case "Fail - Major":
@@ -369,6 +372,7 @@ let set_button_css = function(frm, table, table_name, select_field,fieldname1, c
                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("background-color", "#FF8343");
                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("color", "white");
                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).text("Fail - Major");
+                    $(`div [data-idx="${row_idx}"]`).find('.field-area').find(fieldname1).css("display", "");
                 });
                 break;
             case "Fail - Critical":
@@ -376,6 +380,7 @@ let set_button_css = function(frm, table, table_name, select_field,fieldname1, c
                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("background-color", "#B43F3F");
                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("color", "white");
                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).text("Fail - Critical");
+                    $(`div [data-idx="${row_idx}"]`).find('.field-area').find(fieldname1).css("display", "");
                 });
                 break;
             case "Undetermined":
@@ -383,6 +388,7 @@ let set_button_css = function(frm, table, table_name, select_field,fieldname1, c
                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("background-color", "#FABC3F");
                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("color", "white");
                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).text("Undetermined");
+                    $(`div [data-idx="${row_idx}"]`).find('.field-area').find(fieldname1).css("display", "");
                 });
                 break;
             default:
@@ -390,6 +396,7 @@ let set_button_css = function(frm, table, table_name, select_field,fieldname1, c
                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("background-color", "#758694");
                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("color", "white");
                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).text("To Do");
+                    $(`div [data-idx="${row_idx}"]`).find('.field-area').find(fieldname1).css("display", "");
                 });
         }
     });

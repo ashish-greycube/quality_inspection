@@ -3,6 +3,7 @@
  "allow_rename": 1,
  "creation": "2025-01-20 18:53:57.669230",
  "doctype": "DocType",
+ "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "item_color",
@@ -30,51 +31,57 @@
  ],
  "fields": [
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "hologram",
    "fieldtype": "Button",
+   "in_list_view": 1,
    "label": "Hologram(optional)"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "carb",
    "fieldtype": "Button",
+   "in_list_view": 1,
    "label": "Carb II"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "floor_score",
    "fieldtype": "Button",
+   "in_list_view": 1,
    "label": "Floor Score(optional)"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "shrink_wrap",
    "fieldtype": "Button",
+   "in_list_view": 1,
    "label": "Inner/Outer Shrink wrap"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "insert_sheet",
    "fieldtype": "Button",
+   "in_list_view": 1,
    "label": "Insert Sheet"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "carton_weight",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Carton Weight"
+   "label": "Carton Weight",
+   "precision": "2"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "production_date",
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "Production Date"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "country_of_origin",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -82,54 +89,59 @@
    "options": "Country"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "end_label",
    "fieldtype": "Attach",
    "in_list_view": 1,
    "label": "End Label"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "hologram_select",
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Hologram (optional)",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
+   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
+   "read_only": 1
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "carb_select",
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Carb II",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
+   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
+   "read_only": 1
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "floor_select",
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Floor Score(optional)",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
+   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
+   "read_only": 1
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "shink_wrap_select",
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Inner/Outer Shrink wrap",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
+   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
+   "read_only": 1
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "insert_sheet_select",
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Insert Sheet",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
+   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
+   "read_only": 1
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "item_color",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -177,7 +189,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-02-13 21:02:53.551744",
+ "modified": "2025-02-17 18:19:33.274075",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Inner and Outer Carton Details QI",

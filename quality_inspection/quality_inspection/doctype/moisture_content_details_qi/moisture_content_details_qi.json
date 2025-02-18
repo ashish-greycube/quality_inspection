@@ -45,19 +45,21 @@
  ],
  "fields": [
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "master_sample",
    "fieldtype": "Attach",
+   "in_list_view": 1,
    "label": "Master Sample"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "current_moisture",
    "fieldtype": "Float",
+   "in_list_view": 1,
    "label": "Current Moisture"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "item_color",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -73,9 +75,10 @@
    "label": "Sample 1"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "finished_board_1",
    "fieldtype": "Attach",
+   "in_list_view": 1,
    "label": "Finished Board"
   },
   {
@@ -83,7 +86,7 @@
    "fieldtype": "Column Break"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "current_1",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -94,12 +97,14 @@
    "fieldtype": "Column Break"
   },
   {
+   "columns": 3,
    "fieldname": "results_1",
    "fieldtype": "Button",
+   "in_list_view": 1,
    "label": "Results"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "default": "To Do",
    "fieldname": "results_select_1",
    "fieldtype": "Select",
@@ -154,8 +159,10 @@
    "label": "Sample 3"
   },
   {
+   "columns": 3,
    "fieldname": "finished_board_3",
    "fieldtype": "Attach",
+   "in_list_view": 1,
    "label": "Finished Board"
   },
   {
@@ -163,7 +170,7 @@
    "fieldtype": "Column Break"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "current_3",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -174,12 +181,14 @@
    "fieldtype": "Column Break"
   },
   {
+   "columns": 3,
    "fieldname": "results_3",
    "fieldtype": "Button",
+   "in_list_view": 1,
    "label": "Results"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "default": "To Do",
    "fieldname": "results_select_3",
    "fieldtype": "Select",
@@ -194,8 +203,10 @@
    "label": "Sample 4"
   },
   {
+   "columns": 3,
    "fieldname": "finished_board_4",
    "fieldtype": "Attach",
+   "in_list_view": 1,
    "label": "Finished Board"
   },
   {
@@ -203,7 +214,7 @@
    "fieldtype": "Column Break"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "current_4",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -214,12 +225,14 @@
    "fieldtype": "Column Break"
   },
   {
+   "columns": 3,
    "fieldname": "results_4",
    "fieldtype": "Button",
+   "in_list_view": 1,
    "label": "Results"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "default": "To Do",
    "fieldname": "results_select_4",
    "fieldtype": "Select",
@@ -256,7 +269,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-02-13 23:52:36.281331",
+ "modified": "2025-02-17 18:50:22.246414",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Moisture Content Details QI",

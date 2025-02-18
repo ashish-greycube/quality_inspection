@@ -42,7 +42,7 @@ app_license = "mit"
 # include js in page
 # page_js = {"page" : "public/js/file.js"}
 
-app_include_js = "override.bundle.js"
+# app_include_js = "override.bundle.js"
 
 # include js in doctype views
 # doctype_js = {"doctype" : "public/js/doctype.js"}

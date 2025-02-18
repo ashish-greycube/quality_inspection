@@ -1,0 +1,3 @@
+frappe/frappe/public/js/frappe/form/grid_row.js
+frappe/frappe/public/js/frappe/form/grid.js
+frappe/frappe/public/scss/common/grid.scss

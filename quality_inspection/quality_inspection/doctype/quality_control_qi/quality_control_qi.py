@@ -8,6 +8,8 @@ from frappe.model.mapper import get_mapped_doc
 from frappe.utils import cstr, flt
 
 PASS_STATUS = ["Pass"]
+UNDETERMINED = ["Undetermined"]
+TODO_STATUS = ["To Do"]
 class QualityControlQI(Document):
 
 	def onload(self):
@@ -24,21 +26,29 @@ class QualityControlQI(Document):
 		template_path = "templates/pallet_information.html"
 
 		pallet_html = frappe.render_template(template_path,  
-									   dict(total_attach=self.pallet_total_attachment, pending=self.pallet_pending_attachment, pass_ration=self.pallet_pass_ration,color=None))  
+									   dict(total_attach=self.pallet_total_attachment, pending=self.pallet_pending_attachment, 
+				 							pass_ration=self.pallet_pass_ration,color=None, undetermined_ratio=self.pallet_undetermined_ratio, todo_ration=self.pallet_todo_ratio))  
 		inner_outer_html = frappe.render_template(template_path,  
-										dict(total_attach=self.inner_total_attachment, pending=self.inner_pending_attachment, pass_ration=self.inner_pass_ration,color=None))
+										dict(total_attach=self.inner_total_attachment, pending=self.inner_pending_attachment, 
+			   								pass_ration=self.inner_pass_ration,color=None, undetermined_ratio=self.inner_undetermined_ratio, todo_ration=self.inner_todo_ratio))
 		color_match_html = frappe.render_template(template_path,
-										dict(total_attach=self.color_total_attachment, pending=self.color_pending_attachment, pass_ration=self.color_pass_ration,color=self.color_count))
+										dict(total_attach=self.color_total_attachment, pending=self.color_pending_attachment, 
+			   								pass_ration=self.color_pass_ration,color=self.color_count, undetermined_ratio=self.color_undetermined_ratio, todo_ration=self.color_todo_ratio))
 		over_wax_html = frappe.render_template(template_path,  
-										dict(total_attach=self.over_total_attachment, pending=self.over_pending_attachment, pass_ration=self.over_pass_ration,color=None))
+										dict(total_attach=self.over_total_attachment, pending=self.over_pending_attachment, 
+			   								pass_ration=self.over_pass_ration,color=None, undetermined_ratio=self.over_undetermined_ratio, todo_ration=self.over_todo_ratio))
 		gloss_level_html = frappe.render_template(template_path,  
-										dict(total_attach=self.gloss_total_attachment, pending=self.gloss_pending_attachment, pass_ration=self.gloss_pass_ration,color=None))
+										dict(total_attach=self.gloss_total_attachment, pending=self.gloss_pending_attachment, 
+			   								pass_ration=self.gloss_pass_ration,color=None, undetermined_ratio=self.gloss_undetermined_ratio, todo_ration=self.gloss_todo_ratio))
 		moisture_html = frappe.render_template(template_path,  
-										dict(total_attach=self.moisture_total_attachment, pending=self.moisture_pending_attachment, pass_ration=self.moisture_pass_ration,color=None))
+										dict(total_attach=self.moisture_total_attachment, pending=self.moisture_pending_attachment, 
+			   								pass_ration=self.moisture_pass_ration,color=None, undetermined_ratio=self.moisture_undetermined_ratio, todo_ration=self.moisture_todo_ratio))
 		open_box_html = frappe.render_template(template_path,  
-										dict(total_attach=self.open_total_attachment, pending=self.open_pending_attachment, pass_ration=self.open_pass_ration,color=None))
+										dict(total_attach=self.open_total_attachment, pending=self.open_pending_attachment, 
+			   								pass_ration=self.open_pass_ration,color=None, undetermined_ratio=self.open_undetermined_ratio, todo_ration=self.open_todo_ratio))
 		width_thickness_html = frappe.render_template(template_path,  
-										dict(total_attach=self.width_total_attachment, pending=self.width_pending_attachment, pass_ration=self.width_pass_ration,color=None))
+										dict(total_attach=self.width_total_attachment, pending=self.width_pending_attachment, 
+			   								pass_ration=self.width_pass_ration,color=None, undetermined_ratio=self.open_undetermined_ratio, todo_ration=self.width_todo_ratio))
 
 		self.set_onload("pallet_html", pallet_html)
 		self.set_onload("inner_outer_html", inner_outer_html)
@@ -55,6 +65,10 @@ class QualityControlQI(Document):
 		pendings = 0
 		total_pass = 0
 		pass_ration = 0
+		total_undetermined = 0
+		undetermined_ratio = 0
+		total_todo = 0
+		todo_ration = 0
 
 		if self.get("no_of_po") and self.get("no_of_po") > 0:
 			if child_table == "pallet_details":
@@ -70,15 +84,22 @@ class QualityControlQI(Document):
 					for select in select_field_list:
 						if row.get(select) in PASS_STATUS:
 							total_pass = total_pass + 1
+						elif row.get(select) in UNDETERMINED:
+							total_undetermined = total_undetermined + 1
+						elif row.get(select) in TODO_STATUS:
+							total_todo = total_todo + 1
+						else:
+							pass
 
-				print(total_pass, '---total_pass', total_select_fields, '---total_select_fields')
-				pass_ration = (total_pass * 100/ total_select_fields) 
+				pass_ration = ((total_pass * 100)/ total_select_fields)
+				undetermined_ratio = ((total_undetermined * 100) / total_select_fields)
+				todo_ration = ((total_todo * 100) / total_select_fields)
 
 			else:
-
+				table_length = 0
 				for i in range(self.no_of_po):
 					child_table_name=child_table+cstr(i+1)
-					table_length = 0
+					
 					if len(self.get(child_table_name)) > 0:
 						table_length = table_length +  len(self.get(child_table_name))
 						for row in self.get(child_table_name):
@@ -91,44 +112,61 @@ class QualityControlQI(Document):
 							for select in select_field_list:
 								if row.get(select) in PASS_STATUS:
 									total_pass = total_pass + 1
+								elif row.get(select) in UNDETERMINED:
+									total_undetermined = total_undetermined + 1
+								elif row.get(select) in TODO_STATUS:
+									total_todo = total_todo + 1
+								else:
+									pass
 
-				print(total_pass, "=======total_pass======")
 
+				print(total_todo, "========total_todo")
 				total_select_fields = table_length * len(select_field_list)
+				print(total_select_fields, "=========total_select_fields")
 
-				pass_ration = (total_pass * 100/ total_select_fields) 
+				pass_ration = ((total_pass * 100)/ total_select_fields)
+				undetermined_ratio = ((total_undetermined * 100) / total_select_fields)
+				todo_ration = ((total_todo * 100) / total_select_fields)
 		
-		print(pass_ration, '---pass_ration')
-
-		return total_attachments, pendings, pass_ration
+		return total_attachments, pendings, pass_ration, undetermined_ratio, todo_ration
 	
 	def set_attachments_details(self):
 		pallet = self.calculate_attachments_details("pallet_details", ['width', 'height'], ['button_select'])
 		self.pallet_total_attachment = pallet[0]
 		self.pallet_pending_attachment = pallet[1]
 		self.pallet_pass_ration = flt((pallet[2]), 2)
+		self.pallet_undetermined_ratio = flt((pallet[3]), 2)
+		self.pallet_todo_ratio = flt((pallet[4]), 2)
 
 		inner = self.calculate_attachments_details("inner_and_outer_carton_details_", ['end_label'],
 											 ['hologram_select', 'carb_select', 'floor_select', 'shink_wrap_select', 'insert_sheet_select'])
 		self.inner_total_attachment = inner[0]
 		self.inner_pending_attachment = inner[1]
 		self.inner_pass_ration = flt((inner[2]), 2)
+		self.inner_undetermined_ratio = flt((inner[3]), 2)
+		self.inner_todo_ratio = flt((inner[4]), 2)
 
 		color = self.calculate_attachments_details("color_match_and_embossing_details_", ['master_sample', 'finished_board'], ['results_select', 'embossing_select'])
 		self.color_total_attachment = color[0]
 		self.color_pending_attachment = color[1]
 		self.color_pass_ration = flt((color[2]), 2)
+		self.color_undetermined_ratio = flt((color[3]), 2)
+		self.color_todo_ratio = flt((color[4]), 2)
 
 		over = self.calculate_attachments_details("over_wax_and_edge_paint_", ['finished_board'], ['over_wax_select', 'edge_paint_select'])
 		self.over_total_attachment = over[0]
 		self.over_pending_attachment = over[1]
 		self.over_pass_ration = flt((over[2]), 2)
+		self.over_undetermined_ratio = flt((over[3]), 2)
+		self.over_todo_ratio = flt((over[4]), 2)
 
 		gloss = self.calculate_attachments_details("gloss_level_details_", ['master_sample', 'finished_board_1', 'finished_board_2', 'finished_board_3', 'finished_board_4'], 
 											 ['results_select_1', 'results_select_2', 'results_select_3', 'results_select_4'])
 		self.gloss_total_attachment = gloss[0]
 		self.gloss_pending_attachment = gloss[1]
 		self.gloss_pass_ration = flt((gloss[2]), 2)
+		self.gloss_undetermined_ratio = flt(gloss[3], 2)
+		self.gloss_todo_ratio = flt((gloss[4]), 2)
 
 		moisture = self.calculate_attachments_details("moisture_content_details_", 
 												['master_sample', 'finished_board_1', 'finished_board_2', 'finished_board_3', 'finished_board_4'],
@@ -136,12 +174,16 @@ class QualityControlQI(Document):
 		self.moisture_total_attachment = moisture[0]
 		self.moisture_pending_attachment = moisture[1]
 		self.moisture_pass_ration = flt((moisture[2]), 2)
+		self.moisture_undetermined_ratio = flt((moisture[3]), 2)
+		self.moisture_todo_ratio = flt((moisture[4]), 2)
 
 		open = self.calculate_attachments_details("open_box_inspection_details_", ['finished_board'],
 											['bowing_select', 'squareness_select', 'ledging_overwood_select', 'pad_away_select'])
 		self.open_total_attachment = open[0]
 		self.open_pending_attachment = open[1]
 		self.open_pass_ration = flt((open[2]), 2)
+		self.open_undetermined_ratio = flt(open[3], 2)
+		self.open_todo_ratio = flt((open[4]), 2)
 
 		width = self.calculate_attachments_details("width_and_thickness_details_", 
 											 ['finished_board_1', 'finished_board_2', 'finished_board_3', 'master_sample_matching_board'],
@@ -149,6 +191,8 @@ class QualityControlQI(Document):
 		self.width_total_attachment = width[0]
 		self.width_pending_attachment = width[1]
 		self.width_pass_ration =flt(( width[2]), 2)
+		self.width_undetermined_ratio = flt((width[3]), 2)
+		self.width_todo_ratio = flt((width[4]), 2)
 
 	def set_color_count_for_color_match_and_embossing(self):
 		total_color = 0
@@ -205,7 +249,7 @@ class QualityControlQI(Document):
 						po1.qty = po.qty
 						po1.color = po.color
 						po1.amount = po.cost
-						po1.item_color = cstr(po.item_no) + (cstr(po.color) or 'red')
+						po1.item_color = cstr(po.item_no) + "-" +(cstr(po.color) or 'red')
 						po1.tas_po_ref = po.parent
 
 			self.set_pallet_details_table(unique_tas_po)
@@ -322,7 +366,7 @@ class QualityControlQI(Document):
 		# moisture equipment default value
 		default_value = ""
 		if len(self.moisture_equipment) > 0:
-			default_value = frappe.db.get_value('Equipment QI', self.moisture_equipment[0].equipment, 'equipment_default_value')
+			default_value = frappe.db.get_value('Equipment QI', self.moisture_equipment, 'equipment_default_value')
 		
 		self.default_moisture = default_value
 

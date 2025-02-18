@@ -3,6 +3,7 @@
  "allow_rename": 1,
  "creation": "2025-01-20 18:12:57.863422",
  "doctype": "DocType",
+ "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "tas_po",
@@ -20,7 +21,7 @@
  ],
  "fields": [
   {
-   "columns": 2,
+   "columns": 3,
    "fieldname": "pallet_type",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -28,40 +29,44 @@
    "options": "Pallet Type QI"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "current_width",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Cur Corner Width"
+   "label": "Cur Corner Width",
+   "precision": "2"
   },
   {
-   "columns": 2,
+   "columns": 3,
    "fieldname": "status",
    "fieldtype": "Button",
+   "in_list_view": 1,
    "label": "Corner Width Status"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "width",
    "fieldtype": "Attach",
+   "in_list_view": 1,
    "label": "Corner Width"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "height_reading",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Height Reading"
+   "label": "Height Reading",
+   "precision": "2"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "fieldname": "height",
    "fieldtype": "Attach",
    "in_list_view": 1,
    "label": "Height"
   },
   {
-   "columns": 1,
+   "columns": 3,
    "default": "To Do",
    "fieldname": "button_select",
    "fieldtype": "Select",
@@ -71,7 +76,7 @@
    "read_only": 1
   },
   {
-   "columns": 2,
+   "columns": 3,
    "fieldname": "tas_po",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -102,7 +107,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-02-13 20:58:04.070728",
+ "modified": "2025-02-17 17:54:23.723169",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Pallet Information QI",

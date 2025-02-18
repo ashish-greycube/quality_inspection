@@ -1,9 +1,11 @@
 <div style="text-align: center; font-size: 15px;">
     <div style="border: 2px solid black; margin: 2% 10%; padding: 2% 0% 2% 0%; border-radius: 2%;">
         This section requires {{total_attach}} attachments, Attached: {{total_attach - pending}} Pending {{pending}} <br>
+        ToDo Ration: {{todo_ration}} % <br>
         Pass Ration: {{pass_ration}} % <br>
-        Fail Ration: {{100 - pass_ration}} % <br>
-        
+        Undetermined Ratio: {{undetermined_ratio}} % <br>
+        {% set fail_ration = 100 - (todo_ration + pass_ration + undetermined_ratio) %}
+        Fail Ration: {{ " %.2f " | format(fail_ration) }} % <br>
         {% if color %}
         Color: {{color}}
         {% endif %}

@@ -40,6 +40,8 @@
   "pallet_total_attachment",
   "pallet_pending_attachment",
   "pallet_pass_ration",
+  "pallet_undetermined_ratio",
+  "pallet_todo_ratio",
   "default_corner_width",
   "section_break_wxpv",
   "pallet_details",
@@ -50,6 +52,8 @@
   "inner_total_attachment",
   "inner_pending_attachment",
   "inner_pass_ration",
+  "inner_undetermined_ratio",
+  "inner_todo_ratio",
   "section_break_jccn",
   "carton_po_1",
   "inner_and_outer_carton_details_1",
@@ -79,6 +83,8 @@
   "color_pending_attachment",
   "color_pass_ration",
   "color_count",
+  "color_undetermined_ratio",
+  "color_todo_ratio",
   "section_break_newx",
   "po_color_1",
   "color_match_and_embossing_details_1",
@@ -107,6 +113,8 @@
   "over_total_attachment",
   "over_pending_attachment",
   "over_pass_ration",
+  "over_undetermined_ratio",
+  "over_todo_ratio",
   "section_break_jznz",
   "po_over_1",
   "over_wax_and_edge_paint_1",
@@ -135,6 +143,8 @@
   "gloss_total_attachment",
   "gloss_pending_attachment",
   "gloss_pass_ration",
+  "gloss_undetermined_ratio",
+  "gloss_todo_ratio",
   "section_break_trlm",
   "po_gloss_1",
   "gloss_level_details_1",
@@ -164,6 +174,8 @@
   "moisture_pending_attachment",
   "moisture_pass_ration",
   "default_moisture",
+  "moisture_undetermined_ratio",
+  "moisture_todo_ratio",
   "section_break_brmr",
   "po_moisture_1",
   "moisture_content_details_1",
@@ -192,6 +204,8 @@
   "open_total_attachment",
   "open_pending_attachment",
   "open_pass_ration",
+  "open_undetermined_ratio",
+  "open_todo_ratio",
   "section_break_ltwz",
   "guidelines",
   "section_break_ckig",
@@ -222,6 +236,8 @@
   "width_total_attachment",
   "width_pending_attachment",
   "width_pass_ration",
+  "width_undetermined_ratio",
+  "width_todo_ratio",
   "section_break_tnra",
   "po_width_1",
   "width_and_thickness_details_1",
@@ -814,12 +830,6 @@
   },
   {
    "fieldname": "over_equipment",
-   "fieldtype": "Table MultiSelect",
-   "label": "Equipment In Use",
-   "options": "Equipment Use In QI"
-  },
-  {
-   "fieldname": "moisture_equipment",
    "fieldtype": "Table MultiSelect",
    "label": "Equipment In Use",
    "options": "Equipment Use In QI"
@@ -1774,12 +1784,128 @@
    "fieldtype": "Small Text",
    "label": "Guidelines",
    "read_only": 1
+  },
+  {
+   "fieldname": "moisture_equipment",
+   "fieldtype": "Link",
+   "label": "Equipment In Use",
+   "options": "Equipment QI"
+  },
+  {
+   "fieldname": "inner_undetermined_ratio",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "inner_undetermined_ratio",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "over_undetermined_ratio",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "over_undetermined_ratio",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "gloss_undetermined_ratio",
+   "fieldtype": "Float",
+   "label": "gloss_undetermined_ratio",
+   "precision": "2"
+  },
+  {
+   "fieldname": "moisture_undetermined_ratio",
+   "fieldtype": "Float",
+   "label": "moisture_undetermined_ratio",
+   "precision": "2"
+  },
+  {
+   "fieldname": "open_undetermined_ratio",
+   "fieldtype": "Float",
+   "label": "open_undetermined_ratio"
+  },
+  {
+   "fieldname": "width_undetermined_ratio",
+   "fieldtype": "Float",
+   "label": "width_undetermined_ratio",
+   "precision": "2"
+  },
+  {
+   "fieldname": "pallet_undetermined_ratio",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "pallet_undetermined_ratio",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "color_undetermined_ratio",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "color_undetermined_ratio",
+   "read_only": 1
+  },
+  {
+   "fieldname": "pallet_todo_ratio",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "pallet_todo_ratio",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "inner_todo_ratio",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "inner_todo_ratio",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "color_todo_ratio",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "color_todo_ratio",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "over_todo_ratio",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "over_todo_ratio",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "gloss_todo_ratio",
+   "fieldtype": "Float",
+   "label": "gloss_todo_ratio",
+   "precision": "2"
+  },
+  {
+   "fieldname": "moisture_todo_ratio",
+   "fieldtype": "Float",
+   "label": "moisture_todo_ratio",
+   "precision": "2"
+  },
+  {
+   "fieldname": "open_todo_ratio",
+   "fieldtype": "Float",
+   "label": "open_todo_ratio",
+   "precision": "2"
+  },
+  {
+   "fieldname": "width_todo_ratio",
+   "fieldtype": "Float",
+   "label": "width_todo_ratio",
+   "precision": "2"
   }
  ],
  "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-14 00:06:15.945414",
+ "modified": "2025-02-16 19:31:08.986664",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Quality Control QI",
