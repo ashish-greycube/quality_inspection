@@ -6,6 +6,10 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
 from frappe.utils import cstr, flt
+import openpyxl
+from openpyxl.styles import Font, Alignment, PatternFill
+from openpyxl.styles import Border, Side
+import os
 
 PASS_STATUS = ["Pass"]
 UNDETERMINED = ["Undetermined"]
@@ -365,7 +369,7 @@ class QualityControlQI(Document):
 
 		# moisture equipment default value
 		default_value = ""
-		if len(self.moisture_equipment) > 0:
+		if self.moisture_equipment and len(self.moisture_equipment) > 0:
 			default_value = frappe.db.get_value('Equipment QI', self.moisture_equipment, 'equipment_default_value')
 		
 		self.default_moisture = default_value
@@ -384,3 +388,94 @@ class QualityControlQI(Document):
 						print(PASS_STATUS, '---PASS_STATUS')
 						if row.over_wax_select not in PASS_STATUS and not row.finished_board:
 							frappe.msgprint(_("In Over Wax Child Table, For {0} Item, Finished Board Picture is Require.").format(row.item_color), alert=True)
+
+
+
+@frappe.whitelist()
+def download_excel(doctype,docname,child_fieldname,file_name,data=None):
+	ignore_fieldtype_in_list_view = ["Section Break", "Column Break", "HTML", "Button", "Image"]
+	print(docname, '---docname')
+	idx_no = 1
+	qo_doc = frappe.get_doc(doctype, docname)
+	file_header = ["Sr. NO."]
+	file_data = []
+	# file_data_list = [idx_no]
+	for row in qo_doc.get(child_fieldname):
+		file_data_list = [idx_no]
+		child_doc = frappe.get_doc(row.doctype, row.name)
+		print(child_doc, '---child_doc')
+		print(qo_doc.meta.get_field(child_fieldname).label,"+++++++++++")
+		field_data = child_doc.meta.fields
+		for f in field_data:
+			print(f.fieldtype, '---fieldtype')
+			if not data:
+				if f.in_list_view == 1:
+					if f.fieldtype not in ignore_fieldtype_in_list_view:
+						if f.label not in file_header:
+							file_header.append(f.label)
+						if f.fieldtype == "Check":
+							print(child_doc.get(f.fieldname), '---fieldname')
+							if child_doc.get(f.fieldname) == 1:
+								print("Yes")
+								file_data_list.append("Yes")
+							else:
+								print("No")
+								file_data_list.append("No")
+							
+						elif f.fieldtype == "Attach":
+							# file_header.append(f.label+" URL")
+							file_data_list.append("""<img src={0} alt="img" width="500" height="600">""".format(child_doc.get(f.fieldname)))
+						else:
+							file_data_list.append(child_doc.get(f.fieldname))
+			
+			print(f.fieldname, '---fieldname',f.in_list_view)
+		file_data.append(file_data_list)
+		print(file_header, '---file_header')
+		print(file_data, '---file_data')
+		idx_no += 1
+
+	public_file_path = frappe.get_site_path("public", "files")
+	workbook = openpyxl.Workbook(write_only=True)
+	# file_name=f"SBI-{docname}.xlsx"
+	file_url=os.path.join(public_file_path,file_name)
+	sheet = workbook.create_sheet(doctype, 0)
+	sheet.append(file_header)
+	for ele in file_data:
+		sheet.append(ele)
+	# sheet.append(file_footer)
+	workbook.save(file_url)
+
+	workBook = openpyxl.load_workbook(file_url)
+	workSheet = workBook.active
+	header_font_style = Font(bold=True, size=12, name="Calibri")
+	color_code = "D3D3D3"
+	# path = frappe.utils.get_url()+"/files/image.png"
+	# img = openpyxl.drawing.image.Image(path) 
+	# workSheet.add_image(img)
+	for i in range(1, workSheet.max_column + 1):
+		workSheet.cell(1, i).font = header_font_style
+		workSheet.cell(1, i).fill = PatternFill(start_color=color_code, end_color=color_code, fill_type="solid")
+		# workSheet.cell(workSheet.max_row, i).font = Font(bold=True, size=10, name="Calibri")
+		workSheet.row_dimensions[1].height = 20
+	
+	for j in range(1, workSheet.max_row + 1):
+		workSheet.cell(j, 1).font = header_font_style
+		workSheet.cell(j, 1).fill = PatternFill(start_color=color_code, end_color=color_code, fill_type="solid")
+
+	border_thin = Side(style='thin')
+	for i in range (1, workSheet.max_row + 1):
+		for j in range(1, workSheet.max_column + 1):
+			workSheet.cell(i, j).alignment = Alignment(horizontal="center", vertical="center")
+			workSheet.cell(i, j).border = Border(top=border_thin, left=border_thin, right=border_thin, bottom=border_thin)
+
+	for column_cells in workSheet.columns:
+		new_column_length = max(len(str(cell.value)) for cell in column_cells)
+		new_column_letter = (chr(64+(column_cells[0].column)))
+		if new_column_length > 0:
+			workSheet.column_dimensions[new_column_letter].width = new_column_length+5 # *1.10
+
+	workBook.save(file_url)
+
+
+
+	return frappe.utils.get_url()+"/files/"+file_name

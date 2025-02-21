@@ -3,8 +3,21 @@
 
 frappe.ui.form.on("Quality Control QI", {
     refresh(frm) {
+        setTimeout(() => {
+            frm.fields_dict.pallet_details.grid.wrapper.find('.static-area').click()
+            frm.fields_dict.pallet_details.grid.wrapper.find('div.select-icon').hide()
+        }, 100);
+
+        // setTimeout(() => {
+        //     frm.fields_dict.inner_and_outer_carton_details_1.grid.wrapper.find('div [data-fieldtype="Select"]').click()
+        // }, 200);
+        // setTimeout(() => {
+        //     frm.fields_dict.inner_and_outer_carton_details_2.grid.wrapper.find('div [data-fieldtype="Select"]').click()
+        //     // frm.fields_dict.inner_and_outer_carton_details_2.grid.wrapper.find('div [data-idx="1"]').click()
+        // }, 100);
+        
+        // click_table_row(frm)
         set_html_details(frm)
-        // set_table_button_css(frm)
 
         if (!frm.is_new()) {
             frm.add_custom_button(__("TAS Po"), function () {
@@ -72,6 +85,35 @@ frappe.ui.form.on("Quality Control QI", {
                 }
 
             })
+
+            frm.add_custom_button(__('Get Pallet Excel'), () => {
+                let file_name="Quality"+frm.doc.name+".xlsx"
+                return frappe.call({
+                    method: "quality_inspection.quality_inspection.doctype.quality_control_qi.quality_control_qi.download_excel",
+                    args: {
+                        doctype: frm.doc.doctype,
+                        docname: frm.doc.name,
+                        child_fieldname: "pallet_details",
+                        file_name:file_name
+                    },
+                    callback: function (r) {
+                      console.log(r.message)
+                      function downloadURI(uri, name) 
+                      {
+                          var link = document.createElement("a");
+                          // If you don't know the name or want to use
+                          // the webserver default set name = ''
+                          link.setAttribute('download', name);
+                          link.href = uri;
+                          document.body.appendChild(link);
+                          link.click();
+                          link.remove();
+                      }                    
+                      downloadURI(r.message,"Quality"+frm.doc.name)
+                      console.log("22")
+                      }
+                  })
+              })
         }
     },
 
@@ -80,11 +122,14 @@ frappe.ui.form.on("Quality Control QI", {
     },
 
     onload_post_render: function (frm) {
+        // set_pallet_button_css(frm)
         $('button.grid-add-row').hide()
+        // $('div.select-icon').hide()
+        click_table_row(frm)
         change_table_button_css()
         // hide_select_fields()
         set_table_button_css(frm)
-    }
+    },
 });
 
 let make_html =  function(frm, field_name, html_details){
@@ -121,7 +166,7 @@ let create_child_table_list = function(frm, child_table){
             child_table_list.push(child_table_name)
         }
     }
-    console.log(child_table_list, '====child_table_list')
+    // console.log(child_table_list, '====child_table_list')
     return child_table_list
 }
 
@@ -129,18 +174,18 @@ let table_details_list = [
     {   'table_name':"Pallet Information QI",
         'table_field_name': "pallet_details",
         'table_button_details': [
-            {'button': 'status', 'select': 'button_select', 'fieldname': '[data-fieldname="status"].btn-xs'}
+            {'button': 'status', 'select': 'button_select', 'fieldname': '[data-fieldname="button_select"]'}
         ],
         'select_field': ['button_select']
     },
     {   'table_name':"Inner and Outer Carton Details QI",
         'table_field_name': "inner_and_outer_carton_details_",
         'table_button_details': [
-            {'button': 'hologram', 'select': 'hologram_select', 'fieldname': '[data-fieldname="hologram"].btn-xs'}, 
-            {'button': 'carb', 'select': 'carb_select', 'fieldname': '[data-fieldname="carb"].btn-xs'}, 
-            {'button': 'floor_score', 'select': 'floor_select', 'fieldname': '[data-fieldname="floor_score"].btn-xs'}, 
-            {'button': 'shrink_wrap', 'select': 'shink_wrap_select', 'fieldname': '[data-fieldname="shrink_wrap"].btn-xs'}, 
-            {'button': 'insert_sheet', 'select': 'insert_sheet_select', 'fieldname': '[data-fieldname="insert_sheet"].btn-xs'},
+            {'button': 'hologram', 'select': 'hologram_select', 'fieldname': '[data-fieldname="hologram_select"]'}, 
+            {'button': 'carb', 'select': 'carb_select', 'fieldname': '[data-fieldname="carb_select"]'}, 
+            {'button': 'floor_score', 'select': 'floor_select', 'fieldname': '[data-fieldname="floor_select"]'}, 
+            {'button': 'shrink_wrap', 'select': 'shink_wrap_select', 'fieldname': '[data-fieldname="shink_wrap_select"]'}, 
+            {'button': 'insert_sheet', 'select': 'insert_sheet_select', 'fieldname': '[data-fieldname="insert_sheet_select"]'},
         ],
         'select_field': ['hologram_select', 'carb_select', 'floor_select', 'shink_wrap_select', 'insert_sheet_select']
     },
@@ -208,10 +253,11 @@ let change_table_button_css = function () {
                 let row = locals[cdt][cdn]
                 let table_name_1 = frm.fields_dict[row.parentfield].grid.wrapper
                 let button_select = row[b.select]
-                let row_idx = row.idx
+                let row_idx = row.name
                 let fieldname1 = b.fieldname
                 let select_field = b.select
-                change_button_css(frm, cdt, cdn, table_name_1, button_select, row_idx, fieldname1, select_field)
+                // change_button_css(frm, cdt, cdn, table_name_1, button_select, row_idx, fieldname1, select_field)
+                change_select_css(frm, cdt, cdn, table_name_1, button_select, row_idx, fieldname1, select_field)
             })
         }
     }
@@ -227,7 +273,8 @@ let set_table_button_css = function (frm) {
             for (let b of buttons) {
                 let fieldname1 = b.fieldname
                 let select_field = b.select
-                set_button_css(frm, table, table_name_1, select_field, fieldname1)
+                // set_button_css(frm, table, table_name_1, select_field, fieldname1)
+                set_select_css(frm, table, table_name_1, select_field,fieldname1, cdt = undefined, cdn = undefined)
             }
         }
         else {
@@ -241,11 +288,21 @@ let set_table_button_css = function (frm) {
                     for (let b of buttons) {
                         let fieldname1 = b.fieldname
                         let select_field = b.select
-                        set_button_css(frm, table, table_name_1, select_field, fieldname1)
+                        // set_button_css(frm, table, table_name_1, select_field, fieldname1)
+                        set_select_css(frm, table, table_name_1, select_field,fieldname1, cdt = undefined, cdn = undefined)
                     }
+
+                    // setTimeout(() => {
+                        // console.log("=====setTimeout========")
+                        // frm.fields_dict[table_name].grid.wrapper.find('.static-area').click()
+                        // frm.fields_dict[table_name].grid.wrapper.find('div.select-icon').hide()
+                    // }, 100);
+
                 }
             }
         }
+
+        
     }
 }
 
@@ -269,8 +326,40 @@ let hide_select_fields = function(){
     }
 }
 
+let click_table_row = function(frm){
+    // setTimeout(() => {
+        for(const table of table_details_list){
+            if (table.table_field_name == 'pallet_details') {
+                continue
+            }
+            else{
+                let child_table_list = create_child_table_list(frm, table.table_field_name)
+                if (child_table_list.length > 0) {
+    
+                for (const table_name of child_table_list) {
+                    // setTimeout(() => {
+                        console.log( frm.fields_dict[table_name], "1====table_name=======")
+                        // console.log( frm.fields_dict.over_wax_and_edge_paint_1.grid.wrapper.find('.grid-row').find('.editable-row'), "====")
+                        // frm.fields_dict.inner_and_outer_carton_details_1.grid.wrapper.find('.grid-row').find('.editable-row').click()
+                        // console.log("Hello")
+                        frm.fields_dict[table_name].grid.wrapper.find('div [data-fieldtype="Select"]').click()
+                        // frm.fields_dict[table_name].grid.wrapper.find('div [data-idx="1"]').click()
+                        frm.fields_dict[table_name].grid.wrapper.find('div.select-icon').hide()
+                    // }, 1);
+                    setTimeout(() => {
+                        frm.fields_dict[table_name].grid.wrapper.find('div [data-idx="1"]').click()
+                    },5)
+                }
+            }
+            }
+            
+        }
+    // }, 1)
+    
+}
+
 let change_button_css = function(frm, cdt, cdn, table_name, button_select, row_idx, fieldname1, select_field){
-    console.log("====change_button_css====")
+    // console.log("====change_button_css====")
     switch (button_select) {
         case "To Do":
             table_name.on('click', '.grid-row', function (event) {
@@ -337,7 +426,7 @@ let change_button_css = function(frm, cdt, cdn, table_name, button_select, row_i
 }
 
 let set_button_css = function(frm, table, table_name, select_field,fieldname1, cdt = undefined, cdn = undefined){
-    console.log("====set_button_css====")
+    // console.log("====set_button_css====")
     table.forEach(row => {
         let row_idx = row.idx
         let button_select = row[select_field]
@@ -401,3 +490,304 @@ let set_button_css = function(frm, table, table_name, select_field,fieldname1, c
         }
     });
 }
+
+let change_select_css = function(frm, cdt, cdn, table_name, button_select, row_idx, fieldname1, select_field){
+    table_name.on('change', '.grid-row', function (event) {
+        $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("border", "1px solid black");
+        $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("text-align", "center");
+        $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("margin", "5px 7px");
+        $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("width", "90%");
+        $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("height", "auto");
+        $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("font-size", "100%");
+        $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("padding", "0px");
+    })
+
+    switch (button_select) {
+        case "To Do":
+            table_name.on('click', '.grid-row', function (event) {
+                $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#76885B");
+                $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("color", "white");
+            });
+            frappe.model.set_value(cdt, cdn, select_field, 'Pass')
+            break;
+        case "Pass":
+            table_name.on('click', '.grid-row', function (event) {
+                $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#CB80AB");
+                $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("color", "white");
+            });
+            frappe.model.set_value(cdt, cdn, select_field, 'Fail - Minor')
+            // frm.refresh()
+            break;
+        case "Fail - Minor":
+            table_name.on('click', '.grid-row', function (event) {
+                $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#FF8343");
+                $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("color", "white");
+            });
+            frappe.model.set_value(cdt, cdn, select_field, 'Fail - Major')
+            // frm.refresh()
+            break;
+        case "Fail - Major":
+            table_name.on('click', '.grid-row', function (event) {
+                $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#B43F3F");
+                $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("color", "white");
+            });
+            frappe.model.set_value(cdt, cdn, select_field, 'Fail - Critical')
+            // frm.refresh()
+            break;
+        case "Fail - Critical":
+            table_name.on('click', '.grid-row', function (event) {
+                $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#FABC3F");
+                $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("color", "white");
+            });
+            frappe.model.set_value(cdt, cdn, select_field, 'Undetermined')
+            // frm.refresh()
+            break;
+        case "Undetermined":
+            table_name.on('click', '.grid-row', function (event) {
+                $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#758694");
+                $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("color", "white");
+            });
+            frappe.model.set_value(cdt, cdn, select_field, 'To Do')
+            // frm.refresh()
+            break;
+        default:
+            table_name.on('click', '.grid-row', function (event) {
+                $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#758694");
+                $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("color", "white");
+            });
+            frappe.model.set_value(cdt, cdn, select_field, 'To Do')
+    }
+}
+
+let set_select_css = function(frm, table, table_name, select_field,fieldname1, cdt = undefined, cdn = undefined){
+    table.forEach(row => {
+        // console.log(table, "=========")
+        let row_idx = row.name
+        let button_select = row[select_field]
+
+        // frm.fields_dict.inner_and_outer_carton_details_1.grid.wrapper.find('div [data-idx="1"]').click()
+        // $(`div [data-name="${row_idx}"]`).click()
+        table_name.on('click', '.grid-row', function (event) {
+            // console.log("helloooooooo")
+            $(`div [data-name="${row_idx}"]`).find(`div ${fieldname1}`).find('.ellipsis').css("border", "1px solid black");
+            $(`div [data-name="${row_idx}"]`).find(`div ${fieldname1}`).find('.ellipsis').css("text-align", "center");
+            $(`div [data-name="${row_idx}"]`).find(`div ${fieldname1}`).find('.ellipsis').css("margin", "5px 7px");
+            $(`div [data-name="${row_idx}"]`).find(`div ${fieldname1}`).find('.ellipsis').css("width", "90%");
+            $(`div [data-name="${row_idx}"]`).find(`div ${fieldname1}`).find('.ellipsis').css("height", "auto");
+            $(`div [data-name="${row_idx}"]`).find(`div ${fieldname1}`).find('.ellipsis').css("font-size", "100%");
+            $(`div [data-name="${row_idx}"]`).find(`div ${fieldname1}`).find('.ellipsis').css("padding", "0px");
+        })
+        if(table[0].parentfield == row.parentfield){
+            switch (button_select) {
+                case "To Do":
+                    table_name.on('click', '.grid-row', function (event) {
+                        $(`div [data-name="${row_idx}"]`).find(`div ${fieldname1}`).find('.ellipsis').css("background-color", "#758694");
+                        $(`div [data-name="${row_idx}"]`).find(`div ${fieldname1}`).find('.ellipsis').css("color", "white");
+                    });
+                    break;
+                case "Pass":
+                    table_name.on('click', '.grid-row', function (event) {
+                        $(`div [data-name="${row_idx}"]`).find(`div ${fieldname1}`).find('.ellipsis').css("background-color", "#76885B");
+                        $(`div [data-name="${row_idx}"]`).find(`div ${fieldname1}`).find('.ellipsis').css("color", "white");
+                    });
+                    break;
+                case "Fail - Minor":
+                    table_name.on('click', '.grid-row', function (event) {
+                        $(`div [data-name="${row_idx}"]`).find(`div ${fieldname1}`).find('.ellipsis').css("background-color", "#CB80AB");
+                        $(`div [data-name="${row_idx}"]`).find(`div ${fieldname1}`).find('.ellipsis').css("color", "white");
+                    });
+                    break;
+                case "Fail - Major":
+                    table_name.on('click', '.grid-row', function (event) {
+                        $(`div [data-name="${row_idx}"]`).find(`div ${fieldname1}`).find('.ellipsis').css("background-color", "#FF8343");
+                        $(`div [data-name="${row_idx}"]`).find(`div ${fieldname1}`).find('.ellipsis').css("color", "white");
+                    });
+                    break;
+                case "Fail - Critical":
+                    table_name.on('click', '.grid-row', function (event) {
+                        $(`div [data-name="${row_idx}"]`).find(`div ${fieldname1}`).find('.ellipsis').css("background-color", "#B43F3F");
+                        $(`div [data-name="${row_idx}"]`).find(`div ${fieldname1}`).find('.ellipsis').css("color", "white");
+                    });
+                    break;
+                case "Undetermined":
+                    table_name.on('click', '.grid-row', function (event) {
+                        $(`div [data-name="${row_idx}"]`).find(`div ${fieldname1}`).find('.ellipsis').css("background-color", "#FABC3F");
+                        $(`div [data-name="${row_idx}"]`).find(`div ${fieldname1}`).find('.ellipsis').css("color", "white");
+                    });
+                    break;
+                default:
+                    table_name.on('click', '.grid-row', function (event) {
+                        $(`div [data-name="${row_idx}"]`).find(`div ${fieldname1}`).find('.ellipsis').css("background-color", "#758694");
+                        $(`div [data-name="${row_idx}"]`).find(`div ${fieldname1}`).find('.ellipsis').css("color", "white");
+                    });
+            }
+        }
+        
+
+    });
+}
+
+// frappe.ui.form.on("Pallet Information QI", {
+//     status: function(frm, cdt, cdn){
+//         let row = locals[cdt][cdn]
+//         let select_field = row.button_select
+//         let fieldname1 = '[data-fieldname="button_select"]'
+//         let table_name =  frm.fields_dict[row.parentfield].grid.wrapper
+//         let row_idx = row.idx
+
+//         table_name.on('change', '.grid-row', function (event) {
+//             // console.log("Clickkkkkkkkkkk")
+//             $(`div [data-idx="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("border", "1px solid black");
+//             $(`div [data-idx="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("text-align", "center");
+//             $(`div [data-idx="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("margin", "5px 7px");
+//             $(`div [data-idx="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("width", "90%");
+//             $(`div [data-idx="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("height", "auto");
+//             $(`div [data-idx="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("font-size", "100%");
+//             $(`div [data-idx="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("padding", "0px");
+//         })
+
+//         switch (select_field) {
+//             case "To Do":
+//                 table_name.on('click', '.grid-row', function (event) {
+//                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#76885B");
+//                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("color", "white");
+//                 });
+//                 frappe.model.set_value(cdt, cdn, 'button_select', 'Pass')
+//                 break;
+//             case "Pass":
+//                 table_name.on('click', '.grid-row', function (event) {
+//                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#CB80AB");
+//                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("color", "white");
+//                 });
+//                 frappe.model.set_value(cdt, cdn, 'button_select', 'Fail - Minor')
+//                 // frm.refresh()
+//                 break;
+//             case "Fail - Minor":
+//                 table_name.on('click', '.grid-row', function (event) {
+//                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#FF8343");
+//                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("color", "white");
+//                 });
+//                 frappe.model.set_value(cdt, cdn, 'button_select', 'Fail - Major')
+//                 // frm.refresh()
+//                 break;
+//             case "Fail - Major":
+//                 table_name.on('click', '.grid-row', function (event) {
+//                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#B43F3F");
+//                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("color", "white");
+//                 });
+//                 frappe.model.set_value(cdt, cdn, 'button_select', 'Fail - Critical')
+//                 // frm.refresh()
+//                 break;
+//             case "Fail - Critical":
+//                 table_name.on('click', '.grid-row', function (event) {
+//                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#FABC3F");
+//                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("color", "white");
+//                 });
+//                 frappe.model.set_value(cdt, cdn, 'button_select', 'Undetermined')
+//                 // frm.refresh()
+//                 break;
+//             case "Undetermined":
+//                 table_name.on('click', '.grid-row', function (event) {
+//                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#758694");
+//                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("color", "white");
+//                 });
+//                 frappe.model.set_value(cdt, cdn, 'button_select', 'To Do')
+//                 // frm.refresh()
+//                 break;
+//             default:
+//                 table_name.on('click', '.grid-row', function (event) {
+//                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#758694");
+//                     $(`div [data-idx="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("color", "white");
+//                 });
+//                 frappe.model.set_value(cdt, cdn, 'button_select', 'To Do')
+//         }
+//     }
+// })
+
+// let set_pallet_button_css = function(frm){
+//     frm.doc.pallet_details.forEach(row => {
+//         let row_idx = row.idx
+//         let button_select = row.button_select
+//         let table_name =  frm.fields_dict[row.parentfield].grid.wrapper
+//         let fieldname1 = '.ellipsis'
+
+//         // console.log('button_select-->', button_select)
+
+//         table_name.on('click', '.grid-row', function (event) {
+//             // console.log("helloooooooo")
+//             $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("border", "1px solid black");
+//             $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("text-align", "center");
+//             $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("margin", "5px 7px");
+//             $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("width", "90%");
+//             $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("height", "auto");
+//             $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("font-size", "100%");
+//             $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("padding", "0px");
+//         })
+        
+//         switch (button_select) {
+//             case "To Do":
+//                 table_name.on('click', '.grid-row', function (event) {
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("background-color", "#758694");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("color", "white");
+//                     // $(`div [data-idx="${row_idx}"]`).find(fieldname1).css("padding", "2%");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("border", "1px solid black");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("text-align", "center");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("border-radius", "3px");
+//                 });
+//                 break;
+//             case "Pass":
+//                 table_name.on('click', '.grid-row', function (event) {
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("background-color", "#76885B");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("color", "white");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("border", "1px solid black");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("text-align", "center");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("border-radius", "3px");
+//                 });
+//                 break;
+//             case "Fail - Minor":
+//                 table_name.on('click', '.grid-row', function (event) {
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("background-color", "#CB80AB");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("color", "white");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("border", "1px solid black");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("text-align", "center");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("border-radius", "3px");
+//                 });
+//                 break;
+//             case "Fail - Major":
+//                 table_name.on('click', '.grid-row', function (event) {
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("background-color", "#FF8343");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("color", "white");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("border", "1px solid black");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("text-align", "center");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("border-radius", "3px");
+//                 });
+//                 break;
+//             case "Fail - Critical":
+//                 table_name.on('click', '.grid-row', function (event) {
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("background-color", "#B43F3F");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("color", "white");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("border", "1px solid black");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("text-align", "center");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("border-radius", "3px");
+//                 });
+//                 break;
+//             case "Undetermined":
+//                 table_name.on('click', '.grid-row', function (event) {
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("background-color", "#FABC3F");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("color", "white");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("border", "1px solid black");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("text-align", "center");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("border-radius", "3px");
+//                 });
+//                 break;
+//             default:
+//                 table_name.on('click', '.grid-row', function (event) {
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("background-color", "#758694");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("color", "white");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("border", "1px solid black");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("text-align", "center");
+//                     $(`div [data-idx="${row_idx}"]`).find('div [data-fieldname="button_select"]').find(fieldname1).css("border-radius", "3px");
+//                 });
+//         }
+//     });
+// }

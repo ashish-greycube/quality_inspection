@@ -1,14 +1,28 @@
-<div style="text-align: center; font-size: 15px;">
-    <div style="border: 2px solid black; margin: 2% 10%; padding: 2% 0% 2% 0%; border-radius: 2%;">
-        This section requires {{total_attach}} attachments, Attached: {{total_attach - pending}} Pending {{pending}} <br>
-        ToDo Ration: {{todo_ration}} % <br>
-        Pass Ration: {{pass_ration}} % <br>
-        Undetermined Ratio: {{undetermined_ratio}} % <br>
+<div style="font-size: 15px;">
+    <div style="border: 2px solid black; margin: 2% 10%; padding: 2% 0% 2% 2%; border-radius: 2%;">
+        <div class="row">
+            <div class="col-xs-4 text-right"><b>Attechments:</b></div>
+            <div class="col-xs-8">Total - {{total_attach}}, Attached - {{total_attach - pending}}, Pending - {{pending}}</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4 text-right"><b> Ratio: </b></div>
+            <div class="col-xs-8"> ToDo - {{todo_ration}} % <br> Pass : {{pass_ration}} % <br> Undetermined : {{undetermined_ratio}} % <br>
+                {% set fail_ration = 100 - (todo_ration + pass_ration + undetermined_ratio) %}
+                Fail : {{ " %.2f " | format(fail_ration) }} % <br></div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4 text-right"><b> Color: </b></div>
+            <div class="col-xs-8">{% if color %}
+                Color: {{color}}
+                {% endif %}</div>
+        </div>
+        <!-- Attechments: Total - {{total_attach}}, Attached - {{total_attach - pending}}, Pending - {{pending}} <br>
+        Ratio: <br> ToDo - {{todo_ration}} % <br> Pass : {{pass_ration}} % <br> Undetermined : {{undetermined_ratio}} % <br>
         {% set fail_ration = 100 - (todo_ration + pass_ration + undetermined_ratio) %}
-        Fail Ration: {{ " %.2f " | format(fail_ration) }} % <br>
-        {% if color %}
+        Fail : {{ " %.2f " | format(fail_ration) }} % <br> -->
+        <!-- {% if color %}
         Color: {{color}}
-        {% endif %}
+        {% endif %} -->
     </div>
    
 </div>
