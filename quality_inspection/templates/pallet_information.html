@@ -10,12 +10,14 @@
                 {% set fail_ration = 100 - (todo_ration + pass_ration + undetermined_ratio) %}
                 Fail : {{ " %.2f " | format(fail_ration) }} % <br></div>
         </div>
+        {% if color %}
         <div class="row">
             <div class="col-xs-4 text-right"><b> Color: </b></div>
-            <div class="col-xs-8">{% if color %}
-                Color: {{color}}
-                {% endif %}</div>
+            <div class="col-xs-8">
+                 {{color}}
+               </div>
         </div>
+        {% endif %}
         <!-- Attechments: Total - {{total_attach}}, Attached - {{total_attach - pending}}, Pending - {{pending}} <br>
         Ratio: <br> ToDo - {{todo_ration}} % <br> Pass : {{pass_ration}} % <br> Undetermined : {{undetermined_ratio}} % <br>
         {% set fail_ration = 100 - (todo_ration + pass_ration + undetermined_ratio) %}
