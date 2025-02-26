@@ -23,13 +23,13 @@
   "section_break_twal",
   "master_sample_matching_board",
   "column_break_ioto",
+  "manual_select",
   "manual_html",
-  "manual_pull_test",
-  "manual_select"
+  "manual_pull_test"
  ],
  "fields": [
   {
-   "columns": 3,
+   "columns": 1,
    "fieldname": "manual_pull_test",
    "fieldtype": "Button",
    "in_list_view": 1,
@@ -151,7 +151,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-02-17 19:00:21.959565",
+ "modified": "2025-02-25 02:33:41.233886",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Width And Thickness Details QI",

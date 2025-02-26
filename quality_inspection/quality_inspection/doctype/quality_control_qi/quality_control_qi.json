@@ -277,7 +277,7 @@
    "fieldname": "flooring_class",
    "fieldtype": "Select",
    "label": "Flooring Class",
-   "options": "\nHARDWOOD\nFLOORING\nLAMINATE FLOORING\nLVP & WPC"
+   "options": "\nHARDWOOD FLOORING\nLAMINATE FLOORING\nLVP & WPC"
   },
   {
    "fieldname": "column_break_fvru",
@@ -1931,7 +1931,7 @@
  "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-20 23:17:46.374854",
+ "modified": "2025-02-25 20:26:18.892675",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Quality Control QI",

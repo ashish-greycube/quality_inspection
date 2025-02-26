@@ -32,35 +32,35 @@
  ],
  "fields": [
   {
-   "columns": 4,
+   "columns": 1,
    "fieldname": "hologram",
    "fieldtype": "Button",
    "in_list_view": 1,
-   "label": "<b style=\"border:1px solid black; padding:3px;border-radius:3px;\">Hologram Update</b>"
+   "label": "<div style=\"margin-left: -11px; margin-top: -6px;\"><i class=\"fa fa-caret-right\" style=\"font-size:2.5rem;\"></i></div>"
   },
   {
-   "columns": 3,
+   "columns": 1,
+   "depends_on": "eval:parent.flooring_class=='LVP & WPC'",
    "fieldname": "carb",
    "fieldtype": "Button",
-   "in_list_view": 1,
-   "label": "<b style=\"border:1px solid black; padding:3px;border-radius:3px;\">Carb Update</b>"
+   "in_list_view": 1
   },
   {
-   "columns": 3,
+   "columns": 1,
    "fieldname": "floor_score",
    "fieldtype": "Button",
    "in_list_view": 1,
    "label": "<b style=\"border:1px solid black; padding:3px;border-radius:3px;\">Floor Update</b>"
   },
   {
-   "columns": 3,
+   "columns": 1,
    "fieldname": "shrink_wrap",
    "fieldtype": "Button",
    "in_list_view": 1,
    "label": "<b style=\"border:1px solid black; padding:3px;border-radius:3px;\">Shrink Update</b>"
   },
   {
-   "columns": 3,
+   "columns": 1,
    "fieldname": "insert_sheet",
    "fieldtype": "Button",
    "in_list_view": 1,
@@ -194,7 +194,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-02-21 00:45:33.738160",
+ "modified": "2025-02-25 02:01:20.141369",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Inner and Outer Carton Details QI",

@@ -7,8 +7,8 @@ from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
 from frappe.utils import cstr, flt
 import openpyxl
-from openpyxl.styles import Font, Alignment, PatternFill
-from openpyxl.styles import Border, Side
+from openpyxl.drawing.image import Image
+from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 import os
 
 PASS_STATUS = ["Pass"]
@@ -390,11 +390,10 @@ class QualityControlQI(Document):
 							frappe.msgprint(_("In Over Wax Child Table, For {0} Item, Finished Board Picture is Require.").format(row.item_color), alert=True)
 
 
-
 @frappe.whitelist()
 def download_excel(doctype,docname,child_fieldname,file_name,data=None):
+	attachment_list = []
 	ignore_fieldtype_in_list_view = ["Section Break", "Column Break", "HTML", "Button", "Image"]
-	print(docname, '---docname')
 	idx_no = 1
 	qo_doc = frappe.get_doc(doctype, docname)
 	file_header = ["Sr. NO."]
@@ -403,37 +402,44 @@ def download_excel(doctype,docname,child_fieldname,file_name,data=None):
 	for row in qo_doc.get(child_fieldname):
 		file_data_list = [idx_no]
 		child_doc = frappe.get_doc(row.doctype, row.name)
-		print(child_doc, '---child_doc')
-		print(qo_doc.meta.get_field(child_fieldname).label,"+++++++++++")
 		field_data = child_doc.meta.fields
 		for f in field_data:
-			print(f.fieldtype, '---fieldtype')
 			if not data:
+				# print("Nooooooooooooooooooooo Dataaaaaaaaaaaaaaaaaaaa")
 				if f.in_list_view == 1:
 					if f.fieldtype not in ignore_fieldtype_in_list_view:
 						if f.label not in file_header:
 							file_header.append(f.label)
 						if f.fieldtype == "Check":
-							print(child_doc.get(f.fieldname), '---fieldname')
 							if child_doc.get(f.fieldname) == 1:
-								print("Yes")
 								file_data_list.append("Yes")
 							else:
-								print("No")
 								file_data_list.append("No")
 							
 						elif f.fieldtype == "Attach":
+							print("Attach",f.fieldname)
+							if child_doc.get(f.fieldname) in [ None,""]:
+								print(child_doc.get(f.fieldname),'child_doc.get(f.fieldname)')
+								attachment_list.append("")
+							else:
+								print(child_doc.get(f.fieldname),"===")
+								attachment_list.append(child_doc.get(f.fieldname))
 							# file_header.append(f.label+" URL")
-							file_data_list.append("""<img src={0} alt="img" width="500" height="600">""".format(child_doc.get(f.fieldname)))
+							# file_data_list.append("""<img src={0} alt="img" width="500" height="600">""".format(child_doc.get(f.fieldname)))
+							file_data_list.append("")
+						
 						else:
-							file_data_list.append(child_doc.get(f.fieldname))
-			
-			print(f.fieldname, '---fieldname',f.in_list_view)
+							if child_doc.get(f.fieldname) in [ None,""]:
+								file_data_list.append("-")
+							else:
+								print(child_doc.get(f.fieldname),"d.get(f.fieldname)",f.fieldname,"++++++++++++++++++++++++++")
+								file_data_list.append(child_doc.get(f.fieldname))
+					
+				# file_data_list.append()
 		file_data.append(file_data_list)
-		print(file_header, '---file_header')
-		print(file_data, '---file_data')
 		idx_no += 1
-
+	print(file_data_list,"================")
+	print(file_data,"file data")
 	public_file_path = frappe.get_site_path("public", "files")
 	workbook = openpyxl.Workbook(write_only=True)
 	# file_name=f"SBI-{docname}.xlsx"
@@ -441,6 +447,7 @@ def download_excel(doctype,docname,child_fieldname,file_name,data=None):
 	sheet = workbook.create_sheet(doctype, 0)
 	sheet.append(file_header)
 	for ele in file_data:
+		# print(ele,"ele-->")
 		sheet.append(ele)
 	# sheet.append(file_footer)
 	workbook.save(file_url)
@@ -449,9 +456,7 @@ def download_excel(doctype,docname,child_fieldname,file_name,data=None):
 	workSheet = workBook.active
 	header_font_style = Font(bold=True, size=12, name="Calibri")
 	color_code = "D3D3D3"
-	# path = frappe.utils.get_url()+"/files/image.png"
-	# img = openpyxl.drawing.image.Image(path) 
-	# workSheet.add_image(img)
+
 	for i in range(1, workSheet.max_column + 1):
 		workSheet.cell(1, i).font = header_font_style
 		workSheet.cell(1, i).fill = PatternFill(start_color=color_code, end_color=color_code, fill_type="solid")
@@ -462,11 +467,40 @@ def download_excel(doctype,docname,child_fieldname,file_name,data=None):
 		workSheet.cell(j, 1).font = header_font_style
 		workSheet.cell(j, 1).fill = PatternFill(start_color=color_code, end_color=color_code, fill_type="solid")
 
+	print(file_header,"File header")
+	print(attachment_list,"attachment_list")
 	border_thin = Side(style='thin')
+	attachment_idx = 0
 	for i in range (1, workSheet.max_row + 1):
 		for j in range(1, workSheet.max_column + 1):
 			workSheet.cell(i, j).alignment = Alignment(horizontal="center", vertical="center")
 			workSheet.cell(i, j).border = Border(top=border_thin, left=border_thin, right=border_thin, bottom=border_thin)
+			print(workSheet.cell(i, j).value,i,j,"---")
+			if workSheet.cell(i, j).value==None:
+				# cell = workSheet.cell(i, j)
+				print(workSheet.cell(i, j).column_letter,"cell")
+				cell = "{0}{1}".format(workSheet.cell(i, j).column_letter,workSheet.cell(i, j).row)
+				print(cell,"cell id")
+				print(frappe.local.site,"")
+				print(frappe.utils.get_site_url(frappe.local.site))
+				# print(workSheet.cell(i, j).col_idx,"col")
+				# print(workSheet.cell(i, j).row,"row")
+				# print(workSheet.cell(i, j).column,"column")
+				# print(workSheet.cell(i, j).number_format,"number_format")
+				print(attachment_idx,len(attachment_list))
+				if len(attachment_list)>0:
+					if attachment_idx <= len(attachment_list):
+						# print(i-2,attachment_list[attachment_idx],"=================",cell,j,i)
+						if len(attachment_list[attachment_idx]) > 2:
+							img = Image(frappe.local.site+"/public"+attachment_list[attachment_idx])
+							img.width = 50
+							img.height = 15
+							workSheet.add_image(img,cell)
+						else :
+							workSheet.cell(i, j).value = attachment_list[attachment_idx]
+					attachment_idx += 1
+				
+# /home/greycubedev/v15-bench/sites/refteck15/public/files/2025-01-27_12-25.png
 
 	for column_cells in workSheet.columns:
 		new_column_length = max(len(str(cell.value)) for cell in column_cells)
@@ -474,8 +508,24 @@ def download_excel(doctype,docname,child_fieldname,file_name,data=None):
 		if new_column_length > 0:
 			workSheet.column_dimensions[new_column_letter].width = new_column_length+5 # *1.10
 
+	print(workSheet.cell(16, 10).value,"calue")
+	for ws in workSheet:
+		print(ws,"ws")
+		for w in ws:
+			print(w.row,w.column)
+
+	cell = "D2"
+
+	width =  workSheet.column_dimensions['E'].width
+	print(width,"width")
+	height = workSheet.row_dimensions[16].height
+	print(height,"height")
+
+	# img = Image("/home/greycubedev/Downloads/laptop.jpeg")
+	# img.width = 50
+	# img.height = 15
+	# workSheet.add_image(img,cell)
+	print(file_header,"---------------------------------------------------------------------------")
 	workBook.save(file_url)
-
-
 
 	return frappe.utils.get_url()+"/files/"+file_name

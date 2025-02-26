@@ -13,12 +13,12 @@
   "finished_board",
   "results_column",
   "results_html",
-  "results",
   "results_select",
+  "results",
   "column_break_bkki",
   "embossing_html",
-  "embossing",
-  "embossing_select"
+  "embossing_select",
+  "embossing"
  ],
  "fields": [
   {
@@ -36,14 +36,14 @@
    "label": "Finished Board"
   },
   {
-   "columns": 3,
+   "columns": 1,
    "fieldname": "results",
    "fieldtype": "Button",
    "in_list_view": 1,
    "label": "Results"
   },
   {
-   "columns": 3,
+   "columns": 1,
    "fieldname": "embossing",
    "fieldtype": "Button",
    "in_list_view": 1,
@@ -109,7 +109,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-02-17 18:27:29.696548",
+ "modified": "2025-02-25 02:28:01.924185",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Color Match and Embossing Details Ql",
