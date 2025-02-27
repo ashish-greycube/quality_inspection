@@ -658,6 +658,7 @@ let set_button_css = function(frm, table, table_name, select_field,fieldname1, c
 }
 
 let change_select_css = function (frm, cdt, cdn, table_name, button_select, row_idx, fieldname1, select_field) {
+    console.log("change select css")
     table_name.on('change', '.grid-row', function (event) {
         $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("border", "1px solid black");
         $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("text-align", "center");

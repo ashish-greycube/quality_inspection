@@ -8,7 +8,9 @@
   "defaults_tab",
   "pallet_default_value",
   "tab_break_iiih",
-  "open_box_inspection"
+  "open_box_inspection",
+  "section_break_ozoe",
+  "width_thickness"
  ],
  "fields": [
   {
@@ -34,12 +36,21 @@
    "fieldname": "defaults_tab",
    "fieldtype": "Tab Break",
    "label": "Defaults"
+  },
+  {
+   "fieldname": "section_break_ozoe",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "width_thickness",
+   "fieldtype": "Small Text",
+   "label": "Width & Thickness"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-02-13 20:41:03.322690",
+ "modified": "2025-02-26 19:59:07.994499",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Quality Assurance Settings QI",

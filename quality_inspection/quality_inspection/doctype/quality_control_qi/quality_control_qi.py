@@ -363,6 +363,7 @@ class QualityControlQI(Document):
 	def set_pallet_and_moisture_default_value(self):
 		pallet_default_value = frappe.db.get_single_value('Quality Assurance Settings QI', 'pallet_default_value')
 		open_box_guidelines = frappe.db.get_single_value('Quality Assurance Settings QI', 'open_box_inspection')
+		width_thickness_guidelines = frappe.db.get_single_value('Quality Assurance Settings QI', 'width_thickness')
 
 		if pallet_default_value:
 			self.default_corner_width = ">=" + cstr(pallet_default_value)
@@ -376,6 +377,9 @@ class QualityControlQI(Document):
 
 		if open_box_guidelines:
 			self.guidelines = open_box_guidelines
+
+		if width_thickness_guidelines:
+			self.assembling_gap = width_thickness_guidelines
 			
 
 

@@ -238,6 +238,8 @@
   "width_pass_ration",
   "width_undetermined_ratio",
   "width_todo_ratio",
+  "section_break_oglh",
+  "assembling_gap",
   "section_break_tnra",
   "po_width_1",
   "width_and_thickness_details_1",
@@ -1792,7 +1794,7 @@
   {
    "fieldname": "guidelines",
    "fieldtype": "Small Text",
-   "label": "Guidelines",
+   "label": "Guidelines:",
    "read_only": 1
   },
   {
@@ -1926,12 +1928,22 @@
    "label": "width_todo_ratio",
    "precision": "2",
    "read_only": 1
+  },
+  {
+   "fieldname": "section_break_oglh",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "assembling_gap",
+   "fieldtype": "Small Text",
+   "label": "Guidelines:",
+   "read_only": 1
   }
  ],
  "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-25 20:26:18.892675",
+ "modified": "2025-02-26 23:45:19.367838",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Quality Control QI",
