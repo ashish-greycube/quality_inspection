@@ -101,36 +101,44 @@ class QualityControlQI(Document):
 
 			else:
 				table_length = 0
+				total_select_fields = 0
 				for i in range(self.no_of_po):
 					child_table_name=child_table+cstr(i+1)
 					
 					if len(self.get(child_table_name)) > 0:
 						table_length = table_length +  len(self.get(child_table_name))
-						for row in self.get(child_table_name):
 
+						for row in self.get(child_table_name):
 							for attach in attach_field_list:
 								if not row.get(attach):
 									pendings = pendings + 1
 								total_attachments = total_attachments + 1
 
 							for select in select_field_list:
-								if row.get(select) in PASS_STATUS:
-									total_pass = total_pass + 1
-								elif row.get(select) in UNDETERMINED:
-									total_undetermined = total_undetermined + 1
-								elif row.get(select) in TODO_STATUS:
-									total_todo = total_todo + 1
+								if child_table_name == "inner_and_outer_carton_details_" + cstr(i+1) and self.flooring_class == "LVP & WPC" and select == "carb_select":
+									continue
+								elif child_table_name == "over_wax_and_edge_paint_" + cstr(i+1) and self.flooring_class == "LVP & WPC" and select == "over_wax_select":
+									continue
+								elif child_table_name == "over_wax_and_edge_paint_" + cstr(i+1) and self.flooring_class == "HARDWOOD FLOORING" and select == "edge_paint_select":
+									continue
 								else:
-									pass
+									total_select_fields = total_select_fields + 1
+									if row.get(select) in PASS_STATUS:
+										total_pass = total_pass + 1
+									elif row.get(select) in UNDETERMINED:
+										total_undetermined = total_undetermined + 1
+									elif row.get(select) in TODO_STATUS:
+										total_todo = total_todo + 1
+									else:
+										pass
 
-
-				print(total_todo, "========total_todo")
-				total_select_fields = table_length * len(select_field_list)
-				print(total_select_fields, "=========total_select_fields")
-
-				pass_ration = ((total_pass * 100)/ total_select_fields)
-				undetermined_ratio = ((total_undetermined * 100) / total_select_fields)
-				todo_ration = ((total_todo * 100) / total_select_fields)
+						print(total_todo, "========total_todo")
+						# total_select_fields = table_length * len(select_field_list)
+						print(total_select_fields, "=========total_select_fields")
+				if total_select_fields > 0:
+					pass_ration = ((total_pass * 100)/ total_select_fields)
+					undetermined_ratio = ((total_undetermined * 100) / total_select_fields)
+					todo_ration = ((total_todo * 100) / total_select_fields)
 		
 		return total_attachments, pendings, pass_ration, undetermined_ratio, todo_ration
 	

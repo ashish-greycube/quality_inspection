@@ -128,13 +128,13 @@ frappe.ui.form.on("Quality Control QI", {
     },
 
     after_save: function (frm) {
-        console.log('after_save')
+        // console.log('after_save')
         // click_table_every_row(frm)
         click_first_row_table(frm)
     },
 
     onload_post_render: function (frm) {
-        console.log('onload_post_render')
+        // console.log('onload_post_render')
         set_button_label_arrow(frm)
         // set_pallet_button_css(frm)
         $('button.grid-add-row').hide()
@@ -421,16 +421,16 @@ let update_child_table_field_property = function (frm) {
         for (const over_table of over_wax_tables) {
             // console.log(over_table, "----over_table---")
             if (frm.doc.flooring_class == 'LVP & WPC') {
-                frm.fields_dict[over_table].grid.update_docfield_property("over_wax", "hidden", 0);
-                frm.fields_dict[over_table].grid.update_docfield_property("over_wax_select", "hidden", 0);
-                frm.fields_dict[over_table].grid.update_docfield_property("over_wax", "in_list_view", 1);
-                frm.fields_dict[over_table].grid.update_docfield_property("over_wax_select", "in_list_view", 1);
-            }
-            else{
                 frm.fields_dict[over_table].grid.update_docfield_property("over_wax", "hidden", 1);
                 frm.fields_dict[over_table].grid.update_docfield_property("over_wax_select", "hidden", 1);
                 frm.fields_dict[over_table].grid.update_docfield_property("over_wax", "in_list_view", 0);
                 frm.fields_dict[over_table].grid.update_docfield_property("over_wax_select", "in_list_view", 0);
+            }
+            else{
+                frm.fields_dict[over_table].grid.update_docfield_property("over_wax", "hidden", 0);
+                frm.fields_dict[over_table].grid.update_docfield_property("over_wax_select", "hidden", 0);
+                frm.fields_dict[over_table].grid.update_docfield_property("over_wax", "in_list_view", 1);
+                frm.fields_dict[over_table].grid.update_docfield_property("over_wax_select", "in_list_view", 1);
             }
 
             if(frm.doc.flooring_class == 'HARDWOOD FLOORING'){
@@ -446,80 +446,6 @@ let update_child_table_field_property = function (frm) {
                 frm.fields_dict[over_table].grid.update_docfield_property("edge_paint_select", "in_list_view", 1);
             }
             frm.fields_dict[over_table].grid.reset_grid();
-        }
-    }
-
-    let moisture_tables = create_child_table_list(frm, 'moisture_content_details_')
-    if (moisture_tables.length > 0){
-        for(const moisture of moisture_tables) {
-            if (frm.doc.flooring_class == 'HARDWOOD FLOORING'){
-                /////// hidden 0 ///////
-                frm.fields_dict[moisture].grid.update_docfield_property("current_1", "hidden", 0);
-                frm.fields_dict[moisture].grid.update_docfield_property("current_2", "hidden", 0);
-                frm.fields_dict[moisture].grid.update_docfield_property("current_3", "hidden", 0);
-                frm.fields_dict[moisture].grid.update_docfield_property("current_4", "hidden", 0);
-
-                frm.fields_dict[moisture].grid.update_docfield_property("results_1", "hidden", 0);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_2", "hidden", 0);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_3", "hidden", 0);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_4", "hidden", 0);
-
-                frm.fields_dict[moisture].grid.update_docfield_property("results_select_1", "hidden", 0);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_select_2", "hidden", 0);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_select_3", "hidden", 0);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_select_4", "hidden", 0);
-
-                /////// in list view 1 ///////
-                frm.fields_dict[moisture].grid.update_docfield_property("current_1", "in_list_view", 1);
-                frm.fields_dict[moisture].grid.update_docfield_property("current_2", "in_list_view", 1);
-                frm.fields_dict[moisture].grid.update_docfield_property("current_3", "in_list_view", 1);
-                frm.fields_dict[moisture].grid.update_docfield_property("current_4", "in_list_view", 1);
-
-                frm.fields_dict[moisture].grid.update_docfield_property("results_1", "in_list_view", 1);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_2", "in_list_view", 1);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_3", "in_list_view", 1);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_4", "in_list_view", 1);
-
-                frm.fields_dict[moisture].grid.update_docfield_property("results_select_1", "in_list_view", 1);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_select_2", "in_list_view", 1);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_select_3", "in_list_view", 1);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_select_4", "in_list_view", 1);
-    
-            }
-            else {
-                /////// hidden 1 ///////
-                frm.fields_dict[moisture].grid.update_docfield_property("current_1", "hidden", 1);
-                frm.fields_dict[moisture].grid.update_docfield_property("current_2", "hidden", 1);
-                frm.fields_dict[moisture].grid.update_docfield_property("current_3", "hidden", 1);
-                frm.fields_dict[moisture].grid.update_docfield_property("current_4", "hidden", 1);
-
-                frm.fields_dict[moisture].grid.update_docfield_property("results_1", "hidden", 1);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_2", "hidden", 1);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_3", "hidden", 1);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_4", "hidden", 1);
-
-                frm.fields_dict[moisture].grid.update_docfield_property("results_select_1", "hidden", 1);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_select_2", "hidden", 1);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_select_3", "hidden", 1);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_select_4", "hidden", 1);
-
-                /////// in list view 0 ///////
-                frm.fields_dict[moisture].grid.update_docfield_property("current_1", "in_list_view", 0);
-                frm.fields_dict[moisture].grid.update_docfield_property("current_2", "in_list_view", 0);
-                frm.fields_dict[moisture].grid.update_docfield_property("current_3", "in_list_view", 0);
-                frm.fields_dict[moisture].grid.update_docfield_property("current_4", "in_list_view", 0);
-
-                frm.fields_dict[moisture].grid.update_docfield_property("results_1", "in_list_view", 0);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_2", "in_list_view", 0);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_3", "in_list_view", 0);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_4", "in_list_view", 0);
-
-                frm.fields_dict[moisture].grid.update_docfield_property("results_select_1", "in_list_view", 0);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_select_2", "in_list_view", 0);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_select_3", "in_list_view", 0);
-                frm.fields_dict[moisture].grid.update_docfield_property("results_select_4", "in_list_view", 0);
-            }
-            frm.fields_dict[moisture].grid.reset_grid();
         }
     }
 }
@@ -658,7 +584,7 @@ let set_button_css = function(frm, table, table_name, select_field,fieldname1, c
 }
 
 let change_select_css = function (frm, cdt, cdn, table_name, button_select, row_idx, fieldname1, select_field) {
-    console.log("change select css")
+    // console.log("change select css")
     table_name.on('change', '.grid-row', function (event) {
         $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("border", "1px solid black");
         $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("text-align", "center");

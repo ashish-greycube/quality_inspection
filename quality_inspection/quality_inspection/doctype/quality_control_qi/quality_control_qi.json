@@ -276,6 +276,7 @@
    "label": "Date of Inspection"
   },
   {
+   "description": "This determines participation of quality parameters\n\n\n\n\n\n\n",
    "fieldname": "flooring_class",
    "fieldtype": "Select",
    "label": "Flooring Class",
@@ -319,6 +320,7 @@
    "label": "Bevel, Over Wax & Edge Paint"
   },
   {
+   "depends_on": "eval:doc.flooring_class==\"HARDWOOD FLOORING\"",
    "fieldname": "tab_6_tab",
    "fieldtype": "Tab Break",
    "label": "Moisture Content"
@@ -1943,7 +1945,7 @@
  "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-26 23:45:19.367838",
+ "modified": "2025-02-27 02:54:54.158104",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Quality Control QI",
