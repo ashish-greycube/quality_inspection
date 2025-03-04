@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class EdgeProfileQI(Document):
+class QualityInspectionSettingsQI(Document):
 	pass

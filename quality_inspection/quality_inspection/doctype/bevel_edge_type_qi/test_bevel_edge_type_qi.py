@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestBevelTypeQI(FrappeTestCase):
+class TestBevelEdgeTypeQI(FrappeTestCase):
 	pass

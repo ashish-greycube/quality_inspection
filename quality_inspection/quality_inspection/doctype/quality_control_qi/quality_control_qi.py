@@ -256,11 +256,11 @@ class QualityControlQI(Document):
 					if unique == po.parent:
 						child_table_name="quality_control_item_"+cstr(idx+1)
 						po1 = self.append(child_table_name, {})
-						po1.item = po.item_no
+						# po1.item = po.item_no
 						po1.item_name = po.item_desc
 						po1.qty = po.qty
-						po1.color = po.color
-						po1.amount = po.cost
+						# po1.color = po.color
+						# po1.amount = po.cost
 						po1.item_color = cstr(po.item_no) + "-" +(cstr(po.color) or 'red')
 						po1.tas_po_ref = po.parent
 
@@ -319,11 +319,11 @@ class QualityControlQI(Document):
 
 						for item in po_doc.items:
 							po1 = self.append(child_table_name, {})
-							po1.item = item.item_no
+							# po1.item = item.item_no
 							po1.item_name = item.item_desc
 							po1.qty = item.qty
-							po1.color = item.color
-							po1.amount = item.cost
+							# po1.color = item.color
+							# po1.amount = item.cost
 							po1.item_color = cstr(item.item_no) + "-" + (cstr(item.color) or 'red')
 							po1.tas_po_ref = item.parent
 			
@@ -344,7 +344,7 @@ class QualityControlQI(Document):
 	def set_po_ref_and_child_tables(self, po_list, parent_field, child_table):
 		for idx,unique in enumerate(po_list):
 			# parent po field
-			parent_po_field_name=parent_field+cstr(idx+1)			
+			parent_po_field_name=parent_field+cstr(idx+1)
 			self.set(parent_po_field_name,unique)
 
 			# child table
@@ -369,9 +369,9 @@ class QualityControlQI(Document):
 
 
 	def set_pallet_and_moisture_default_value(self):
-		pallet_default_value = frappe.db.get_single_value('Quality Assurance Settings QI', 'pallet_default_value')
-		open_box_guidelines = frappe.db.get_single_value('Quality Assurance Settings QI', 'open_box_inspection')
-		width_thickness_guidelines = frappe.db.get_single_value('Quality Assurance Settings QI', 'width_thickness')
+		pallet_default_value = frappe.db.get_single_value('Quality Inspection Settings QI', 'pallet_default_value')
+		open_box_guidelines = frappe.db.get_single_value('Quality Inspection Settings QI', 'open_box_inspection')
+		width_thickness_guidelines = frappe.db.get_single_value('Quality Inspection Settings QI', 'width_thickness')
 
 		if pallet_default_value:
 			self.default_corner_width = ">=" + cstr(pallet_default_value)

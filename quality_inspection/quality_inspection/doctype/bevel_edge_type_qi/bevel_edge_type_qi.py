@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class BevelTypeQI(Document):
+class BevelEdgeTypeQI(Document):
 	pass

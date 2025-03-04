@@ -1,29 +1,30 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:edge_profile",
- "creation": "2024-09-17 16:07:08.532857",
+ "autoname": "field:bevel_type",
+ "creation": "2025-02-09 21:43:21.681320",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "edge_profile"
+  "bevel_type"
  ],
  "fields": [
   {
-   "fieldname": "edge_profile",
+   "allow_in_quick_entry": 1,
+   "fieldname": "bevel_type",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Edge Profile",
+   "label": "Bevel Type",
    "reqd": 1,
    "unique": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-12-29 22:04:24.241129",
+ "modified": "2025-02-09 21:44:12.122422",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
- "name": "Edge Profile QI",
+ "name": "Bevel Edge Type QI",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
@@ -40,7 +41,6 @@
    "write": 1
   }
  ],
- "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

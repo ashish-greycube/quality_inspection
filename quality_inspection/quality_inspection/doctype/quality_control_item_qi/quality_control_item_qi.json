@@ -7,23 +7,11 @@
  "engine": "InnoDB",
  "field_order": [
   "item_color",
-  "item",
   "item_name",
   "qty",
-  "color",
-  "amount",
   "tas_po_ref"
  ],
  "fields": [
-  {
-   "columns": 3,
-   "fieldname": "item",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Item",
-   "options": "Item",
-   "read_only": 1
-  },
   {
    "columns": 3,
    "fieldname": "item_name",
@@ -41,25 +29,9 @@
    "read_only": 1
   },
   {
-   "columns": 3,
-   "fieldname": "color",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Color",
-   "read_only": 1
-  },
-  {
-   "columns": 3,
-   "fieldname": "amount",
-   "fieldtype": "Currency",
-   "in_list_view": 1,
-   "label": "Amount",
-   "precision": "2",
-   "read_only": 1
-  },
-  {
    "fieldname": "tas_po_ref",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "TAS PO Ref",
    "read_only": 1
   },
@@ -68,14 +40,14 @@
    "fieldname": "item_color",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Item Color",
+   "label": "Item-Color",
    "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-02-17 01:00:15.596748",
+ "modified": "2025-03-03 18:48:16.003016",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Quality Control Item QI",

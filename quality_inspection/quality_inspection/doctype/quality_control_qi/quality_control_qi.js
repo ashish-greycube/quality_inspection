@@ -2,7 +2,7 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on("Quality Control QI", {
-    refresh(frm) {
+    refresh(frm) {     
         setTimeout(() => {
             frm.fields_dict.pallet_details.grid.wrapper.find('.static-area').click()
             frm.fields_dict.pallet_details.grid.wrapper.find('div.select-icon').hide()
@@ -18,6 +18,8 @@ frappe.ui.form.on("Quality Control QI", {
         // }
         
         // click_table_every_row(frm)
+        click_first_row_table(frm)
+        // set_table_button_css(frm)
         set_html_details(frm)
 
         if (!frm.is_new()) {
@@ -75,7 +77,6 @@ frappe.ui.form.on("Quality Control QI", {
                             // console.log(args.filtered_children); // list of selected item names
                         }
                     });
-
                     // setTimeout(() => {
                     //     d.$parent.append(`
                     //         <span class='small text-muted'>
@@ -87,54 +88,108 @@ frappe.ui.form.on("Quality Control QI", {
 
             })
 
-            frm.add_custom_button(__('Get Pallet Excel'), () => {
-                let file_name="Quality"+frm.doc.name+".xlsx"
-                return frappe.call({
-                    method: "quality_inspection.quality_inspection.doctype.quality_control_qi.quality_control_qi.download_excel",
-                    args: {
-                        doctype: frm.doc.doctype,
-                        docname: frm.doc.name,
-                        child_fieldname: "pallet_details",
-                        file_name:file_name
-                    },
-                    callback: function (r) {
-                    //   console.log(r.message)
-                      function downloadURI(uri, name) 
-                      {
-                          var link = document.createElement("a");
-                          // If you don't know the name or want to use
-                          // the webserver default set name = ''
-                          link.setAttribute('download', name);
-                          link.href = uri;
-                          document.body.appendChild(link);
-                          link.click();
-                          link.remove();
-                      }                    
-                      downloadURI(r.message,"Quality"+frm.doc.name)
-                    //   console.log("22")
-                      }
+            if (frm.doc.docstatus == 1){
+                frm.add_custom_button(__('Get Pallet Excel'), () => {
+                    let file_name="Quality"+frm.doc.name+".xlsx"
+                    return frappe.call({
+                        method: "quality_inspection.quality_inspection.doctype.quality_control_qi.quality_control_qi.download_excel",
+                        args: {
+                            doctype: frm.doc.doctype,
+                            docname: frm.doc.name,
+                            child_fieldname: "pallet_details",
+                            file_name:file_name
+                        },
+                        callback: function (r) {
+                        //   console.log(r.message)
+                          function downloadURI(uri, name) 
+                          {
+                              var link = document.createElement("a");
+                              // If you don't know the name or want to use
+                              // the webserver default set name = ''
+                              link.setAttribute('download', name);
+                              link.href = uri;
+                              document.body.appendChild(link);
+                              link.click();
+                              link.remove();
+                          }                    
+                          downloadURI(r.message,"Quality"+frm.doc.name)
+                        //   console.log("22")
+                          }
+                      })
                   })
-              })
+            }
         }
+
+        // document.querySelector('.btn-primary[data-label="Save"]').addEventListener("click", frm.reload_doc());
+        // $(document).ready(function () { 
+        //     $(document).on('click','.btn-primary[data-label="Save"]',function(){
+        //         console.log("GfG is clicked using click() method");
+        //     });
+        //     console.log("readyyy")
+        //     // $('.btn-primary[data-label="Save"]').click(function () { 
+        //     //     console.log("GfG is clicked using click() method"); 
+        //     // }); 
+        // }); 
+        // frm.reload_doc();
     },
 
     onload: function (frm) {
+        console.log("=======onload=======")
         set_html_details(frm)
+        // click_table_every_row(frm)
+        // click_first_row_table(frm)
+        // frm.scroll_to_field("po_color_1");
+        
+        // $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        //     // console.log(i, "====i")
+
+        //     var target = $(e.target).attr('data-fieldname');
+        //     console.log(e.target, "====e.target==")
+        //     console.log(target, "===")
+        //     if (target === 'tab_3_tab') {
+        //         console.log("ACTIVEEEE")
+                
+        //         let inner_outer_tables = create_child_table_list(frm, 'inner_and_outer_carton_details_')
+        //         // setTimeout(() => {
+        //             if (inner_outer_tables.length > 0) {
+        //                 console.log('condition')  
+        //                 for (const inner_table of inner_outer_tables) {
+        //                     // select
+        //                     frm.fields_dict[inner_table].grid.wrapper.find('div [data-fieldname="hologram_select"]').click()
+        //                     // frm.fields_dict[inner_table].grid.wrapper.find('div [data-fieldname="hologram_select"]').click()
+        //                     frm.fields_dict[inner_table].grid.wrapper.find('div.select-icon').hide()
+        //                     frm.fields_dict[inner_table].grid.wrapper.find('div [data-idx="1"]').click()
+        //                 }
+        //             }
+        //         // }, 100);
+        //     } else {
+        //         console.log("ELSEEEEEEE")
+        //     }
+        // })
     },
 
     flooring_class: function (frm){
         update_child_table_field_property(frm)
+        click_table_every_row(frm)
         click_first_row_table(frm)
     },
 
-    after_save: function (frm) {
-        // console.log('after_save')
-        // click_table_every_row(frm)
-        click_first_row_table(frm)
-    },
+    // after_save: function (frm) {
+    //     console.log('after_save')
+    //     setTimeout(() => {
+    //         frm.reload_doc();
+    //         console.log("==reload_doc==")
+    //         // click_first_row_table(frm)
+    //         // click_table_every_row(frm)
+    //     }, 10)
+        
+
+    //     // frm.reload_doc();
+    //     // frm.refresh();
+
+    // },
 
     onload_post_render: function (frm) {
-        // console.log('onload_post_render')
         set_button_label_arrow(frm)
         // set_pallet_button_css(frm)
         $('button.grid-add-row').hide()
@@ -343,9 +398,11 @@ let click_table_every_row = function (frm) {
         else {
             let child_table_list = create_child_table_list(frm, table.table_field_name)
             if (child_table_list.length > 0) {
-
+                let select_field_name = table.table_button_details[0].fieldname
                 for (const table_name of child_table_list) {
-                    frm.fields_dict[table_name].grid.wrapper.find('div [data-fieldtype="Select"]').click()
+                    // frm.fields_dict[table_name].grid.wrapper.find('div [data-fieldtype="Select"]').click()
+                    // console.log(frm.fields_dict[table_name].grid.wrapper.find(`div ${select_field_name}`), "=======")
+                    frm.fields_dict[table_name].grid.wrapper.find(`div ${select_field_name}`).click()
                     frm.fields_dict[table_name].grid.wrapper.find('div.select-icon').hide()
                 }
             }
@@ -584,7 +641,6 @@ let set_button_css = function(frm, table, table_name, select_field,fieldname1, c
 }
 
 let change_select_css = function (frm, cdt, cdn, table_name, button_select, row_idx, fieldname1, select_field) {
-    // console.log("change select css")
     table_name.on('change', '.grid-row', function (event) {
         $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("border", "1px solid black");
         $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("text-align", "center");

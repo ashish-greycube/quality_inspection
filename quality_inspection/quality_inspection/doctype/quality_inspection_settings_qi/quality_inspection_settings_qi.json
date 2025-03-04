@@ -18,14 +18,13 @@
    "fieldname": "pallet_default_value",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Pallet Default Value",
+   "label": "<b>Pallet Default Value</b> (inches)",
    "reqd": 1
   },
   {
-   "description": "Guidelines",
    "fieldname": "open_box_inspection",
-   "fieldtype": "Small Text",
-   "label": "Open Box Inspection"
+   "fieldtype": "Text Editor",
+   "label": "<b>Open Box Inspection</b>"
   },
   {
    "fieldname": "tab_break_iiih",
@@ -43,17 +42,17 @@
   },
   {
    "fieldname": "width_thickness",
-   "fieldtype": "Small Text",
-   "label": "Width & Thickness"
+   "fieldtype": "Text Editor",
+   "label": "<b>Width &amp; Thickness</b>"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-02-26 19:59:07.994499",
+ "modified": "2025-03-03 02:39:26.617710",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
- "name": "Quality Assurance Settings QI",
+ "name": "Quality Inspection Settings QI",
  "owner": "Administrator",
  "permissions": [
   {

@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"frW0KLaU9w\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Quality Inspection</span>\",\"col\":12}},{\"id\":\"vNfVgg0lyQ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Quality Control\",\"col\":3}},{\"id\":\"Z9V9qqA-HV\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Quality Assurance Settings\",\"col\":3}},{\"id\":\"r2JQCQwGKt\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"TAS Purchase Order\",\"col\":3}},{\"id\":\"1ICuPiosi3\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Vendor\",\"col\":3}},{\"id\":\"ndxZxmewdr\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Item\",\"col\":3}},{\"id\":\"jrWeDj_iy0\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Equipments\",\"col\":3}},{\"id\":\"cER3a64Tk5\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Pallet Type\",\"col\":3}},{\"id\":\"GMxGfMue4o\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Bevel Type\",\"col\":3}},{\"id\":\"uiIGN-uR9l\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Edge Profile\",\"col\":3}}]",
+ "content": "[{\"id\":\"frW0KLaU9w\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Quality Inspection</span>\",\"col\":12}},{\"id\":\"vNfVgg0lyQ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Quality Control\",\"col\":3}},{\"id\":\"r2JQCQwGKt\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"TAS Purchase Order\",\"col\":3}},{\"id\":\"1ICuPiosi3\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Vendor\",\"col\":3}},{\"id\":\"ndxZxmewdr\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Item\",\"col\":3}},{\"id\":\"jrWeDj_iy0\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Equipments\",\"col\":3}},{\"id\":\"nprYqkMqTn\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Quality Inspection Settings\",\"col\":3}},{\"id\":\"cER3a64Tk5\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Pallet Type\",\"col\":3}},{\"id\":\"g0Z5DS6Waw\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Bevel Edge Type\",\"col\":3}}]",
  "creation": "2025-01-29 19:22:34.700145",
  "custom_blocks": [],
  "docstatus": 0,
@@ -8,8 +8,8 @@
  "for_user": "",
  "hide_custom": 0,
  "icon": "quantity-1",
- "idx": 0,
- "indicator_color": "green",
+ "idx": 1,
+ "indicator_color": "",
  "is_hidden": 0,
  "label": "QI",
  "links": [
@@ -24,7 +24,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-02-20 18:20:59.563088",
+ "modified": "2025-03-03 23:44:21.987463",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "QI",
@@ -39,13 +39,6 @@
   {
    "color": "Grey",
    "doc_view": "List",
-   "label": "Quality Assurance Settings",
-   "link_to": "Quality Assurance Settings QI",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
    "label": "Equipments",
    "link_to": "Equipment QI",
    "stats_filter": "[]",
@@ -54,8 +47,23 @@
   {
    "color": "Grey",
    "doc_view": "List",
+   "label": "Quality Inspection Settings",
+   "link_to": "Quality Inspection Settings QI",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
    "label": "Quality Control",
    "link_to": "Quality Control QI",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Bevel Edge Type",
+   "link_to": "Bevel Edge Type QI",
    "stats_filter": "[]",
    "type": "DocType"
   },
@@ -78,24 +86,8 @@
   {
    "color": "Grey",
    "doc_view": "List",
-   "label": "Bevel Type",
-   "link_to": "Bevel Type QI",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
    "label": "Vendor",
    "link_to": "Supplier",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Edge Profile",
-   "link_to": "Edge Profile QI",
    "stats_filter": "[]",
    "type": "DocType"
   },
