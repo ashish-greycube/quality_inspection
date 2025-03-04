@@ -21,12 +21,13 @@
   {
    "fieldname": "equipment_default_value",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Equipment Default Value"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-13 23:49:29.865922",
+ "modified": "2025-03-03 23:55:08.826769",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Equipment QI",

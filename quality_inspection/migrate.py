@@ -65,4 +65,8 @@ def after_migrate():
 
     if qi.width_thickness == "" or qi.width_thickness == None or qi.width_thickness == '<div class="ql-editor read-mode"><p><br></p></div>':    
         qi.width_thickness = '<div class="ql-editor read-mode"><ol><li data-list="bullet"><span class="ql-ui" contenteditable="false"></span>Default value: Max 0.2mm</li><li data-list="bullet"><span class="ql-ui" contenteditable="false"></span>Default value should be read only</li><li data-list="bullet"><span class="ql-ui" contenteditable="false"></span>If pallet height entered is &gt;0.2mm then font color should be red with a lighter red background and auto-change the Pass/Fail button status to Fail</li><li data-list="bullet"><span class="ql-ui" contenteditable="false"></span>If pallet height entered is &lt;0.2mm then font color should be default and auto-change the Pass/Fail button status to Pass</li></ol></div>'
-        qi.save(ignore_permissions=True)
+
+    if qi.pallet_default_value == "" or qi.pallet_default_value == None:
+        qi.pallet_default_value = 8
+
+    qi.save(ignore_permissions=True)
