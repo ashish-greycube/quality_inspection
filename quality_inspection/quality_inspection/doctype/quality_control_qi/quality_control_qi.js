@@ -170,7 +170,7 @@ frappe.ui.form.on("Quality Control QI", {
 
     flooring_class: function (frm){
         update_child_table_field_property(frm)
-        click_table_every_row(frm)
+        // click_table_every_row(frm)
         click_first_row_table(frm)
     },
 
