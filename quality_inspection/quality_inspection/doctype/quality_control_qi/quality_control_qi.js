@@ -9,17 +9,8 @@ frappe.ui.form.on("Quality Control QI", {
         }, 100);
         update_child_table_field_property(frm)
         frm.fields_dict.pallet_details.grid.update_docfield_property("status", "label", `<i class="fa fa-caret-right" style="border:1px solid black;padding:0px 3px;margin:2px 0px -13px -18px;height: 145%; font-size:1.6rem"></i>`);
-        
-        // if(frm.doc.flooring_class == 'HARDWOOD FLOORING'){
-        //     frm.fields_dict.pallet_details.grid.update_docfield_property("pallet_type","hidden", 1);
-        //     frm.fields_dict.pallet_details.grid.update_docfield_property("pallet_type","in_list_view", 0);
-        //     frm.fields_dict.pallet_details.grid.reset_grid();
-        //     frm.refresh_field("pallet_details");
-        // }
-        
-        // click_table_every_row(frm)
+
         click_first_row_table(frm)
-        // set_table_button_css(frm)
         set_html_details(frm)
 
         if (!frm.is_new()) {
@@ -72,9 +63,6 @@ frappe.ui.form.on("Quality Control QI", {
                             }
 
 				            cur_dialog.hide();
-                            // console.log(selections, '====selections')
-                            // console.log(args, '====args')
-                            // console.log(args.filtered_children); // list of selected item names
                         }
                     });
                     // setTimeout(() => {
@@ -134,60 +122,51 @@ frappe.ui.form.on("Quality Control QI", {
     },
 
     onload: function (frm) {
-        console.log("=======onload=======")
         set_html_details(frm)
         // click_table_every_row(frm)
         // click_first_row_table(frm)
         // frm.scroll_to_field("po_color_1");
         
-        // $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        //     // console.log(i, "====i")
+            // $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            //     // console.log(i, "====i")
 
-        //     var target = $(e.target).attr('data-fieldname');
-        //     console.log(e.target, "====e.target==")
-        //     console.log(target, "===")
-        //     if (target === 'tab_3_tab') {
-        //         console.log("ACTIVEEEE")
-                
-        //         let inner_outer_tables = create_child_table_list(frm, 'inner_and_outer_carton_details_')
-        //         // setTimeout(() => {
-        //             if (inner_outer_tables.length > 0) {
-        //                 console.log('condition')  
-        //                 for (const inner_table of inner_outer_tables) {
-        //                     // select
-        //                     frm.fields_dict[inner_table].grid.wrapper.find('div [data-fieldname="hologram_select"]').click()
-        //                     // frm.fields_dict[inner_table].grid.wrapper.find('div [data-fieldname="hologram_select"]').click()
-        //                     frm.fields_dict[inner_table].grid.wrapper.find('div.select-icon').hide()
-        //                     frm.fields_dict[inner_table].grid.wrapper.find('div [data-idx="1"]').click()
-        //                 }
-        //             }
-        //         // }, 100);
-        //     } else {
-        //         console.log("ELSEEEEEEE")
-        //     }
-        // })
+            //     var target = $(e.target).attr('data-fieldname');
+            //     console.log(e.target, "====e.target==")
+            //     console.log(target, "===")
+            //     if (target === 'tab_3_tab') {
+            //         console.log("ACTIVEEEE")
+                    
+            //         let inner_outer_tables = create_child_table_list(frm, 'inner_and_outer_carton_details_')
+            //         // setTimeout(() => {
+            //             if (inner_outer_tables.length > 0) {
+            //                 console.log('condition')  
+            //                 for (const inner_table of inner_outer_tables) {
+            //                     // select
+            //                     frm.fields_dict[inner_table].grid.wrapper.find('div [data-fieldname="hologram_select"]').click()
+            //                     // frm.fields_dict[inner_table].grid.wrapper.find('div [data-fieldname="hologram_select"]').click()
+            //                     frm.fields_dict[inner_table].grid.wrapper.find('div.select-icon').hide()
+            //                     frm.fields_dict[inner_table].grid.wrapper.find('div [data-idx="1"]').click()
+            //                 }
+            //             }
+            //         // }, 100);
+            //     } else {
+            //         console.log("ELSEEEEEEE")
+            //     }
+            // })
     },
 
     flooring_class: function (frm){
         update_child_table_field_property(frm)
-        // click_table_every_row(frm)
         click_first_row_table(frm)
+        frm.save()
     },
 
-    // after_save: function (frm) {
-    //     console.log('after_save')
-    //     setTimeout(() => {
-    //         frm.reload_doc();
-    //         console.log("==reload_doc==")
-    //         // click_first_row_table(frm)
-    //         // click_table_every_row(frm)
-    //     }, 10)
-        
-
-    //     // frm.reload_doc();
-    //     // frm.refresh();
-
-    // },
+    after_save: function (frm) {
+        console.log('after_save')
+        setTimeout(() => {
+            window.location.reload();
+        }, 100)
+    },
 
     onload_post_render: function (frm) {
         set_button_label_arrow(frm)
