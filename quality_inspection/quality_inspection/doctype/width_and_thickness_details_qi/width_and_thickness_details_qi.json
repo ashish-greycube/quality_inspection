@@ -32,8 +32,7 @@
    "columns": 1,
    "fieldname": "manual_pull_test",
    "fieldtype": "Button",
-   "in_list_view": 1,
-   "label": "Manual Pull Test"
+   "in_list_view": 1
   },
   {
    "columns": 3,
@@ -151,7 +150,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-03 18:40:47.111444",
+ "modified": "2025-03-05 23:25:54.943308",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Width And Thickness Details QI",

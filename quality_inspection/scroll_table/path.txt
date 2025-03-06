@@ -1,3 +1,8 @@
 frappe/frappe/public/js/frappe/form/grid_row.js
 frappe/frappe/public/js/frappe/form/grid.js
 frappe/frappe/public/scss/common/grid.scss
+
+GitHub Links:
+https://github.com/frappe/frappe/blob/develop/frappe/public/js/frappe/form/grid_row.js
+https://github.com/frappe/frappe/blob/develop/frappe/public/js/frappe/form/grid.js
+https://github.com/frappe/frappe/blob/develop/frappe/public/scss/common/grid.scss

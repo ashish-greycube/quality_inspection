@@ -28,22 +28,19 @@
    "columns": 1,
    "fieldname": "bowing",
    "fieldtype": "Button",
-   "in_list_view": 1,
-   "label": "Bowing"
+   "in_list_view": 1
   },
   {
    "columns": 1,
    "fieldname": "squareness",
    "fieldtype": "Button",
-   "in_list_view": 1,
-   "label": "Squareness"
+   "in_list_view": 1
   },
   {
    "columns": 1,
    "fieldname": "ledging_overwood",
    "fieldtype": "Button",
    "in_list_view": 1,
-   "label": "Ledging Overwood",
    "read_only": 1
   },
   {
@@ -133,14 +130,13 @@
    "columns": 1,
    "fieldname": "pad_away",
    "fieldtype": "Button",
-   "in_list_view": 1,
-   "label": "Pad Away From Locking System "
+   "in_list_view": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-03 18:40:27.805547",
+ "modified": "2025-03-05 23:25:39.123609",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Open Box Inspection Details QI",

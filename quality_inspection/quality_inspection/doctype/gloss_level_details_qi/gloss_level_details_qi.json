@@ -102,8 +102,7 @@
    "columns": 1,
    "fieldname": "results_1",
    "fieldtype": "Button",
-   "in_list_view": 1,
-   "label": "Result"
+   "in_list_view": 1
   },
   {
    "columns": 3,
@@ -111,7 +110,8 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Result",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined"
+   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
+   "read_only": 1
   },
   {
    "description": "Highest reading found on the finished board used for (1)",
@@ -146,8 +146,7 @@
    "columns": 1,
    "fieldname": "results_2",
    "fieldtype": "Button",
-   "in_list_view": 1,
-   "label": "Result"
+   "in_list_view": 1
   },
   {
    "columns": 3,
@@ -191,8 +190,7 @@
    "columns": 1,
    "fieldname": "results_3",
    "fieldtype": "Button",
-   "in_list_view": 1,
-   "label": "Result"
+   "in_list_view": 1
   },
   {
    "columns": 3,
@@ -236,8 +234,7 @@
    "columns": 1,
    "fieldname": "results_4",
    "fieldtype": "Button",
-   "in_list_view": 1,
-   "label": "Result"
+   "in_list_view": 1
   },
   {
    "columns": 3,
@@ -276,7 +273,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-03 18:39:36.654355",
+ "modified": "2025-03-05 23:27:45.118182",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Gloss Level Details QI",

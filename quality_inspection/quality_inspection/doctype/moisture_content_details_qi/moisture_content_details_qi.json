@@ -100,8 +100,7 @@
    "columns": 1,
    "fieldname": "results_1",
    "fieldtype": "Button",
-   "in_list_view": 1,
-   "label": "Result"
+   "in_list_view": 1
   },
   {
    "columns": 3,
@@ -142,8 +141,7 @@
    "columns": 1,
    "fieldname": "results_2",
    "fieldtype": "Button",
-   "in_list_view": 1,
-   "label": "Result"
+   "in_list_view": 1
   },
   {
    "columns": 3,
@@ -186,8 +184,7 @@
    "columns": 1,
    "fieldname": "results_3",
    "fieldtype": "Button",
-   "in_list_view": 1,
-   "label": "Result"
+   "in_list_view": 1
   },
   {
    "columns": 3,
@@ -230,8 +227,7 @@
    "columns": 1,
    "fieldname": "results_4",
    "fieldtype": "Button",
-   "in_list_view": 1,
-   "label": "Result"
+   "in_list_view": 1
   },
   {
    "columns": 3,
@@ -271,7 +267,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-03 18:39:55.898711",
+ "modified": "2025-03-05 23:24:43.039874",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Moisture Content Details QI",

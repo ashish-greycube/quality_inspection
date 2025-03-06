@@ -40,8 +40,7 @@
    "columns": 1,
    "fieldname": "status",
    "fieldtype": "Button",
-   "in_list_view": 1,
-   "label": "<b style=\"border:1px solid black; padding:3px;border-radius:3px;\">Corner Update</b>"
+   "in_list_view": 1
   },
   {
    "columns": 3,
@@ -107,7 +106,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-02-25 19:59:42.160044",
+ "modified": "2025-03-05 23:22:53.923395",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Pallet Information QI",

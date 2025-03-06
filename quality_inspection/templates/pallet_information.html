@@ -2,13 +2,13 @@
     <div style="border: 2px solid black; margin: 2% 10%; padding: 2% 0% 2% 2%; border-radius: 2%;">
         <div class="row">
             <div class="col-xs-4 text-right"><b style="color: darkslategray;">Attechments:</b></div>
-            <div class="col-xs-8"><span style="color:darkblue">Total - {{total_attach}}</span>, <span style="color: darkgreen;"> Attached - {{total_attach - pending}} </span>, <span style="color: crimson;">Pending - {{pending}} </span></div>
+            <div class="col-xs-8"><span style="color:darkblue">Total : {{total_attach}}</span>, <span style="color: darkgreen;"> Attached : {{total_attach - pending}} </span>, <span style="color: crimson;">Pending : {{pending}} </span></div>
         </div>
         <hr style="width: 90%; margin-top: 5px; margin-bottom: 5px">
         <div class="row">
             <div class="col-xs-4 text-right"><b style="color: darkslategray;"> Ratio: </b></div>
             <div class="col-xs-8"> 
-                <span style="color:darkgoldenrod;"> ToDo - {{todo_ration}} % </span> <br>  
+                <span style="color:darkgoldenrod;"> ToDo : {{todo_ration}} % </span> <br>  
                 <span style="color: forestgreen;"> Pass : {{pass_ration}} % </span><br>
                 <span style="color: chocolate;"> Undetermined : {{undetermined_ratio}} % </span><br>
                 {% set fail_ration = 100 - (todo_ration + pass_ration + undetermined_ratio) %}

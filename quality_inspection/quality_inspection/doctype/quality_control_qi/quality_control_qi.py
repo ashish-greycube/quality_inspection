@@ -132,9 +132,7 @@ class QualityControlQI(Document):
 									else:
 										pass
 
-						print(total_todo, "========total_todo")
 						# total_select_fields = table_length * len(select_field_list)
-						print(total_select_fields, "=========total_select_fields")
 				if total_select_fields > 0:
 					pass_ration = ((total_pass * 100)/ total_select_fields)
 					undetermined_ratio = ((total_undetermined * 100) / total_select_fields)
@@ -397,7 +395,6 @@ class QualityControlQI(Document):
 				child_table_name="over_wax_and_edge_paint_"+cstr(i+1)
 				if len(self.get(child_table_name)) > 0:
 					for row in self.get(child_table_name):
-						print(PASS_STATUS, '---PASS_STATUS')
 						if row.over_wax_select not in PASS_STATUS and not row.finished_board:
 							frappe.msgprint(_("In Over Wax Child Table, For {0} Item, Finished Board Picture is Require.").format(row.item_color), alert=True)
 
@@ -417,7 +414,6 @@ def download_excel(doctype,docname,child_fieldname,file_name,data=None):
 		field_data = child_doc.meta.fields
 		for f in field_data:
 			if not data:
-				# print("Nooooooooooooooooooooo Dataaaaaaaaaaaaaaaaaaaa")
 				if f.in_list_view == 1:
 					if f.fieldtype not in ignore_fieldtype_in_list_view:
 						if f.label not in file_header:
