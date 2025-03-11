@@ -23,11 +23,6 @@
 		background-color: var(--subtle-fg);
 		border-top-left-radius: var(--border-radius-md);
 		border-top-right-radius: var(--border-radius-md);
-
-		.row-check,
-		.row .col:last-child {
-			border-radius: var(--border-radius-md);
-		}
 	}
 
 	&.with-filter {
