@@ -91,7 +91,8 @@
    "fieldname": "item_color",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Item-Color"
+   "label": "Item-Color",
+   "read_only": 1
   },
   {
    "fieldname": "section_break_ywwb",
@@ -136,7 +137,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-05 23:25:39.123609",
+ "modified": "2025-03-19 21:06:10.724456",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Open Box Inspection Details QI",

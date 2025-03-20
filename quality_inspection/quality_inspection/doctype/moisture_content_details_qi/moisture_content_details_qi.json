@@ -63,7 +63,8 @@
    "fieldname": "item_color",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Item-Color"
+   "label": "Item-Color",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_blmr",
@@ -267,7 +268,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-19 03:35:08.849036",
+ "modified": "2025-03-19 21:05:54.340949",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Moisture Content Details QI",

@@ -22,7 +22,7 @@
  ],
  "fields": [
   {
-   "columns": 4,
+   "columns": 5,
    "fieldname": "bevel",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -65,7 +65,8 @@
    "fieldname": "item_color",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Item-Color"
+   "label": "Item-Color",
+   "read_only": 1
   },
   {
    "fieldname": "section_break_qeys",
@@ -108,7 +109,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-19 20:06:36.530816",
+ "modified": "2025-03-19 21:04:00.061643",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Over Wax and Edge Paint Ql",
