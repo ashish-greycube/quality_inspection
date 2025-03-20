@@ -79,7 +79,7 @@
    "fieldname": "finished_board_1",
    "fieldtype": "Attach",
    "in_list_view": 1,
-   "label": "Finished Board"
+   "label": "MT-Finished Board"
   },
   {
    "fieldname": "column_break_huof",
@@ -90,7 +90,7 @@
    "fieldname": "current_1",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Current"
+   "label": "MT-Current"
   },
   {
    "fieldname": "column_break_hpnj",
@@ -108,7 +108,7 @@
    "fieldname": "results_select_1",
    "fieldtype": "Select",
    "in_list_view": 1,
-   "label": "Result",
+   "label": "MT-Result",
    "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
@@ -120,7 +120,7 @@
   {
    "fieldname": "finished_board_2",
    "fieldtype": "Attach",
-   "label": "Finished Board"
+   "label": "H-Finished Board"
   },
   {
    "fieldname": "column_break_fgmf",
@@ -131,7 +131,7 @@
    "fieldname": "current_2",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Current"
+   "label": "H-Current"
   },
   {
    "fieldname": "column_break_xtpj",
@@ -149,7 +149,7 @@
    "fieldname": "results_select_2",
    "fieldtype": "Select",
    "in_list_view": 1,
-   "label": "Result",
+   "label": "H-Result",
    "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
@@ -163,7 +163,7 @@
    "fieldname": "finished_board_3",
    "fieldtype": "Attach",
    "in_list_view": 1,
-   "label": "Finished Board"
+   "label": "L-Finished Board"
   },
   {
    "fieldname": "column_break_cszi",
@@ -174,7 +174,7 @@
    "fieldname": "current_3",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Current"
+   "label": "L-Current"
   },
   {
    "fieldname": "column_break_zzdg",
@@ -192,7 +192,7 @@
    "fieldname": "results_select_3",
    "fieldtype": "Select",
    "in_list_view": 1,
-   "label": "Result",
+   "label": "L-Result",
    "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
@@ -206,7 +206,7 @@
    "fieldname": "finished_board_4",
    "fieldtype": "Attach",
    "in_list_view": 1,
-   "label": "Finished Board"
+   "label": "AV-Finished Board"
   },
   {
    "fieldname": "column_break_qadn",
@@ -217,7 +217,7 @@
    "fieldname": "current_4",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Current"
+   "label": "AV-Current"
   },
   {
    "fieldname": "column_break_gcys",
@@ -235,39 +235,39 @@
    "fieldname": "results_select_4",
    "fieldtype": "Select",
    "in_list_view": 1,
-   "label": "Result",
+   "label": "AV-Result",
    "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
   {
    "fieldname": "results_html_1",
    "fieldtype": "HTML",
-   "label": "Result",
+   "label": "MT-Result",
    "options": "Results"
   },
   {
    "fieldname": "results_html_2",
    "fieldtype": "HTML",
-   "label": "Result",
+   "label": "H-Result",
    "options": "Results"
   },
   {
    "fieldname": "results_html_3",
    "fieldtype": "HTML",
-   "label": "Result",
+   "label": "L-Result",
    "options": "Results"
   },
   {
    "fieldname": "results_html_4",
    "fieldtype": "HTML",
-   "label": "Result",
+   "label": "AV-Result",
    "options": "Results"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-05 23:24:43.039874",
+ "modified": "2025-03-19 03:35:08.849036",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Moisture Content Details QI",

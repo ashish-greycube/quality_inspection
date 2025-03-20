@@ -14,6 +14,7 @@ import os
 PASS_STATUS = ["Pass"]
 UNDETERMINED = ["Undetermined"]
 TODO_STATUS = ["To Do"]
+FAIL_STATUS = ['Fail - Minor', 'Fail - Major', 'Fail - Critical']
 class QualityControlQI(Document):
 
 	def onload(self):
@@ -23,7 +24,7 @@ class QualityControlQI(Document):
 		self.set_pallet_and_moisture_default_value()
 		self.set_attachments_details()
 		self.set_color_count_for_color_match_and_embossing()
-		# self.validate_over_wax_and_edge_paint_child_table()
+		self.validate_over_wax_and_edge_paint_child_table()
 		
 	def get_pallet_information_html(self):
 
@@ -391,12 +392,17 @@ class QualityControlQI(Document):
 
 	def validate_over_wax_and_edge_paint_child_table(self):
 		if self.get("no_of_po") and self.no_of_po > 0:
+			items = []
 			for i in range(self.no_of_po):
 				child_table_name="over_wax_and_edge_paint_"+cstr(i+1)
 				if len(self.get(child_table_name)) > 0:
 					for row in self.get(child_table_name):
-						if row.over_wax_select not in PASS_STATUS and not row.finished_board:
-							frappe.msgprint(_("In Over Wax Child Table, For {0} Item, Finished Board Picture is Require.").format(row.item_color), alert=True)
+						if row.over_wax_select in FAIL_STATUS and not row.finished_board:
+							items.append(row.item_color)
+			
+			if len(items) > 0:
+				joint_items = ", ".join((ele if ele!=None else '') for ele in items)
+				frappe.msgprint(_("In Over Wax Child Table, For {0} Item, Finished Board Picture is Require.").format(joint_items), alert=True)
 
 
 @frappe.whitelist()

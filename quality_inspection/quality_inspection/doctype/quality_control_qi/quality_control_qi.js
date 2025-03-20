@@ -109,15 +109,14 @@ frappe.ui.form.on("Quality Control QI", {
 
     onload: function (frm) {
         set_html_details(frm)
-        let fullwidth = JSON.parse(localStorage.container_fullwidth || "false");
-        if (fullwidth == false){
-            frappe.ui.toolbar.toggle_full_width(); 
-        }
+        // let fullwidth = JSON.parse(localStorage.container_fullwidth || "false");
+        // if (fullwidth == false){
+        //     frappe.ui.toolbar.toggle_full_width(); 
+        // }
     },
 
     flooring_class: function (frm){
         update_child_table_field_property(frm)
-        frm.save()
     },
 
     after_save: function (frm) {
@@ -538,3 +537,19 @@ let set_select_css = function (frm, table, table_name, select_field, fieldname1,
 
     });
 }
+
+frappe.ui.form.on("Over Wax and Edge Paint Ql", {
+    over_wax_select(frm, cdt, cdn) {
+        let row = locals[cdt][cdn]
+        if (row.over_wax_select) {
+            if (['Fail - Minor', 'Fail - Major', 'Fail - Critical'].includes(row.over_wax_select)) {
+                if (!row.finished_board) {
+                    frappe.show_alert({
+                        message:__('Please upload image of failed overwax finished board'),
+                        indicator:'blue'
+                    }, 5);
+                }
+            }
+        }
+    }
+})

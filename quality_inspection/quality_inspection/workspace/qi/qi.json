@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"frW0KLaU9w\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Quality Inspection</span>\",\"col\":12}},{\"id\":\"gcoPX13IWZ\",\"type\":\"card\",\"data\":{\"card_name\":\"DocType\",\"col\":4}},{\"id\":\"r2JQCQwGKt\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"TAS Purchase Order\",\"col\":3}},{\"id\":\"1ICuPiosi3\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Vendor\",\"col\":3}}]",
+ "content": "[{\"id\":\"frW0KLaU9w\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Quality Inspection</span>\",\"col\":12}},{\"id\":\"z1DeTlfwbc\",\"type\":\"card\",\"data\":{\"card_name\":\"Transaction\",\"col\":4}},{\"id\":\"fybyf5s9wQ\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"gcoPX13IWZ\",\"type\":\"card\",\"data\":{\"card_name\":\"LOV\",\"col\":4}},{\"id\":\"C_z_YgvFzI\",\"type\":\"card\",\"data\":{\"card_name\":\"Master\",\"col\":4}}]",
  "creation": "2025-01-29 19:22:34.700145",
  "custom_blocks": [],
  "docstatus": 0,
@@ -26,8 +26,8 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "DocType",
-   "link_count": 5,
+   "label": "Transaction",
+   "link_count": 1,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -45,19 +45,18 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Pallet Type",
-   "link_count": 0,
-   "link_to": "Pallet Type QI",
+   "label": "LOV",
+   "link_count": 3,
    "link_type": "DocType",
    "onboard": 0,
-   "type": "Link"
+   "type": "Card Break"
   },
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Equipment",
+   "label": "Pallet Type",
    "link_count": 0,
-   "link_to": "Equipment QI",
+   "link_to": "Pallet Type QI",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -75,15 +74,73 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Equipment",
+   "link_count": 0,
+   "link_to": "Equipment QI",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Settings",
+   "link_count": 1,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Quality Inspection Settings",
    "link_count": 0,
    "link_to": "Quality Inspection Settings QI",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Master",
+   "link_count": 3,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "TAS Purchase Order",
+   "link_count": 0,
+   "link_to": "TAS Purchase Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Item",
+   "link_count": 0,
+   "link_to": "Item",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Vendor",
+   "link_count": 0,
+   "link_to": "Supplier",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2025-03-19 02:37:00.045020",
+ "modified": "2025-03-19 20:46:15.809202",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "QI",
@@ -94,23 +151,6 @@
  "quick_lists": [],
  "roles": [],
  "sequence_id": 31.0,
- "shortcuts": [
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "TAS Purchase Order",
-   "link_to": "TAS Purchase Order",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Vendor",
-   "link_to": "Supplier",
-   "stats_filter": "[]",
-   "type": "DocType"
-  }
- ],
+ "shortcuts": [],
  "title": "QI"
 }

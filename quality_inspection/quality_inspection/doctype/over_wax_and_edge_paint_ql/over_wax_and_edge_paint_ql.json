@@ -30,12 +30,6 @@
    "options": "Bevel Edge Type QI"
   },
   {
-   "columns": 1,
-   "fieldname": "over_wax",
-   "fieldtype": "Button",
-   "in_list_view": 1
-  },
-  {
    "columns": 4,
    "fieldname": "finished_board",
    "fieldtype": "Attach",
@@ -103,12 +97,18 @@
    "fieldtype": "HTML",
    "label": "Edge Paint",
    "options": "Edge Paint"
+  },
+  {
+   "columns": 1,
+   "fieldname": "over_wax",
+   "fieldtype": "Button",
+   "in_list_view": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-05 23:23:41.411239",
+ "modified": "2025-03-19 20:06:36.530816",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Over Wax and Edge Paint Ql",
