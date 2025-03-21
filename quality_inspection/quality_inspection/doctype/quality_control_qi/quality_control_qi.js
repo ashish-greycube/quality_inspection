@@ -109,19 +109,40 @@ frappe.ui.form.on("Quality Control QI", {
 
     onload: function (frm) {
         set_html_details(frm)
+        
+        let current_tab_id = localStorage.getItem('current_tab_id_1')
+        let current_tab_fieldname = localStorage.getItem('current_tab_fieldname_1')
+
+        console.log(current_tab_id, '===point1', current_tab_fieldname, "===point2") 
+
+        if (current_tab_id && current_tab_fieldname) {
+            setTimeout(() => {
+                $(`.nav-link[aria-controls=${current_tab_id}][data-fieldname=${current_tab_fieldname}]`).click()
+                localStorage.removeItem('current_tab_id_1')
+                localStorage.removeItem('current_tab_fieldname_1')
+                console.log("10000000000")
+            }, 100)
+        }
         // let fullwidth = JSON.parse(localStorage.container_fullwidth || "false");
         // if (fullwidth == false){
         //     frappe.ui.toolbar.toggle_full_width(); 
         // }
+        
     },
 
     flooring_class: function (frm){
         update_child_table_field_property(frm)
     },
 
+    before_save: function (frm) {
+        localStorage.setItem('current_tab_id_1', cur_frm.get_active_tab()?.wrapper[0].id)
+        localStorage.setItem('current_tab_fieldname_1', cur_frm.get_active_tab()?.df.fieldname)
+    },
+
     after_save: function (frm) {
         setTimeout(() => {
-            window.location.reload();
+            // window.location.reload();
+            location.reload();
         }, 100)
     },
 
@@ -327,8 +348,16 @@ let click_table_every_row = function (frm) {
             if (child_table_list.length > 0) {
                 let select_field_name = table.table_button_details[0].fieldname
                 for (const table_name of child_table_list) {
-                    frm.fields_dict[table_name].grid.wrapper.find(`div ${select_field_name}`).click()
-                    frm.fields_dict[table_name].grid.wrapper.find('div.select-icon').hide()
+
+                    if ( frm.doc.flooring_class == "LVP & WPC" && table.table_field_name == 'over_wax_and_edge_paint_'){
+                        frm.fields_dict[table_name].grid.wrapper.find(`div [data-fieldname="edge_paint_select"]`).click()
+                        frm.fields_dict[table_name].grid.wrapper.find('div.select-icon').hide()
+                    }
+                    else{
+                        frm.fields_dict[table_name].grid.wrapper.find(`div ${select_field_name}`).click()
+                        frm.fields_dict[table_name].grid.wrapper.find('div.select-icon').hide()
+                    }
+                    
                 }
             }
         }
@@ -410,7 +439,7 @@ let update_child_table_field_property = function (frm) {
 }
 
 let change_select_css = function (frm, cdt, cdn, table_name, button_select, row_idx, fieldname1, select_field) {
-    table_name.on('change', '.grid-row', function (event) {
+    table_name.on('click', '.grid-row', function (event) {
         $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("border", "1px solid black");
         $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("text-align", "center");
         $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("width", "90%");
@@ -427,6 +456,7 @@ let change_select_css = function (frm, cdt, cdn, table_name, button_select, row_
                 $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#76885B");
                 $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("color", "white");
             });
+            $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#76885B");
             frappe.model.set_value(cdt, cdn, select_field, 'Pass')
             break;
         case "Pass":
@@ -434,6 +464,7 @@ let change_select_css = function (frm, cdt, cdn, table_name, button_select, row_
                 $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#CB80AB");
                 $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("color", "white");
             });
+            $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#CB80AB");
             frappe.model.set_value(cdt, cdn, select_field, 'Fail - Minor')
             break;
         case "Fail - Minor":
@@ -441,6 +472,7 @@ let change_select_css = function (frm, cdt, cdn, table_name, button_select, row_
                 $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#FF8343");
                 $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("color", "white");
             });
+            $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#FF8343");
             frappe.model.set_value(cdt, cdn, select_field, 'Fail - Major')
             break;
         case "Fail - Major":
@@ -448,6 +480,7 @@ let change_select_css = function (frm, cdt, cdn, table_name, button_select, row_
                 $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#B43F3F");
                 $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("color", "white");
             });
+            $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#B43F3F");
             frappe.model.set_value(cdt, cdn, select_field, 'Fail - Critical')
             break;
         case "Fail - Critical":
@@ -455,6 +488,7 @@ let change_select_css = function (frm, cdt, cdn, table_name, button_select, row_
                 $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#FABC3F");
                 $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("color", "white");
             });
+            $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#FABC3F");
             frappe.model.set_value(cdt, cdn, select_field, 'Undetermined')
             break;
         case "Undetermined":
@@ -462,6 +496,7 @@ let change_select_css = function (frm, cdt, cdn, table_name, button_select, row_
                 $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#758694");
                 $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("color", "white");
             });
+            $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#758694");
             frappe.model.set_value(cdt, cdn, select_field, 'To Do')
             break;
         default:
@@ -469,6 +504,7 @@ let change_select_css = function (frm, cdt, cdn, table_name, button_select, row_
                 $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#758694");
                 $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("color", "white");
             });
+            $(`div [data-name="${row_idx}"]`).find(fieldname1).find('.ellipsis').css("background-color", "#758694");
             frappe.model.set_value(cdt, cdn, select_field, 'To Do')
     }
 }
