@@ -80,7 +80,6 @@ frappe.ui.form.on("Quality Control QI", {
                             },
                             callback: function (r) {
                                 let po_list = r.message
-                                console.log(po_list, "=====po_list=====")
                                 if (po_list.length > 0) {
                                     let po_list_1 = []
                                     po_list.forEach((row) => {
@@ -136,7 +135,6 @@ frappe.ui.form.on("Quality Control QI", {
                             },
                             callback: function (r) {
                                 let item_list = r.message
-                                console.log(item_list, "===item_list===")
                                 if (item_list.length > 0) {
                                     let item_list_1 = []
                                     item_list.forEach((row) => {
@@ -167,7 +165,6 @@ frappe.ui.form.on("Quality Control QI", {
                                         disableReorderColumn: true,
                                     });
 
-                                    console.log(dialog.child_datatable, "---dialog.child_datatable")
                                     this.$child_wrapper.find(".dt-scrollable").css("height", "300px");
 
                                     $(".datatable").ready(function(){
