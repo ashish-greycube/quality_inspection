@@ -56,6 +56,7 @@ frappe.ui.form.on("Quality Control QI", {
                                         loading_html()
                                     }, 100);
                                     $(".datatable").empty()
+                                    dialog.set_df_property("instruction", "hidden", 1)
                                     get_tas_po()
                                 }
                                 else {
@@ -63,13 +64,14 @@ frappe.ui.form.on("Quality Control QI", {
                                         loading_html()
                                     }, 100);
                                     $(".datatable").empty()
+                                    dialog.set_df_property("instruction", "hidden", 1)
                                     get_tas_po_items()
                                 }
                             }
                         },
                         { fieldtype: "HTML", fieldname: "loading_html" },
                         { fieldtype: "HTML", fieldname: "child_selection_area" },
-                        { fieldtype: "HTML", fieldname: "instruction" }
+                        { fieldtype: "HTML", fieldname: "instruction", hidden: 1 }
                     )
 
                     let get_tas_po = function () {
@@ -108,6 +110,8 @@ frappe.ui.form.on("Quality Control QI", {
                                     });
                                     this.$child_wrapper.find(".dt-scrollable").css("height", "300px");
 
+                                    dialog.set_df_property("instruction", "hidden", 0)
+                                    
                                     $(".datatable").ready(function(){
                                         console.log("Datatable is ready!!!")
                                         $("#preloader").remove();
@@ -165,6 +169,8 @@ frappe.ui.form.on("Quality Control QI", {
                                         noDataMessage: __("No Data"),
                                         disableReorderColumn: true,
                                     });
+
+                                    dialog.set_df_property("instruction", "hidden", 0)
 
                                     this.$child_wrapper.find(".dt-scrollable").css("height", "300px");
 
