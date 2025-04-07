@@ -113,6 +113,17 @@ frappe.ui.form.on("Quality Control QI", {
                                         $("#preloader").remove();
                                     })
                                 }
+                                else{
+                                    $(".datatable").ready(function(){
+                                        $("#preloader").remove();
+                                    })
+                                    setTimeout(() => {
+                                        this.$child_selection_area = dialog.fields_dict.child_selection_area.$wrapper
+                                        if (this.$child_selection_area.find("#nodata").length == 0){
+                                            this.$child_selection_area.prepend('<div id="nodata" class="text-center" style="color:#b52a2a">No Data Found...</div>');
+                                        }
+                                    }, 100);
+                                }
                             }
                         })
                     }
@@ -125,7 +136,6 @@ frappe.ui.form.on("Quality Control QI", {
                             },
                             callback: function (r) {
                                 let item_list = r.message
-
                                 console.log(item_list, "===item_list===")
                                 if (item_list.length > 0) {
                                     let item_list_1 = []
@@ -164,6 +174,17 @@ frappe.ui.form.on("Quality Control QI", {
                                         console.log("Datatable is ready!!!")
                                         $("#preloader").remove();
                                     })
+                                }
+                                else{
+                                    $(".datatable").ready(function(){
+                                        $("#preloader").remove();
+                                    })
+                                    setTimeout(() => {
+                                        this.$child_selection_area = dialog.fields_dict.child_selection_area.$wrapper
+                                        if (this.$child_selection_area.find("#nodata").length == 0){
+                                            this.$child_selection_area.prepend('<div id="nodata" class="text-center" style="color:#b52a2a">No Data Found...</div>');
+                                        }
+                                    }, 100);
                                 }
                             }
                         })
