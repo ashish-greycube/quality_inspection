@@ -5,7 +5,7 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
-from frappe.utils import cstr, flt
+from frappe.utils import cstr, flt, getdate, nowdate, add_to_date
 import openpyxl
 from openpyxl.drawing.image import Image
 from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
@@ -24,6 +24,8 @@ class QualityControlQI(Document):
 		self.set_pallet_and_moisture_default_value()
 		self.set_attachments_details()
 		self.set_color_count_for_color_match_and_embossing()
+
+	def on_submit(self):
 		self.validate_over_wax_and_edge_paint_child_table()
 		
 	def get_pallet_information_html(self):
@@ -216,8 +218,9 @@ class QualityControlQI(Document):
 		self.color_count = total_color
 
 	@frappe.whitelist()
-	def make_quality_control_item_using_tas_po_items(self, items):
-
+	def make_quality_control_item_using_tas_po_items(self, selected_items_list):
+		print(selected_items_list, "=========selected_items_list", type(selected_items_list))
+		
 		# empty child table values
 		total_no_of_child_table=10
 		for idx in range(total_no_of_child_table):
@@ -227,41 +230,49 @@ class QualityControlQI(Document):
 			self.set(parent_po_field_name,None)
 
 		# get tas po items
-		if items:
-			tas_po_list = frappe.db.get_list(
-				"TAS Purchase Order Item",
-				parent_doctype="TAS Purchase Order",
-				filters={"name": ["in", items]},
-				fields=["name", "parent", "item_no", "item_desc", "qty", "color", "cost"],
-			)
+		if selected_items_list:
+			# tas_po_list = frappe.db.get_list(
+			# 	"TAS Purchase Order Item",
+			# 	parent_doctype="TAS Purchase Order",
+			# 	filters={"name": ["in", items]},
+			# 	fields=["name", "parent", "item_no", "item_desc", "qty", "color", "cost"],
+			# )
 
 			unique_tas_po = []
-			for po in tas_po_list:
-				if po.parent not in unique_tas_po:
-					unique_tas_po.append(po.parent)
+			for po in selected_items_list:
+				if po.get('tas_po') not in unique_tas_po:
+					unique_tas_po.append(po.get('tas_po'))
 
 			self.no_of_po = len(unique_tas_po)
 
 			# set tas po name
 			for idx,unique in enumerate(unique_tas_po):
 				parent_po_field_name="tas_po_name_"+cstr(idx+1)
-				for po in tas_po_list:
-					if unique == po.parent:
-						self.set(parent_po_field_name,po.parent)
+				for po in selected_items_list:
+					if unique == po.get('tas_po'):
+						self.set(parent_po_field_name,unique)
 						break
+
 			#  set items
 			for idx,unique in enumerate(unique_tas_po):
-				for po in tas_po_list:
-					if unique == po.parent:
-						child_table_name="quality_control_item_"+cstr(idx+1)
-						po1 = self.append(child_table_name, {})
-						# po1.item = po.item_no
-						po1.item_name = po.item_desc
-						po1.qty = po.qty
-						# po1.color = po.color
-						# po1.amount = po.cost
-						po1.item_color = cstr(po.item_no) + "-" +(cstr(po.color) or 'red')
-						po1.tas_po_ref = po.parent
+				for po in selected_items_list:
+					if unique == po.get('tas_po'):
+						item_doc = frappe.db.get_all("TAS Purchase Order Item",
+								   parent_doctype="TAS Purchase Order",
+								   filters={"parent": po.get('tas_po'), "item_no": po.get('item_no'), "qty": po.get('qty') },
+								   fields=["name", "parent", "item_no", "item_desc", "qty", "color"],
+								   limit=1
+								   )
+						
+						if len(item_doc) > 0:
+							child_table_name="quality_control_item_"+cstr(idx+1)
+							po1 = self.append(child_table_name, {})
+							# po1.item = po.item_no
+							po1.item_name = item_doc[0].item_desc
+							po1.qty = item_doc[0].qty
+							po1.item_color = cstr(item_doc[0].item_no) + "-" +(cstr(item_doc[0].color) or 'red')
+							po1.tas_po_ref = item_doc[0].parent
+							po1.tas_po_item_ref = item_doc[0].name
 
 			self.set_pallet_details_table(unique_tas_po)
 
@@ -314,17 +325,34 @@ class QualityControlQI(Document):
 				for po in tas_po_list:
 					if unique == po.name:
 						child_table_name="quality_control_item_"+cstr(idx+1)
-						po_doc = frappe.get_doc("TAS Purchase Order", po.name)
+						
+						not_used_items = frappe.db.sql(""" 
+							SELECT ti.item_no ,ti.item_desc, ti.qty , ti.color, ti.parent, ti.name  
+								FROM `tabTAS Purchase Order Item` as ti 
+								WHERE ti.parent = '{0}' 
+								and ti.name NOT IN (SELECT qi.tas_po_item_ref FROM `tabQuality Control Item QI` as qi WHERE qi.docstatus = 1)
+						""".format(po.name), as_dict=1)
 
-						for item in po_doc.items:
-							po1 = self.append(child_table_name, {})
-							# po1.item = item.item_no
-							po1.item_name = item.item_desc
-							po1.qty = item.qty
-							# po1.color = item.color
-							# po1.amount = item.cost
-							po1.item_color = cstr(item.item_no) + "-" + (cstr(item.color) or 'red')
-							po1.tas_po_ref = item.parent
+						if (len(not_used_items) > 0):
+							for item in not_used_items:
+								po1 = self.append(child_table_name, {})
+								po1.item_name = item.item_desc
+								po1.qty = item.qty
+								po1.item_color = cstr(item.item_no) + "-" + (cstr(item.color) or 'red')
+								po1.tas_po_ref = item.parent
+								po1.tas_po_item_ref = item.name
+
+						# po_doc = frappe.get_doc("TAS Purchase Order", po.name)
+						
+						# for item in po_doc.items:
+						# 	po1 = self.append(child_table_name, {})
+						# 	# po1.item = item.item_no
+						# 	po1.item_name = item.item_desc
+						# 	po1.qty = item.qty
+						# 	# po1.color = item.color
+						# 	# po1.amount = item.cost
+						# 	po1.item_color = cstr(item.item_no) + "-" + (cstr(item.color) or 'red')
+						# 	po1.tas_po_ref = item.parent
 			
 			self.set_pallet_details_table(unique_tas_po)
 
@@ -371,6 +399,7 @@ class QualityControlQI(Document):
 		pallet_default_value = frappe.db.get_single_value('Quality Inspection Settings QI', 'pallet_default_value')
 		open_box_guidelines = frappe.db.get_single_value('Quality Inspection Settings QI', 'open_box_inspection')
 		width_thickness_guidelines = frappe.db.get_single_value('Quality Inspection Settings QI', 'width_thickness')
+		gloss_level_guide = frappe.db.get_single_value('Quality Inspection Settings QI', 'gloss_level')
 
 		if pallet_default_value:
 			self.default_corner_width = ">=" + cstr(pallet_default_value)
@@ -388,7 +417,8 @@ class QualityControlQI(Document):
 		if width_thickness_guidelines:
 			self.assembling_gap = width_thickness_guidelines
 			
-
+		if gloss_level_guide:
+			self.gloss_level_guide = gloss_level_guide
 
 	def validate_over_wax_and_edge_paint_child_table(self):
 		if self.get("no_of_po") and self.no_of_po > 0:
@@ -402,8 +432,102 @@ class QualityControlQI(Document):
 			
 			if len(items) > 0:
 				joint_items = ", ".join((ele if ele!=None else '') for ele in items)
-				frappe.msgprint(_("In Over Wax Child Table, For {0} Item, Finished Board Picture is Require.").format(joint_items), alert=True)
+				frappe.throw(_("In Over Wax Child Table, For {0} Items, Finished Board Picture is Require.").format(joint_items))
 
+@frappe.whitelist()
+def get_tas_po(vendor):
+	tas_po_list = frappe.db.sql("""
+		SELECT tas.name as tas_po, tas.vendor From `tabTAS Purchase Order Item` as ti 
+			INNER JOIN `tabTAS Purchase Order` as tas ON  tas.name = ti.parent 
+			WHERE tas.vendor = '{0}' and 
+			ti.name NOT IN (SELECT qi.tas_po_item_ref FROM `tabQuality Control Item QI` as qi WHERE qi.docstatus = 1) 
+			GROUP BY tas_po;""".format(vendor), as_dict=1, debug=1)
+	
+	return tas_po_list
+
+@frappe.whitelist()
+def get_tas_po_items(vendor):	
+	tas_po_items = frappe.db.sql("""
+		SELECT tas.name as tas_po, ti.item_no, ti.qty, ti.color, ti.name as item_name 
+			From `tabTAS Purchase Order Item` as ti INNER JOIN `tabTAS Purchase Order` as tas ON  tas.name = ti.parent 
+			WHERE tas.vendor = '{0}' 
+							  and ti.name NOT IN (SELECT qi.tas_po_item_ref FROM `tabQuality Control Item QI` as qi WHERE qi.docstatus = 1);
+	""".format(vendor), as_dict=1, debug=1)
+
+	# SELECT tas.name as tas_po, tas.vendor From `tabTAS Purchase Order Item` as ti INNER JOIN `tabTAS Purchase Order` as tas ON  tas.name = ti.parent 
+# WHERE tas.vendor = '001573' and ti.name NOT IN (SELECT qi.tas_po_item_ref FROM `tabQuality Control Item QI` as qi WHERE qi.docstatus = 1) GROUP BY tas_po;
+
+	return tas_po_items
+
+@frappe.whitelist()
+@frappe.validate_and_sanitize_search_inputs
+def item_query(doctype, txt, searchfield, start, page_len, filters, as_dict=False):
+
+	vendor = filters.get("vendor")
+	allow_child_item = filters.get("allow_child_item")
+
+	##### for testing purpose
+	tas_po = frappe.get_doc('TAS Purchase Order', '00104023901')
+	if allow_child_item == 0:
+		return [tas_po]
+	elif allow_child_item == 1:
+		
+		po_doc = tas_po
+
+		for item in po_doc.items:
+			if item.item_no == 'JOEG29H':
+				po_doc.items.remove(item)
+			else:
+				continue
+
+		# items = []
+		# item_list = ['JOCTA29A', 'JOHRTS29']
+		# for item in tas_po.items:
+		# 	if item.item_no in item_list:
+		# 		item_doc = frappe.get_doc('TAS Purchase Order Item', item.name)
+		# 		items.append(item_doc.name)
+		# print(items, "itemssss")
+
+		# item_dict = frappe._dict({ 'name': '00104023901', 'item_no' : 'JOCTA29A', 'qty':1, 'color':'red'})
+
+		# item_dict = frappe.db.sql("""
+		# 	SELECT tas.name, ti.item_no FROM `tabTAS Purchase Order Item` as ti INNER JOIN `tabTAS Purchase Order` AS tas ON tas.name = ti.parent 
+		# 		WHERE tas.name = '00104023901' 
+		# 		and ti.item_no  = 'JOEG29H'
+		# 	""", as_dict=1)
+		test = [po_doc]
+		# print(item_dict, "=====item_dict==")
+		return test
+
+
+	# print(vendor, "============vendor")
+	# print(allow_child_item, "====allow_child_item")
+
+	# checked_items_list = []
+	
+	# qi_list = frappe.db.get_all("Quality Control QI", filters={"docstatus":1, "vendor": vendor}, fields=["name"])
+
+	# inspected_items_details = {}
+
+	# for qi in qi_list:
+	# 	qi_doc = frappe.get_doc("Quality Control QI", qi.name)
+	# 	for i in range(qi_doc.no_of_po):
+	# 		child_table_name="quality_control_item_"+cstr(i+1)
+			
+	# 		if len(qi_doc.get(child_table_name)) > 0:
+	# 			for row in qi_doc.get(child_table_name):
+	# 				item_no = row.item_color.split("-")[0]
+	# 				checked_items_list.append(item_no)
+
+# @frappe.whitelist()
+# def get_tas_po(vendor):
+# 	tas_po_list = frappe.db.get_list(
+# 		"TAS Purchase Order",
+# 		filters={"vendor": vendor},
+# 		fields=["name"],
+# 	)
+
+# 	return tas_po_list
 
 @frappe.whitelist()
 def download_excel(doctype,docname,child_fieldname,file_name,data=None):

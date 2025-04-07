@@ -72,6 +72,9 @@ def after_migrate():
         print("Equipment QI: Vernier Calipers created")
 
     qi = frappe.get_doc('Quality Inspection Settings QI')
+    if qi.gloss_level == "" or qi.gloss_level == None or qi.gloss_level == '<div class="ql-editor read-mode"><p><br></p></div>':
+        qi.gloss_level = '<div class="ql-editor" data-gramm="false" contenteditable="true"><ol><li data-list="ordered"><span class="ql-ui" contenteditable="false"></span>Reading from finished board that matches master sample</li><li data-list="ordered"><span class="ql-ui" contenteditable="false"></span>Highest reading found on the finished board used for (1)</li><li data-list="ordered"><span class="ql-ui" contenteditable="false"></span>Lowest reading found on the finished board used for (1)</li><li data-list="ordered"><span class="ql-ui" contenteditable="false"></span>2 average readings from 2 different planks</li></ol></div>'
+
     if qi.open_box_inspection == "" or qi.open_box_inspection == None or qi.open_box_inspection == '<div class="ql-editor read-mode"><p><br></p></div>':
         qi.open_box_inspection = '<div class="ql-editor read-mode"><ol><li data-list="bullet"><span class="ql-ui" contenteditable="false"></span>Open box inspection: (Inspect against CIS) Open 3 cartons,</li><li data-list="bullet"><span class="ql-ui" contenteditable="false"></span>set aside for sample use after QC Layout minimum 2 end joints and 3 long joints on table Material is flat and uniform (e.g., if bowing – put on 24hr hold and re-inspect. Notify QC Reporting.)</li><li data-list="bullet"><span class="ql-ui" contenteditable="false"></span>Squareness: measure number and size of gapping (FAIL = &gt; 0.2mm)</li><li data-list="bullet"><span class="ql-ui" contenteditable="false"></span>Squareness = Assembling Gap</li></ol></div>'
 

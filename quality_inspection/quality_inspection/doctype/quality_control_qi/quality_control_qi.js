@@ -17,60 +17,222 @@ frappe.ui.form.on("Quality Control QI", {
 
         click_first_row_table(frm)
         set_html_details(frm)
+        set_row_above_table_header(frm)
+        // frm.fields_dict.width_and_thickness_details_1.grid.wrapper.find('.grid-custom-buttons').append(`<div style='border:1px solid'>
+        
+// ===============================================================
 
-        if (!frm.is_new()) {
+        if (!frm.is_new() && frm.doc.docstatus === 0) {
             frm.add_custom_button(__("TAS Po"), function () {
 
                 if (frm.doc.vendor == "" || frm.doc.vendor == undefined) {
                     frappe.throw("Please select vendor first!")
                 }
-                else {
-                    new frappe.ui.form.MultiSelectDialog({
-                        doctype: "TAS Purchase Order",
-                        target: cur_frm,
-                        setters: {
-                            vendor: frm.doc.vendor || undefined,
+                else {                       
+                    let dialog = undefined
+                    const dialog_field = []
+
+                    dialog_field.push(
+                        { fieldtype: "Column Break", fieldname: "column_break_1" },
+                        {
+                            fieldtype: "Link",
+                            fieldname: "vendor_no",
+                            label: __("Vendor No"),
+                            options: "Supplier",
+                            read_only: 1,
+                            default: frm.doc.vendor
                         },
-                        add_filters_group: 1,
-                        // date_field: "transaction_date",
-                        allow_child_item_selection: 1,
-                        child_fieldname: "items",
-                        child_columns:  ["item_no", "qty", "color"],
-                        // get_query() {
-                        //     return {
-                        //         filters: { docstatus: ['!=', 2] }
-                        //     }
-                        // },
-                        onload: setTimeout(() => {
-                            cur_dialog.set_value('allow_child_item_selection', 1)
-                        }, 2000),
-                        action(selections, args) {
-                            if (args.filtered_children.length > 0 && selections.length > 0){
-                                frappe
-                                .call({
-                                    method: "make_quality_control_item_using_tas_po_items",
-                                    doc: frm.doc,
-                                    args: args.filtered_children,
-                                })
-                                .then(() => {
-                                    refresh_field("tas_po_name_1");
-                                });
+                        { fieldtype: "Column Break", fieldname: "column_break_2" },
+                        { fieldtype: "Section Break", fieldname: "section_break_1" },
+                        {
+                            fieldtype: "Check",
+                            fieldname: "allow_child_item_selection",
+                            label: __("Allow Child Item Selection"),
+                            read_only: 0,
+                            default: 1,
+                            onchange: function (e) {
+                                if (this.value == 0) {
+                                    setTimeout(() => {
+                                        loading_html()
+                                    }, 100);
+                                    $(".datatable").empty()
+                                    get_tas_po()
+                                }
+                                else {
+                                    setTimeout(() => {
+                                        loading_html()
+                                    }, 100);
+                                    $(".datatable").empty()
+                                    get_tas_po_items()
+                                }
                             }
-                            else if (selections.length > 0){
-                                frappe
-                                .call({
-                                    method: "make_quality_control_item_using_tas_po",
-                                    doc: frm.doc,
-                                    args: selections,
-                                })
-                                .then(() => {
-                                    refresh_field("quality_control_item_1");
-                                });
+                        },
+                        { fieldtype: "HTML", fieldname: "loading_html" },
+                        { fieldtype: "HTML", fieldname: "child_selection_area" }
+                    )
+
+                    let get_tas_po = function () {
+                        console.log("------get_tas_po------")
+                        frappe.call({
+                            method: "quality_inspection.quality_inspection.doctype.quality_control_qi.quality_control_qi.get_tas_po",
+                            args: {
+                                vendor: frm.doc.vendor
+                            },
+                            callback: function (r) {
+                                let po_list = r.message
+                                if (po_list.length > 0) {
+                                    let po_list_1 = []
+                                    po_list.forEach((row) => {
+                                        po_list_1.push([
+                                            row["tas_po"],
+                                            row["vendor"]
+                                        ])
+                                    })
+                                    this.$child_wrapper = dialog.fields_dict.child_selection_area.$wrapper;
+                                    this.$child_wrapper.addClass("my-3");
+                                    dialog.child_datatable = new DataTable(this.$child_wrapper.get(0), {
+                                        columns: [
+                                            {name: 'TAS PO', id: 'tas_po', editable: false, dropdown: false,},
+                                            {name: 'Vendor', id: 'vendor', editable: false, dropdown: false,}],
+                                        data: po_list_1,
+                                        layout: "fluid",
+                                        inlineFilters: true,
+                                        serialNoColumn: false,
+                                        checkboxColumn: true,
+                                        cellHeight: 35,
+                                        noDataMessage: __("No Data"),
+                                        disableReorderColumn: true,
+                                    });
+                                    this.$child_wrapper.find(".dt-scrollable").css("height", "300px");
+
+                                    $(".datatable").ready(function(){
+                                        console.log("Datatable is ready!!!")
+                                        $("#preloader").remove();
+                                    })
+                                }
+                            }
+                        })
+                    }
+
+                    let get_tas_po_items = function(){
+                        frappe.call({
+                            method:"quality_inspection.quality_inspection.doctype.quality_control_qi.quality_control_qi.get_tas_po_items",
+                            args: {
+                                vendor: frm.doc.vendor,
+                            },
+                            callback: function (r) {
+                                let item_list = r.message
+                                if (item_list.length > 0) {
+                                    let item_list_1 = []
+                                    item_list.forEach((row) => {
+                                        item_list_1.push([row["tas_po"],
+                                            row["item_no"],
+                                            row["qty"] ,
+                                            row["color"]])
+                                    });
+                                    this.$child_wrapper = dialog.fields_dict.child_selection_area.$wrapper;
+                                    this.$child_wrapper.addClass("my-3");
+    
+                                    dialog.child_datatable = new DataTable(this.$child_wrapper.get(0), {
+                                        columns: [
+                                            {name: 'TAS PO', id: 'tas_po', editable: false, dropdown: false,},
+                                            {name: 'Item No', id: 'item_no', editable: false, dropdown: false,},
+                                            {name: 'Qty', id: 'qty', editable: false, dropdown: false,},
+                                            {name: 'Color', id: 'color', editable: false, dropdown: false,},
+                                            ],
+                                        data: item_list_1,
+                                        layout: "fluid",
+                                        inlineFilters: true,
+                                        serialNoColumn: false,
+                                        checkboxColumn: true,
+                                        cellHeight: 35,
+                                        noDataMessage: __("No Data"),
+                                        disableReorderColumn: true,
+                                    });
+                                    this.$child_wrapper.find(".dt-scrollable").css("height", "300px");
+
+                                    $(".datatable").ready(function(){
+                                        console.log("Datatable is ready!!!")
+                                        $("#preloader").remove();
+                                    })
+                                }
+                            }
+                        })
+                    }
+                    
+                    let loading_html = function(){
+                        setTimeout(() => {
+                            this.$loading_html = dialog.fields_dict.loading_html.$wrapper
+                            if (this.$loading_html.find("#preloader").length == 0){
+                                this.$loading_html.prepend('<div id="preloader" class="text-center">Loading data...</div>');
+                            }
+                        }, 100);
+                    }
+                    loading_html()
+                    get_tas_po_items()
+
+                    dialog = new frappe.ui.Dialog({
+                        title: __("Select TAS Purchase Order"),
+                        fields: dialog_field,
+                        primary_action_label: 'Get Items',
+                        primary_action: function (values) {
+
+                            let checked_items = dialog.child_datatable.rowmanager.getCheckedRows()
+
+                            if (checked_items.length > 0) {
+                                let datatable_data = dialog.child_datatable.datamanager.data
+                                let selected_items_list = []
+
+                                if (dialog.get_field("allow_child_item_selection").value == 1){
+                                    for (const i of checked_items) {
+                                        let row_data = datatable_data[i]     
+                                        selected_items_list.push({
+                                            "tas_po" : row_data[0],
+                                            "item_no" : row_data[1],
+                                            "qty" : row_data[2],
+                                            "color" : row_data[3],
+                                        })
+                                    }
+
+                                    frappe.call({
+                                        method: "make_quality_control_item_using_tas_po_items",
+                                        doc: frm.doc,
+                                        args: selected_items_list,
+                                    })
+                                    .then(() => {
+                                        refresh_field("tas_po_name_1");
+                                        setTimeout(() => {
+                                            location.reload();
+                                        }, 100)
+                                    });
+                                }
+                                else{
+                                    for (const i of checked_items) {
+                                        let row_data = datatable_data[i]     
+                                        selected_items_list.push(row_data[0])
+                                    }
+
+                                    frappe.call({
+                                        method: "make_quality_control_item_using_tas_po",
+                                        doc: frm.doc,
+                                        args: selected_items_list,
+                                    })
+                                    .then(() => {
+                                        refresh_field("tas_po_name_1");
+                                        setTimeout(() => {
+                                            location.reload();
+                                        }, 100)
+                                    });
+                                }
+                                
+                                console.log(selected_items_list, "=====selected_items_list=====")
                             }
 
-				            cur_dialog.hide();
+                            dialog.hide();
                         }
-                    });
+                    })
+
+                    dialog.show()
                 }
 
             })
@@ -147,12 +309,23 @@ frappe.ui.form.on("Quality Control QI", {
     },
 
     onload_post_render: function (frm) {
-        set_button_label_arrow(frm)
+        
+       
         // $('button.grid-add-row').hide()
-        click_table_every_row(frm)
-        click_first_row_table(frm)
-        change_table_select_field_css()
+        if(frm.doc.docstatus == 0){
+            click_table_every_row(frm)
+            click_first_row_table(frm)
+        }
+        set_button_label_arrow(frm)
         set_table_select_field_css(frm)
+        change_table_select_field_css()
+
+        if(frm.doc.docstatus == 1){
+            console.log("freeze-message")
+            frm.fields_dict.pallet_details.grid.wrapper.find(`div [data-idx="1"]`).find(`.btn-open-row`).click()
+            $('.form-in-grid').click()
+            $('.freeze-message').click()
+        }
         
     },
 });
@@ -574,16 +747,127 @@ let set_select_css = function (frm, table, table_name, select_field, fieldname1,
     });
 }
 
+let set_row_above_table_header = function(frm){
+    let color_match_tables = create_child_table_list(frm, 'color_match_and_embossing_details_')
+    if (color_match_tables.length > 0) {
+        for (const color_table of color_match_tables) {
+            frm.fields_dict[color_table].grid.wrapper.find('.grid-heading-row').append(`
+                <div style='border:1px solid #ededed; padding-left: 19.3%; font-size:13px; height: 25px; background-color: #f3f3f3;'>
+                    <div style="display: inline; padding: 1% 18.8%; border:1px solid #ededed" class="text-center"> Color Match </div>
+                    <div style="display: inline; padding: 1% 10.3%; border:1px solid #ededed" class="text-center"> Results </div>
+                    <div style="display: inline; padding: 1% 9.2%; border:1px solid #ededed" class="text-center"> Embossing </div>
+                </div>
+            `)
+            frm.fields_dict[color_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
+        }
+    }
+    
+    let over_wax_tables = create_child_table_list(frm, 'over_wax_and_edge_paint_')
+    if (over_wax_tables.length > 0) {
+        for (const over_wax_table of over_wax_tables) {
+            if (frm.doc.flooring_class == 'LVP & WPC') {
+                frm.fields_dict[over_wax_table].grid.wrapper.find('.grid-heading-row').append(`
+                    <div style='border:1px solid #ededed; padding-left: 29%; font-size:13px; height: 25px; background-color: #f3f3f3;'>
+                        <div style="display: inline; padding: 1% 14.2%; border:1px solid #ededed" class="text-center"> Bevel </div>
+                        <div style="display: inline; padding: 1% 28%; border:1px solid #ededed" class="text-center"> Edge Paint </div>
+                    </div>
+                `)
+            }
+            else if (frm.doc.flooring_class == 'HARDWOOD FLOORING') {
+                frm.fields_dict[over_wax_table].grid.wrapper.find('.grid-heading-row').append(`
+                    <div style='border:1px solid #ededed; padding-left: 29%; font-size:13px; height: 25px; background-color: #f3f3f3;'>
+                        <div style="display: inline; padding: 1% 14.2%; border:1px solid #ededed" class="text-center"> Bevel </div>
+                        <div style="display: inline; padding: 1% 28.3%; border:1px solid #ededed" class="text-center"> Over Wax </div>
+                    </div>
+                `)
+            } else {
+                frm.fields_dict[over_wax_table].grid.wrapper.find('.grid-heading-row').append(`
+                    <div style='border:1px solid #ededed; padding-left: 25.5%; font-size:13px; height: 25px; background-color: #f3f3f3;'>
+                        <div style="display: inline; padding: 1% 11.4%; border:1px solid #ededed" class="text-center"> Bevel </div>
+                        <div style="display: inline; padding: 1% 20.7%; border:1px solid #ededed" class="text-center"> Over Wax </div>
+                        <div style="display: inline; padding: 1% 7%; border:1px solid #ededed" class="text-center"> Edge Paint </div>
+                    </div>
+                `)
+            }
+    
+            frm.fields_dict[over_wax_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
+        }
+    }
+
+    let gloss_level_tables = create_child_table_list(frm, 'gloss_level_details_')
+    if (gloss_level_tables.length > 0) {
+        for (const gloss_level_table of gloss_level_tables) {
+            frm.fields_dict[gloss_level_table].grid.wrapper.find('.grid-heading-row').append(`
+                <div style='border:1px solid #ededed; padding-left: 8.6%; font-size:13px; height: 25px; background-color: #f3f3f3;'>
+                    <div style="display: inline; padding: 1% 5.2%; border:1px solid #ededed" class="text-center"> Master </div>
+                    <div style="display: inline; padding: 1% 9.4%; border:1px solid #ededed" class="text-center"> Matched </div>
+                    <div style="display: inline; padding: 1% 9.6%; border:1px solid #ededed" class="text-center"> Highest </div>
+                    <div style="display: inline; padding: 1% 9.7%; border:1px solid #ededed" class="text-center"> Lowest </div>
+                    <div style="display: inline; padding: 1% 9.6%; border:1px solid #ededed" class="text-center"> Average </div>
+                </div>
+            `)
+            frm.fields_dict[gloss_level_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
+        }
+    }
+
+    let moisture_content_tables = create_child_table_list(frm, 'moisture_content_details_')
+    if (moisture_content_tables.length > 0) {
+        for (const moisture_content_table of moisture_content_tables) {
+            frm.fields_dict[moisture_content_table].grid.wrapper.find('.grid-heading-row').append(`
+                <div style='border:1px solid #ededed; padding-left: 8.6%; font-size:13px; height: 25px; background-color: #f3f3f3;'>
+                    <div style="display: inline; padding: 1% 5.2%; border:1px solid #ededed" class="text-center"> Master </div>
+                    <div style="display: inline; padding: 1% 9.4%; border:1px solid #ededed" class="text-center"> Matched </div>
+                    <div style="display: inline; padding: 1% 9.6%; border:1px solid #ededed" class="text-center"> Highest </div>
+                    <div style="display: inline; padding: 1% 9.7%; border:1px solid #ededed" class="text-center"> Lowest </div>
+                    <div style="display: inline; padding: 1% 9.6%; border:1px solid #ededed" class="text-center"> Average </div>
+                </div>
+            `)
+            frm.fields_dict[moisture_content_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
+        }
+    }
+
+    let open_box_tables = create_child_table_list(frm, 'open_box_inspection_details_')
+    if (open_box_tables.length > 0) {
+        for (const open_box_table of open_box_tables) {
+            frm.fields_dict[open_box_table].grid.wrapper.find('.grid-heading-row').append(`
+                <div style='border:1px solid #ededed; padding-left: 17.5%; font-size:13px; height: 25px; background-color: #f3f3f3;'>
+                    <div style="display: inline; padding: 1% 7.8%; border:1px solid #ededed" class="text-center"> Bowing </div>
+                    <div style="display: inline; padding: 1% 6.5%; border:1px solid #ededed" class="text-center"> Squareness </div>
+                    <div style="display: inline; padding: 1% 4.2%; border:1px solid #ededed" class="text-center"> Ledging Overwood </div>
+                    <div style="display: inline; padding: 1% 3.4%; border:1px solid #ededed" class="text-center"> Pad Away From the Locking System </div>
+                </div>
+            `)
+            frm.fields_dict[open_box_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
+        }
+    }
+
+    let width_tables = create_child_table_list(frm, 'width_and_thickness_details_')
+    if (width_tables.length > 0) {
+        for (const width_table of width_tables) {
+            frm.fields_dict[width_table].grid.wrapper.find('.grid-heading-row').append(`
+                <div style='border:1px solid #ededed; padding-left: 14.7%; font-size:13px; height: 25px; background-color: #f3f3f3;'>
+                    <div style="display: inline; padding: 1% 9.9%; border:1px solid #ededed" class="text-center"> Width </div>
+                    <div style="display: inline; padding: 1% 4.5%; border:1px solid #ededed" class="text-center"> Thickness without padding </div>
+                    <div style="display: inline; padding: 1% 5.3%; border:1px solid #ededed" class="text-center"> Thickness with Padding </div>
+                    <div style="display: inline; padding: 1% 7.4%; border:1px solid #ededed" class="text-center"> Manual Pull Test </div>
+                </div>
+            `)
+            frm.fields_dict[width_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
+        }
+    }
+}
+
 frappe.ui.form.on("Over Wax and Edge Paint Ql", {
     over_wax_select(frm, cdt, cdn) {
         let row = locals[cdt][cdn]
         if (row.over_wax_select) {
             if (['Fail - Minor', 'Fail - Major', 'Fail - Critical'].includes(row.over_wax_select)) {
                 if (!row.finished_board) {
-                    frappe.show_alert({
-                        message:__('Please upload image of failed overwax finished board'),
-                        indicator:'blue'
-                    }, 5);
+                    frappe.msgprint({
+                        title: __('<span style="color:#b52a2a">Mandatory</span>'),
+                        indicator: 'red',
+                        message: __('<p style="color:#b52a2a; font-size: 1rem;">Please upload image of failed overwax finished board</p>')
+                    });
                 }
             }
         }

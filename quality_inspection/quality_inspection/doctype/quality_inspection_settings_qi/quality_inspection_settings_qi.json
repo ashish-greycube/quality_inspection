@@ -8,6 +8,8 @@
   "defaults_tab",
   "pallet_default_value",
   "tab_break_iiih",
+  "gloss_level",
+  "section_break_lsce",
   "open_box_inspection",
   "section_break_ozoe",
   "width_thickness"
@@ -44,12 +46,22 @@
    "fieldname": "width_thickness",
    "fieldtype": "Text Editor",
    "label": "<b>Width &amp; Thickness</b>"
+  },
+  {
+   "fieldname": "gloss_level",
+   "fieldtype": "Text Editor",
+   "label": "<b>Gloss Level</b>"
+  },
+  {
+   "fieldname": "section_break_lsce",
+   "fieldtype": "Section Break"
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-03-03 02:39:26.617710",
+ "modified": "2025-03-23 19:48:18.697042",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Quality Inspection Settings QI",

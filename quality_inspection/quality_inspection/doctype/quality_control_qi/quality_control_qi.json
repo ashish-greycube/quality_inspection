@@ -12,6 +12,7 @@
   "column_break_fvru",
   "vendor",
   "flooring_class",
+  "amended_from",
   "section_break_gvfx",
   "tas_po_name_1",
   "quality_control_item_1",
@@ -145,6 +146,8 @@
   "gloss_pass_ration",
   "gloss_undetermined_ratio",
   "gloss_todo_ratio",
+  "section_break_odap",
+  "gloss_level_guide",
   "section_break_trlm",
   "po_gloss_1",
   "gloss_level_details_1",
@@ -1190,7 +1193,6 @@
   },
   {
    "depends_on": "eval:doc.no_of_po>0",
-   "description": "<i>N=Normal, TWO=Thickness Without, TWI=Thickness With</i>",
    "fieldname": "width_and_thickness_details_1",
    "fieldtype": "Table",
    "options": "Width And Thickness Details QI"
@@ -1260,6 +1262,7 @@
   },
   {
    "depends_on": "eval:doc.no_of_po>1",
+   "description": "<i>N=Normal, TWO=Thickness Without, TWI=Thickness With</i>",
    "fieldname": "width_and_thickness_details_2",
    "fieldtype": "Table",
    "options": "Width And Thickness Details QI"
@@ -1880,12 +1883,33 @@
    "fieldtype": "Text Editor",
    "label": "<b>Guidelines:</b>",
    "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Quality Control QI",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "section_break_odap",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "gloss_level_guide",
+   "fieldtype": "Text Editor",
+   "label": "<b>Guidelines:</b>",
+   "read_only": 1
   }
  ],
  "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2025-03-19 19:56:29.210551",
+ "modified": "2025-03-27 03:49:24.862557",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Quality Control QI",
