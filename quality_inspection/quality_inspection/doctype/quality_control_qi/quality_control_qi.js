@@ -80,6 +80,7 @@ frappe.ui.form.on("Quality Control QI", {
                             },
                             callback: function (r) {
                                 let po_list = r.message
+                                console.log(po_list, "=====po_list=====")
                                 if (po_list.length > 0) {
                                     let po_list_1 = []
                                     po_list.forEach((row) => {
@@ -88,6 +89,8 @@ frappe.ui.form.on("Quality Control QI", {
                                             row["vendor"]
                                         ])
                                     })
+
+                                    console.log(po_list_1, "======po_list_1")
                                     this.$child_wrapper = dialog.fields_dict.child_selection_area.$wrapper;
                                     this.$child_wrapper.addClass("my-3");
                                     dialog.child_datatable = new DataTable(this.$child_wrapper.get(0), {
@@ -122,14 +125,18 @@ frappe.ui.form.on("Quality Control QI", {
                             },
                             callback: function (r) {
                                 let item_list = r.message
+
+                                console.log(item_list, "===item_list===")
                                 if (item_list.length > 0) {
                                     let item_list_1 = []
                                     item_list.forEach((row) => {
                                         item_list_1.push([row["tas_po"],
                                             row["item_no"],
                                             row["qty"] ,
-                                            row["color"]])
+                                            row["color"] || ''])
                                     });
+
+                                    console.log(item_list_1, "=======item_list_1")
                                     this.$child_wrapper = dialog.fields_dict.child_selection_area.$wrapper;
                                     this.$child_wrapper.addClass("my-3");
     
@@ -149,6 +156,8 @@ frappe.ui.form.on("Quality Control QI", {
                                         noDataMessage: __("No Data"),
                                         disableReorderColumn: true,
                                     });
+
+                                    console.log(dialog.child_datatable, "---dialog.child_datatable")
                                     this.$child_wrapper.find(".dt-scrollable").css("height", "300px");
 
                                     $(".datatable").ready(function(){
