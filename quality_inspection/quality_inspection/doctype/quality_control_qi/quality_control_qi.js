@@ -68,7 +68,8 @@ frappe.ui.form.on("Quality Control QI", {
                             }
                         },
                         { fieldtype: "HTML", fieldname: "loading_html" },
-                        { fieldtype: "HTML", fieldname: "child_selection_area" }
+                        { fieldtype: "HTML", fieldname: "child_selection_area" },
+                        { fieldtype: "HTML", fieldname: "instruction" }
                     )
 
                     let get_tas_po = function () {
@@ -258,7 +259,7 @@ frappe.ui.form.on("Quality Control QI", {
                             dialog.hide();
                         }
                     })
-
+                    dialog.set_df_property("instruction", "options", "<div class='text-center'>Above are eligible items that have NOT participated in submitted quality inspection earlier</div>")
                     dialog.show()
                 }
 
@@ -778,45 +779,48 @@ let set_row_above_table_header = function(frm){
     let color_match_tables = create_child_table_list(frm, 'color_match_and_embossing_details_')
     if (color_match_tables.length > 0) {
         for (const color_table of color_match_tables) {
-            frm.fields_dict[color_table].grid.wrapper.find('.grid-heading-row').append(`
-                <div style='border:1px solid #ededed; padding-left: 19.3%; font-size:13px; height: 25px; background-color: #f3f3f3;'>
-                    <div style="display: inline; padding: 1% 18.8%; border:1px solid #ededed" class="text-center"> Color Match </div>
-                    <div style="display: inline; padding: 1% 10.3%; border:1px solid #ededed" class="text-center"> Results </div>
-                    <div style="display: inline; padding: 1% 9.2%; border:1px solid #ededed" class="text-center"> Embossing </div>
+            if (frm.fields_dict[color_table].grid.wrapper.find('.grid-heading-row').find('#color_table').length == 0) {
+                frm.fields_dict[color_table].grid.wrapper.find('.grid-heading-row').append(`
+                <div id="color_table" style='border:1px solid #3b3838; padding-left: 19.3%; font-size:14px; height: 27px; background-color: #f3f3f3; color:#3b3838; border-radius: 10px 10px 0px 0px;'>
+                    <div style="display: inline; padding: 1% 18.6%; border-right:1px solid #3b3838;border-left:1px solid #3b3838" class="text-center"> Color Match </div>
+                    <div style="display: inline; padding: 1% 10%; border-right:1px solid #3b3838" class="text-center"> Results </div>
+                    <div style="display: inline; padding: 1% 9%; border-right:1px solid #3b3838" class="text-center"> Embossing </div>
                 </div>
             `)
+            }
             frm.fields_dict[color_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
         }
     }
-    
+
     let over_wax_tables = create_child_table_list(frm, 'over_wax_and_edge_paint_')
     if (over_wax_tables.length > 0) {
         for (const over_wax_table of over_wax_tables) {
-            if (frm.doc.flooring_class == 'LVP & WPC') {
-                frm.fields_dict[over_wax_table].grid.wrapper.find('.grid-heading-row').append(`
-                    <div style='border:1px solid #ededed; padding-left: 29%; font-size:13px; height: 25px; background-color: #f3f3f3;'>
-                        <div style="display: inline; padding: 1% 14.2%; border:1px solid #ededed" class="text-center"> Bevel </div>
-                        <div style="display: inline; padding: 1% 28%; border:1px solid #ededed" class="text-center"> Edge Paint </div>
-                    </div>
-                `)
+            if (frm.fields_dict[over_wax_table].grid.wrapper.find('.grid-heading-row').find('#over_wax_table').length == 0) {
+                if (frm.doc.flooring_class == 'LVP & WPC') {
+                    frm.fields_dict[over_wax_table].grid.wrapper.find('.grid-heading-row').append(`
+                        <div id="over_wax_table" style='border:1px solid #3b3838; padding-left: 29%; font-size:14px; height: 27px; background-color: #f3f3f3; color:#3b3838; border-radius: 10px 10px 0px 0px;'>
+                            <div style="display: inline; padding: 1% 14.2%; border-right:1px solid #3b3838; border-left:1px solid #3b3838" class="text-center"> Bevel </div>
+                            <div style="display: inline; padding: 1% 27.5%; border-right:1px solid #3b3838" class="text-center"> Edge Paint </div>
+                        </div>
+                    `)
+                }
+                else if (frm.doc.flooring_class == 'HARDWOOD FLOORING') {
+                    frm.fields_dict[over_wax_table].grid.wrapper.find('.grid-heading-row').append(`
+                        <div id="over_wax_table" style='border:1px solid #3b3838; padding-left: 29%; font-size:14px; height: 27px; background-color: #f3f3f3; color:#3b3838; border-radius: 10px 10px 0px 0px;'>
+                            <div style="display: inline; padding: 1% 14.2%; border-right:1px solid #3b3838; border-left:1px solid #3b3838" class="text-center"> Bevel </div>
+                            <div style="display: inline; padding: 1% 28%; border-right:1px solid #3b3838" class="text-center"> Over Wax </div>
+                        </div>
+                    `)
+                } else {
+                    frm.fields_dict[over_wax_table].grid.wrapper.find('.grid-heading-row').append(`
+                        <div id="over_wax_table" style='border:1px solid #3b3838; padding-left: 25.5%; font-size:14px; height: 27px; background-color: #f3f3f3; color:#3b3838; border-radius: 10px 10px 0px 0px;'>
+                            <div style="display: inline; padding: 1% 11.4%; border-right:1px solid #3b3838; border-left:1px solid #3b3838" class="text-center"> Bevel </div>
+                            <div style="display: inline; padding: 1% 20.5%; border-right:1px solid #3b3838" class="text-center"> Over Wax </div>
+                            <div style="display: inline; padding: 1% 6.7%; border-right:1px solid #3b3838" class="text-center"> Edge Paint </div>
+                        </div>
+                    `)
+                }
             }
-            else if (frm.doc.flooring_class == 'HARDWOOD FLOORING') {
-                frm.fields_dict[over_wax_table].grid.wrapper.find('.grid-heading-row').append(`
-                    <div style='border:1px solid #ededed; padding-left: 29%; font-size:13px; height: 25px; background-color: #f3f3f3;'>
-                        <div style="display: inline; padding: 1% 14.2%; border:1px solid #ededed" class="text-center"> Bevel </div>
-                        <div style="display: inline; padding: 1% 28.3%; border:1px solid #ededed" class="text-center"> Over Wax </div>
-                    </div>
-                `)
-            } else {
-                frm.fields_dict[over_wax_table].grid.wrapper.find('.grid-heading-row').append(`
-                    <div style='border:1px solid #ededed; padding-left: 25.5%; font-size:13px; height: 25px; background-color: #f3f3f3;'>
-                        <div style="display: inline; padding: 1% 11.4%; border:1px solid #ededed" class="text-center"> Bevel </div>
-                        <div style="display: inline; padding: 1% 20.7%; border:1px solid #ededed" class="text-center"> Over Wax </div>
-                        <div style="display: inline; padding: 1% 7%; border:1px solid #ededed" class="text-center"> Edge Paint </div>
-                    </div>
-                `)
-            }
-    
             frm.fields_dict[over_wax_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
         }
     }
@@ -824,15 +828,17 @@ let set_row_above_table_header = function(frm){
     let gloss_level_tables = create_child_table_list(frm, 'gloss_level_details_')
     if (gloss_level_tables.length > 0) {
         for (const gloss_level_table of gloss_level_tables) {
-            frm.fields_dict[gloss_level_table].grid.wrapper.find('.grid-heading-row').append(`
-                <div style='border:1px solid #ededed; padding-left: 8.6%; font-size:13px; height: 25px; background-color: #f3f3f3;'>
-                    <div style="display: inline; padding: 1% 5.2%; border:1px solid #ededed" class="text-center"> Master </div>
-                    <div style="display: inline; padding: 1% 9.4%; border:1px solid #ededed" class="text-center"> Matched </div>
-                    <div style="display: inline; padding: 1% 9.6%; border:1px solid #ededed" class="text-center"> Highest </div>
-                    <div style="display: inline; padding: 1% 9.7%; border:1px solid #ededed" class="text-center"> Lowest </div>
-                    <div style="display: inline; padding: 1% 9.6%; border:1px solid #ededed" class="text-center"> Average </div>
-                </div>
-            `)
+            if (frm.fields_dict[gloss_level_table].grid.wrapper.find('.grid-heading-row').find('#gloss_level_table').length == 0) {
+                frm.fields_dict[gloss_level_table].grid.wrapper.find('.grid-heading-row').append(`
+                    <div id="gloss_level_table" style='border:1px solid #3b3838; padding-left: 8.6%; font-size:14px; height: 27px; background-color: #f3f3f3; color:#3b3838; border-radius: 10px 10px 0px 0px;'>
+                        <div style="display: inline; padding: 1% 5.2%; border-right:1px solid #3b3838; border-left:1px solid #3b3838" class="text-center"> Master </div>
+                        <div style="display: inline; padding: 1% 9.3%; border-right:1px solid #3b3838" class="text-center"> Matched </div>
+                        <div style="display: inline; padding: 1% 9.5%; border-right:1px solid #3b3838" class="text-center"> Highest </div>
+                        <div style="display: inline; padding: 1% 9.65%; border-right:1px solid #3b3838" class="text-center"> Lowest </div>
+                        <div style="display: inline; padding: 1% 9.5%; border-right:1px solid #3b3838" class="text-center"> Average </div>
+                    </div>
+                `)
+            }
             frm.fields_dict[gloss_level_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
         }
     }
@@ -840,15 +846,17 @@ let set_row_above_table_header = function(frm){
     let moisture_content_tables = create_child_table_list(frm, 'moisture_content_details_')
     if (moisture_content_tables.length > 0) {
         for (const moisture_content_table of moisture_content_tables) {
-            frm.fields_dict[moisture_content_table].grid.wrapper.find('.grid-heading-row').append(`
-                <div style='border:1px solid #ededed; padding-left: 8.6%; font-size:13px; height: 25px; background-color: #f3f3f3;'>
-                    <div style="display: inline; padding: 1% 5.2%; border:1px solid #ededed" class="text-center"> Master </div>
-                    <div style="display: inline; padding: 1% 9.4%; border:1px solid #ededed" class="text-center"> Matched </div>
-                    <div style="display: inline; padding: 1% 9.6%; border:1px solid #ededed" class="text-center"> Highest </div>
-                    <div style="display: inline; padding: 1% 9.7%; border:1px solid #ededed" class="text-center"> Lowest </div>
-                    <div style="display: inline; padding: 1% 9.6%; border:1px solid #ededed" class="text-center"> Average </div>
-                </div>
-            `)
+            if (frm.fields_dict[moisture_content_table].grid.wrapper.find('.grid-heading-row').find('#moisture_content_table').length == 0) {
+                frm.fields_dict[moisture_content_table].grid.wrapper.find('.grid-heading-row').append(`
+                    <div id="moisture_content_table" style='border:1px solid #3b3838; padding-left: 8.6%; font-size:14px; height: 27px; background-color: #f3f3f3; color:#3b3838;border-radius: 10px 10px 0px 0px;'>
+                        <div style="display: inline; padding: 1% 5.2%; border-right:1px solid #3b3838; border-left:1px solid #3b3838" class="text-center"> Master </div>
+                        <div style="display: inline; padding: 1% 9.3%; border-right:1px solid #3b3838" class="text-center"> Matched </div>
+                        <div style="display: inline; padding: 1% 9.5%; border-right:1px solid #3b3838" class="text-center"> Highest </div>
+                        <div style="display: inline; padding: 1% 9.65%; border-right:1px solid #3b3838" class="text-center"> Lowest </div>
+                        <div style="display: inline; padding: 1% 9.5%; border-right:1px solid #3b3838" class="text-center"> Average </div>
+                    </div>
+                `)
+            }
             frm.fields_dict[moisture_content_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
         }
     }
@@ -856,14 +864,16 @@ let set_row_above_table_header = function(frm){
     let open_box_tables = create_child_table_list(frm, 'open_box_inspection_details_')
     if (open_box_tables.length > 0) {
         for (const open_box_table of open_box_tables) {
-            frm.fields_dict[open_box_table].grid.wrapper.find('.grid-heading-row').append(`
-                <div style='border:1px solid #ededed; padding-left: 17.5%; font-size:13px; height: 25px; background-color: #f3f3f3;'>
-                    <div style="display: inline; padding: 1% 7.8%; border:1px solid #ededed" class="text-center"> Bowing </div>
-                    <div style="display: inline; padding: 1% 6.5%; border:1px solid #ededed" class="text-center"> Squareness </div>
-                    <div style="display: inline; padding: 1% 4.2%; border:1px solid #ededed" class="text-center"> Ledging Overwood </div>
-                    <div style="display: inline; padding: 1% 3.4%; border:1px solid #ededed" class="text-center"> Pad Away From the Locking System </div>
-                </div>
-            `)
+            if (frm.fields_dict[open_box_table].grid.wrapper.find('.grid-heading-row').find('#open_box_table').length == 0) {
+                frm.fields_dict[open_box_table].grid.wrapper.find('.grid-heading-row').append(`
+                    <div id="open_box_table" style='border:1px solid #3b3838; padding-left: 17.5%; font-size:14px; height: 27px; background-color: #f3f3f3; color:#3b3838; border-radius: 10px 10px 0px 0px;'>
+                        <div style="display: inline; padding: 1% 7.7%; border-right:1px solid #3b3838; border-left:1px solid #3b3838" class="text-center"> Bowing </div>
+                        <div style="display: inline; padding: 1% 6.2%; border-right:1px solid #3b3838" class="text-center"> Squareness </div>
+                        <div style="display: inline; padding: 1% 4%; border-right:1px solid #3b3838" class="text-center"> Ledging Overwood </div>
+                        <div style="display: inline; padding: 1% 5.5%; border-right:1px solid #3b3838" class="text-center"> Pad Away From the Locking System </div>
+                    </div>
+                `)
+            }
             frm.fields_dict[open_box_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
         }
     }
@@ -872,11 +882,11 @@ let set_row_above_table_header = function(frm){
     if (width_tables.length > 0) {
         for (const width_table of width_tables) {
             frm.fields_dict[width_table].grid.wrapper.find('.grid-heading-row').append(`
-                <div style='border:1px solid #ededed; padding-left: 14.7%; font-size:13px; height: 25px; background-color: #f3f3f3;'>
-                    <div style="display: inline; padding: 1% 9.9%; border:1px solid #ededed" class="text-center"> Width </div>
-                    <div style="display: inline; padding: 1% 4.5%; border:1px solid #ededed" class="text-center"> Thickness without padding </div>
-                    <div style="display: inline; padding: 1% 5.3%; border:1px solid #ededed" class="text-center"> Thickness with Padding </div>
-                    <div style="display: inline; padding: 1% 7.4%; border:1px solid #ededed" class="text-center"> Manual Pull Test </div>
+                <div style='border:1px solid #3b3838; padding-left: 14.7%; font-size:14px; height: 27px; background-color: #f3f3f3; color:#3b3838; border-radius: 10px 10px 0px 0px;'>
+                    <div style="display: inline; padding: 1% 9.8%; border-right:1px solid #3b3838; border-left:1px solid #3b3838" class="text-center"> Width </div>
+                    <div style="display: inline; padding: 1% 4.1%; border-right:1px solid #3b3838" class="text-center"> Thickness without padding </div>
+                    <div style="display: inline; padding: 1% 4.9%; border-right:1px solid #3b3838" class="text-center"> Thickness with Padding </div>
+                    <div style="display: inline; padding: 1% 9.5%; border-right:1px solid #3b3838" class="text-center"> Manual Pull Test </div>
                 </div>
             `)
             frm.fields_dict[width_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
@@ -893,7 +903,7 @@ frappe.ui.form.on("Over Wax and Edge Paint Ql", {
                     frappe.msgprint({
                         title: __('<span style="color:#b52a2a">Mandatory</span>'),
                         indicator: 'red',
-                        message: __('<p style="color:#b52a2a; font-size: 1rem;">Please upload image of failed overwax finished board</p>')
+                        message: __('<p style="color:#b52a2a; font-size: 1rem;">For {0} at Row {1} : Please upload image of failed overwax finished board</p>',[row.item_color, row.idx])
                     });
                 }
             }

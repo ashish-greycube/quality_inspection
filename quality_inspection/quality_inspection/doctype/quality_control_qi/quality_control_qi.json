@@ -1909,7 +1909,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-03-27 03:49:24.862557",
+ "modified": "2025-04-06 22:10:42.893903",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Quality Control QI",
@@ -1917,6 +1917,7 @@
  "owner": "Administrator",
  "permissions": [
   {
+   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,
@@ -1926,6 +1927,7 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],
