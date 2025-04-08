@@ -319,6 +319,11 @@ frappe.ui.form.on("Quality Control QI", {
                 console.log("10000000000")
             }, 100)
         }
+
+        setTimeout(() => {
+            $('button.grid-add-row').hide()
+        }, 2000)
+        
         // let fullwidth = JSON.parse(localStorage.container_fullwidth || "false");
         // if (fullwidth == false){
         //     frappe.ui.toolbar.toggle_full_width(); 
@@ -339,6 +344,14 @@ frappe.ui.form.on("Quality Control QI", {
         setTimeout(() => {
             // window.location.reload();
             location.reload();
+        }, 100)
+        
+        setTimeout(() => {
+            frappe.run_serially([
+                () => frappe.dom.freeze(__("Loading Invoices! Please Wait...")),
+                () => location.reload(),
+                () => frappe.dom.unfreeze(),
+            ]);
         }, 100)
     },
 
@@ -887,14 +900,16 @@ let set_row_above_table_header = function(frm){
     let width_tables = create_child_table_list(frm, 'width_and_thickness_details_')
     if (width_tables.length > 0) {
         for (const width_table of width_tables) {
-            frm.fields_dict[width_table].grid.wrapper.find('.grid-heading-row').append(`
-                <div style='border:1px solid #3b3838; padding-left: 14.7%; font-size:14px; height: 27px; background-color: #f3f3f3; color:#3b3838; border-radius: 10px 10px 0px 0px;'>
-                    <div style="display: inline; padding: 1% 9.8%; border-right:1px solid #3b3838; border-left:1px solid #3b3838" class="text-center"> Width </div>
-                    <div style="display: inline; padding: 1% 4.1%; border-right:1px solid #3b3838" class="text-center"> Thickness without padding </div>
-                    <div style="display: inline; padding: 1% 4.9%; border-right:1px solid #3b3838" class="text-center"> Thickness with Padding </div>
-                    <div style="display: inline; padding: 1% 9.5%; border-right:1px solid #3b3838" class="text-center"> Manual Pull Test </div>
-                </div>
-            `)
+            if (frm.fields_dict[width_table].grid.wrapper.find('.grid-heading-row').find('#width_table').length == 0) {
+                frm.fields_dict[width_table].grid.wrapper.find('.grid-heading-row').append(`
+                    <div id="width_table" style='border:1px solid #3b3838; padding-left: 14.7%; font-size:14px; height: 27px; background-color: #f3f3f3; color:#3b3838; border-radius: 10px 10px 0px 0px;'>
+                        <div style="display: inline; padding: 1% 9.8%; border-right:1px solid #3b3838; border-left:1px solid #3b3838" class="text-center"> Width </div>
+                        <div style="display: inline; padding: 1% 4.1%; border-right:1px solid #3b3838" class="text-center"> Thickness without padding </div>
+                        <div style="display: inline; padding: 1% 4.9%; border-right:1px solid #3b3838" class="text-center"> Thickness with Padding </div>
+                        <div style="display: inline; padding: 1% 9.5%; border-right:1px solid #3b3838" class="text-center"> Manual Pull Test </div>
+                    </div>
+                `)
+            }
             frm.fields_dict[width_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
         }
     }
@@ -904,12 +919,13 @@ frappe.ui.form.on("Over Wax and Edge Paint Ql", {
     over_wax_select(frm, cdt, cdn) {
         let row = locals[cdt][cdn]
         if (row.over_wax_select) {
+            let table_no = row.parentfield.slice(-1)
             if (['Fail - Minor', 'Fail - Major', 'Fail - Critical'].includes(row.over_wax_select)) {
                 if (!row.finished_board) {
                     frappe.msgprint({
                         title: __('<span style="color:#b52a2a">Mandatory</span>'),
                         indicator: 'red',
-                        message: __('<p style="color:#b52a2a; font-size: 1rem;">For {0} at Row {1} : Please upload image of failed overwax finished board</p>',[row.item_color, row.idx])
+                        message: __('<p style="color:#b52a2a; font-size: 1rem;">Please upload image of failed overwax finished board for following : <br> Table {0} : Row {1} : {2} </p>',[table_no,  row.idx, row.item_color])
                     });
                 }
             }

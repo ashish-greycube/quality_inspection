@@ -428,11 +428,16 @@ class QualityControlQI(Document):
 				if len(self.get(child_table_name)) > 0:
 					for row in self.get(child_table_name):
 						if row.over_wax_select in FAIL_STATUS and not row.finished_board:
-							items.append(row.item_color)
+							a = "Table " + cstr(i+1) + " : Row " + cstr(row.idx) + " : " + cstr(row.item_color)							
+							items.append(a)
 			
 			if len(items) > 0:
-				joint_items = ", ".join((ele if ele!=None else '') for ele in items)
-				frappe.throw(_("In Over Wax Child Table, For {0} Items, Finished Board Picture is Require.").format(joint_items))
+				joint_items = ",<br> ".join((ele if ele!=None else '') for ele in items)
+
+				frappe.throw(
+					msg=_("Please attach pictures for following : <br> {0}").format(joint_items),
+					title=_("Finished board pictures are required for failed over wax."),
+				)
 
 @frappe.whitelist()
 def get_tas_po(vendor):
