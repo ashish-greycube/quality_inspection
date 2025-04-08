@@ -345,14 +345,6 @@ frappe.ui.form.on("Quality Control QI", {
             // window.location.reload();
             location.reload();
         }, 100)
-        
-        setTimeout(() => {
-            frappe.run_serially([
-                () => frappe.dom.freeze(__("Loading Invoices! Please Wait...")),
-                () => location.reload(),
-                () => frappe.dom.unfreeze(),
-            ]);
-        }, 100)
     },
 
     onload_post_render: function (frm) {
