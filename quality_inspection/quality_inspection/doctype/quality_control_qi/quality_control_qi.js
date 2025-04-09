@@ -341,10 +341,12 @@ frappe.ui.form.on("Quality Control QI", {
     },
 
     after_save: function (frm) {
-        setTimeout(() => {
-            // window.location.reload();
-            location.reload();
-        }, 100)
+        if (frm.doc.docstatus == 0){
+            setTimeout(() => {
+                // window.location.reload();
+                location.reload();
+            }, 100)
+        }
     },
 
     onload_post_render: function (frm) {
@@ -360,11 +362,22 @@ frappe.ui.form.on("Quality Control QI", {
         change_table_select_field_css()
 
         if(frm.doc.docstatus == 1){
-            console.log("freeze-message")
             frm.fields_dict.pallet_details.grid.wrapper.find(`div [data-idx="1"]`).find(`.btn-open-row`).click()
             $('.form-in-grid').click()
             $('.freeze-message').click()
         }
+
+        setTimeout(() => {
+            $('div[data-fieldtype="Button"]').find(".btn-default").hover(function(){
+                $(this).css("background-color", "white");
+                $(this).css("border-color: white;")
+            });
+    
+            $('.btn-default').click(function() {
+                $(this).css({"box-shadow": "none"});
+              });
+        }, 1000);
+        
         
     },
 });
