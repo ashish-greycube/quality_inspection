@@ -13,12 +13,11 @@ frappe.ui.form.on("Quality Control QI", {
         }, 2000)
         
         update_child_table_field_property(frm)
-        frm.fields_dict.pallet_details.grid.update_docfield_property("status", "label", `<i class="fa fa-caret-right" style="border:1px solid black;padding:0px 3px;margin:2px 0px -13px -18px;height: 145%; font-size:1.6rem"></i>`);
+        // frm.fields_dict.pallet_details.grid.update_docfield_property("status", "label", `<i class="fa fa-caret-right" style="border:1px solid black;padding:0px 3px;margin:2px 0px -13px -18px;height: 145%; font-size:1.6rem"></i>`);
 
         click_first_row_table(frm)
         set_html_details(frm)
         set_row_above_table_header(frm)
-        // frm.fields_dict.width_and_thickness_details_1.grid.wrapper.find('.grid-custom-buttons').append(`<div style='border:1px solid'>
         
 // ===============================================================
 
@@ -91,8 +90,6 @@ frappe.ui.form.on("Quality Control QI", {
                                             row["vendor"]
                                         ])
                                     })
-
-                                    console.log(po_list_1, "======po_list_1")
                                     this.$child_wrapper = dialog.fields_dict.child_selection_area.$wrapper;
                                     this.$child_wrapper.addClass("my-3");
                                     dialog.child_datatable = new DataTable(this.$child_wrapper.get(0), {
@@ -148,8 +145,6 @@ frappe.ui.form.on("Quality Control QI", {
                                             row["qty"] ,
                                             row["color"] || ''])
                                     });
-
-                                    console.log(item_list_1, "=======item_list_1")
                                     this.$child_wrapper = dialog.fields_dict.child_selection_area.$wrapper;
                                     this.$child_wrapper.addClass("my-3");
     
@@ -258,8 +253,6 @@ frappe.ui.form.on("Quality Control QI", {
                                         }, 100)
                                     });
                                 }
-                                
-                                console.log(selected_items_list, "=====selected_items_list=====")
                             }
 
                             dialog.hide();
@@ -307,16 +300,13 @@ frappe.ui.form.on("Quality Control QI", {
         set_html_details(frm)
         
         let current_tab_id = localStorage.getItem('current_tab_id_1')
-        let current_tab_fieldname = localStorage.getItem('current_tab_fieldname_1')
-
-        console.log(current_tab_id, '===point1', current_tab_fieldname, "===point2") 
+        let current_tab_fieldname = localStorage.getItem('current_tab_fieldname_1') 
 
         if (current_tab_id && current_tab_fieldname) {
             setTimeout(() => {
                 $(`.nav-link[aria-controls=${current_tab_id}][data-fieldname=${current_tab_fieldname}]`).click()
                 localStorage.removeItem('current_tab_id_1')
                 localStorage.removeItem('current_tab_fieldname_1')
-                console.log("10000000000")
             }, 100)
         }
 
@@ -351,7 +341,7 @@ frappe.ui.form.on("Quality Control QI", {
 
     onload_post_render: function (frm) {
         
-       
+
         // $('button.grid-add-row').hide()
         if(frm.doc.docstatus == 0){
             click_table_every_row(frm)
@@ -460,9 +450,10 @@ let table_details_list = [
             {'button': 'results_1', 'select': 'results_select_1', 'fieldname': '[data-fieldname="results_select_1"]'},
             {'button': 'results_2', 'select': 'results_select_2', 'fieldname': '[data-fieldname="results_select_2"]'},
             {'button': 'results_3', 'select': 'results_select_3', 'fieldname': '[data-fieldname="results_select_3"]'},
-            {'button': 'results_4', 'select': 'results_select_4', 'fieldname': '[data-fieldname="results_select_4"]'}
+            {'button': 'results_4', 'select': 'results_select_4', 'fieldname': '[data-fieldname="results_select_4"]'},
+            {'button': 'results_5', 'select': 'results_select_5', 'fieldname': '[data-fieldname="results_select_5"]'}
         ],
-        'select_field': ['results_select_1', 'results_select_2', 'results_select_3', 'results_select_4']
+        'select_field': ['results_select_1', 'results_select_2', 'results_select_3', 'results_select_4', 'results_select_5']
     },
     {   'table_name': "Moisture Content Details QI",
         'table_field_name': "moisture_content_details_",
@@ -804,13 +795,24 @@ let set_row_above_table_header = function(frm){
     if (color_match_tables.length > 0) {
         for (const color_table of color_match_tables) {
             if (frm.fields_dict[color_table].grid.wrapper.find('.grid-heading-row').find('#color_table').length == 0) {
-                frm.fields_dict[color_table].grid.wrapper.find('.grid-heading-row').append(`
-                <div id="color_table" style='border:1px solid #3b3838; padding-left: 19.3%; font-size:14px; height: 27px; background-color: #f3f3f3; color:#3b3838; border-radius: 10px 10px 0px 0px;'>
-                    <div style="display: inline; padding: 1% 18.6%; border-right:1px solid #3b3838;border-left:1px solid #3b3838" class="text-center"> Color Match </div>
-                    <div style="display: inline; padding: 1% 10%; border-right:1px solid #3b3838" class="text-center"> Results </div>
-                    <div style="display: inline; padding: 1% 9%; border-right:1px solid #3b3838" class="text-center"> Embossing </div>
-                </div>
-            `)
+                // padding-left: 4.4%;
+                    frm.fields_dict[color_table].grid.wrapper.find('.grid-heading-row').append(`
+                        <div id="color_table" style="background-color: #f3f3f3;">
+                            <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
+                                <div class="" style="width:71px"></div>
+                                <div class="col grid-static-col col-xs-6 " style="">
+                                </div>
+                                <div class="col grid-static-col col-xs-6 text-right" style="border-left:1px solid #3b3838"> Color Match </div>
+                                <div class="col grid-static-col col-xs-6 " style=""></div>
+                                <div class="col grid-static-col col-xs-3 text-right" style="border-left:1px solid #3b3838"> Results </div>
+                                <div class="col grid-static-col col-xs-1 " style=""></div>
+                                <div class="col grid-static-col col-xs-3 text-right" style="border-left:1px solid #3b3838"> Embossing </div>
+                                <div class="col grid-static-col col-xs-1 text-right" style="border-right:1px solid #3b3838;"></div>
+                                <div class="" style="border-radius: 0px 10px 0px 0px; width: 30px;">
+                                </div>
+                            </div>
+                        </div>
+                        `)    
             }
             frm.fields_dict[color_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
         }
@@ -822,27 +824,69 @@ let set_row_above_table_header = function(frm){
             if (frm.fields_dict[over_wax_table].grid.wrapper.find('.grid-heading-row').find('#over_wax_table').length == 0) {
                 if (frm.doc.flooring_class == 'LVP & WPC') {
                     frm.fields_dict[over_wax_table].grid.wrapper.find('.grid-heading-row').append(`
-                        <div id="over_wax_table" style='border:1px solid #3b3838; padding-left: 29%; font-size:14px; height: 27px; background-color: #f3f3f3; color:#3b3838; border-radius: 10px 10px 0px 0px;'>
-                            <div style="display: inline; padding: 1% 14.2%; border-right:1px solid #3b3838; border-left:1px solid #3b3838" class="text-center"> Bevel </div>
-                            <div style="display: inline; padding: 1% 27.5%; border-right:1px solid #3b3838" class="text-center"> Edge Paint </div>
-                        </div>
+                            <div id="over_wax_table" style="background-color: #f3f3f3;" >
+                                <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
+                                    <div class="" style="width:71px"></div>
+                                    <div class="col grid-static-col col-xs-8 " style=""></div>
+                                    <div class="col grid-static-col col-xs-7 text-center" style="border-right:1px solid #3b3838; border-left:1px solid #3b3838">Bevel
+                                    </div>
+                                    <div class="col grid-static-col col-xs-8 text-right" style="">
+                                    Edge Paint
+                                    </div>
+                                    <div class="col grid-static-col col-xs-3 " style="">
+                                    </div>
+                                    <div class="col grid-static-col col-xs-1 " style="border-right:1px solid #3b3838;">
+                                    </div>
+                                    <div class="" style="border-radius: 0px 10px 0px 0px; width: 30px">
+                                    </div>
+                                </div>
+                            </div>
                     `)
                 }
                 else if (frm.doc.flooring_class == 'HARDWOOD FLOORING') {
                     frm.fields_dict[over_wax_table].grid.wrapper.find('.grid-heading-row').append(`
-                        <div id="over_wax_table" style='border:1px solid #3b3838; padding-left: 29%; font-size:14px; height: 27px; background-color: #f3f3f3; color:#3b3838; border-radius: 10px 10px 0px 0px;'>
-                            <div style="display: inline; padding: 1% 14.2%; border-right:1px solid #3b3838; border-left:1px solid #3b3838" class="text-center"> Bevel </div>
-                            <div style="display: inline; padding: 1% 28%; border-right:1px solid #3b3838" class="text-center"> Over Wax </div>
-                        </div>
-                    `)
+                        <div id="over_wax_table" style="background-color: #f3f3f3;" >
+                                <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
+                                    <div class="" style="width:71px"></div>
+                                    <div class="col grid-static-col col-xs-8 " style=""></div>
+                                    <div class="col grid-static-col col-xs-7 text-center" style="border-right:1px solid #3b3838; border-left:1px solid #3b3838">Bevel
+                                    </div>
+                                    <div class="col grid-static-col col-xs-8 text-right" style="">
+                                    Over Wax
+                                    </div>
+                                    <div class="col grid-static-col col-xs-3 " style="">
+                                    </div>
+                                    <div class="col grid-static-col col-xs-1 " style="border-right:1px solid #3b3838;">
+                                    </div>
+                                    <div class="" style="border-radius: 0px 10px 0px 0px; width: 30px">
+                                    </div>
+                                </div>
+                            </div>
+                        `)
                 } else {
                     frm.fields_dict[over_wax_table].grid.wrapper.find('.grid-heading-row').append(`
-                        <div id="over_wax_table" style='border:1px solid #3b3838; padding-left: 25.5%; font-size:14px; height: 27px; background-color: #f3f3f3; color:#3b3838; border-radius: 10px 10px 0px 0px;'>
-                            <div style="display: inline; padding: 1% 11.4%; border-right:1px solid #3b3838; border-left:1px solid #3b3838" class="text-center"> Bevel </div>
-                            <div style="display: inline; padding: 1% 20.5%; border-right:1px solid #3b3838" class="text-center"> Over Wax </div>
-                            <div style="display: inline; padding: 1% 6.7%; border-right:1px solid #3b3838" class="text-center"> Edge Paint </div>
+                        <div id="over_wax_table" style="background-color: #f3f3f3;" >
+                            <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
+                                <div class="" style="width:71px"></div>
+                                <div class="col grid-static-col col-xs-8 " style="border-left:1px solid #3b3838">
+                                </div>
+                                <div class="col grid-static-col col-xs-7 " style="border-left:1px solid #3b3838"> Bevel
+                                </div>
+                                <div class="col grid-static-col col-xs-3 " style="border-left:1px solid #3b3838">
+                                </div>
+                                <div class="col grid-static-col col-xs-1 " style="">
+                                </div>
+                                <div class="col grid-static-col col-xs-8 text-left" style="">Over Wax 
+                                </div>
+                                <div class="col grid-static-col col-xs-3 text-right" style="border-left:1px solid #3b3838">Edge Paint
+                                </div>
+                                <div class="col grid-static-col col-xs-1 " style="border-right:1px solid #3b3838">
+                                </div>
+                                <div class="" style="border-radius: 0px 10px 0px 0px; width: 30px">
+                                </div>
+                            </div>
                         </div>
-                    `)
+                        `)
                 }
             }
             frm.fields_dict[over_wax_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
@@ -854,14 +898,61 @@ let set_row_above_table_header = function(frm){
         for (const gloss_level_table of gloss_level_tables) {
             if (frm.fields_dict[gloss_level_table].grid.wrapper.find('.grid-heading-row').find('#gloss_level_table').length == 0) {
                 frm.fields_dict[gloss_level_table].grid.wrapper.find('.grid-heading-row').append(`
-                    <div id="gloss_level_table" style='border:1px solid #3b3838; padding-left: 8.6%; font-size:14px; height: 27px; background-color: #f3f3f3; color:#3b3838; border-radius: 10px 10px 0px 0px;'>
-                        <div style="display: inline; padding: 1% 5.2%; border-right:1px solid #3b3838; border-left:1px solid #3b3838" class="text-center"> Master </div>
-                        <div style="display: inline; padding: 1% 9.3%; border-right:1px solid #3b3838" class="text-center"> Matched </div>
-                        <div style="display: inline; padding: 1% 9.5%; border-right:1px solid #3b3838" class="text-center"> Highest </div>
-                        <div style="display: inline; padding: 1% 9.65%; border-right:1px solid #3b3838" class="text-center"> Lowest </div>
-                        <div style="display: inline; padding: 1% 9.5%; border-right:1px solid #3b3838" class="text-center"> Average </div>
+                    <div id="gloss_level_table" style="background-color: #f3f3f3;">
+                        <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
+                            <div class="" style="width:71px"></div>
+                            <div class="col grid-static-col col-xs-3 " style="border-right:1px solid #3b3838;">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 text-right" style=""> Master
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="border-right:1px solid #3b3838;">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style=""> Matched
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-1 " style="border-right:1px solid #3b3838;">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style=""> Highest
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-1 " style="border-right:1px solid #3b3838;">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style=""> Lowest
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-1 " style="border-right:1px solid #3b3838;">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style=""> Average Plank 1
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-1 " style="border-right:1px solid #3b3838;">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style=""> Average Plank 2
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-1 " style="border-right:1px solid #3b3838;">
+                            </div>
+                            <div class="col grid-static-col pointer">
+                            </div>
+                        </div>
                     </div>
-                `)
+                    
+                    `)
             }
             frm.fields_dict[gloss_level_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
         }
@@ -872,14 +963,52 @@ let set_row_above_table_header = function(frm){
         for (const moisture_content_table of moisture_content_tables) {
             if (frm.fields_dict[moisture_content_table].grid.wrapper.find('.grid-heading-row').find('#moisture_content_table').length == 0) {
                 frm.fields_dict[moisture_content_table].grid.wrapper.find('.grid-heading-row').append(`
-                    <div id="moisture_content_table" style='border:1px solid #3b3838; padding-left: 8.6%; font-size:14px; height: 27px; background-color: #f3f3f3; color:#3b3838;border-radius: 10px 10px 0px 0px;'>
-                        <div style="display: inline; padding: 1% 5.2%; border-right:1px solid #3b3838; border-left:1px solid #3b3838" class="text-center"> Master </div>
-                        <div style="display: inline; padding: 1% 9.3%; border-right:1px solid #3b3838" class="text-center"> Matched </div>
-                        <div style="display: inline; padding: 1% 9.5%; border-right:1px solid #3b3838" class="text-center"> Highest </div>
-                        <div style="display: inline; padding: 1% 9.65%; border-right:1px solid #3b3838" class="text-center"> Lowest </div>
-                        <div style="display: inline; padding: 1% 9.5%; border-right:1px solid #3b3838" class="text-center"> Average </div>
+                    <div id="moisture_content_table" style="background-color: #f3f3f3;">
+                        <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
+                            <div class="" style="width:71px"></div>
+                            <div class="col grid-static-col col-xs-3 " style="border-right:1px solid #3b3838;">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 text-right" style="padding-right: 5px !important;">Moisture
+                            </div>
+                            <div class="col grid-static-col col-xs-3 text-left" style="border-right:1px solid #3b3838; padding-left: 0px !important;">Content
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="">Finished Board 1
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="" >
+                            </div>
+                            <div class="col grid-static-col col-xs-1 " style="border-right:1px solid #3b3838;" >
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="">Finished Board 2 
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-1 " style="border-right:1px solid #3b3838;">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="">Finished Board 3
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-1 " style="border-right:1px solid #3b3838;">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="">Finished Board 4
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-1 " style="border-right:1px solid #3b3838;">
+                            </div>
+                            <div class="" style="border-radius: 0px 10px 0px 0px; width:30px">
+                            </div>
+                        </div>
                     </div>
-                `)
+                    `)
             }
             frm.fields_dict[moisture_content_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
         }
@@ -890,13 +1019,34 @@ let set_row_above_table_header = function(frm){
         for (const open_box_table of open_box_tables) {
             if (frm.fields_dict[open_box_table].grid.wrapper.find('.grid-heading-row').find('#open_box_table').length == 0) {
                 frm.fields_dict[open_box_table].grid.wrapper.find('.grid-heading-row').append(`
-                    <div id="open_box_table" style='border:1px solid #3b3838; padding-left: 17.5%; font-size:14px; height: 27px; background-color: #f3f3f3; color:#3b3838; border-radius: 10px 10px 0px 0px;'>
-                        <div style="display: inline; padding: 1% 7.7%; border-right:1px solid #3b3838; border-left:1px solid #3b3838" class="text-center"> Bowing </div>
-                        <div style="display: inline; padding: 1% 6.2%; border-right:1px solid #3b3838" class="text-center"> Squareness </div>
-                        <div style="display: inline; padding: 1% 4%; border-right:1px solid #3b3838" class="text-center"> Ledging Overwood </div>
-                        <div style="display: inline; padding: 1% 5.5%; border-right:1px solid #3b3838" class="text-center"> Pad Away From the Locking System </div>
+                    <div id="open_box_table" style="background-color: #f3f3f3;">
+                        <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
+                            <div class="" style="width:71px"></div>
+                            <div class="col grid-static-col col-xs-5 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="border-left:1px solid #3b3838;"> Bowing
+                            </div>
+                            <div class="col grid-static-col col-xs-1 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="border-left:1px solid #3b3838;" > Squareness
+                            </div>
+                            <div class="col grid-static-col col-xs-1 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 " style="border-left:1px solid #3b3838;" > Ledging Overwood 
+                            </div>
+                            <div class="col grid-static-col col-xs-1 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-4 text-right" style="border-left:1px solid #3b3838; padding-right: 5px !important;"> Pad Away From the
+                            </div>
+                            <div class="col grid-static-col col-xs-3 text-left" style="padding-left: 0px !important;"> Locking System
+                            </div>
+                            <div class="col grid-static-col col-xs-1 " style="border-right:1px solid #3b3838;">
+                            </div>
+                            <div class="" style="border-radius: 0px 10px 0px 0px; width:30px">
+                            </div>
+                        </div>
                     </div>
-                `)
+                    `)
             }
             frm.fields_dict[open_box_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
         }
@@ -907,13 +1057,34 @@ let set_row_above_table_header = function(frm){
         for (const width_table of width_tables) {
             if (frm.fields_dict[width_table].grid.wrapper.find('.grid-heading-row').find('#width_table').length == 0) {
                 frm.fields_dict[width_table].grid.wrapper.find('.grid-heading-row').append(`
-                    <div id="width_table" style='border:1px solid #3b3838; padding-left: 14.7%; font-size:14px; height: 27px; background-color: #f3f3f3; color:#3b3838; border-radius: 10px 10px 0px 0px;'>
-                        <div style="display: inline; padding: 1% 9.8%; border-right:1px solid #3b3838; border-left:1px solid #3b3838" class="text-center"> Width </div>
-                        <div style="display: inline; padding: 1% 4.1%; border-right:1px solid #3b3838" class="text-center"> Thickness without padding </div>
-                        <div style="display: inline; padding: 1% 4.9%; border-right:1px solid #3b3838" class="text-center"> Thickness with Padding </div>
-                        <div style="display: inline; padding: 1% 9.5%; border-right:1px solid #3b3838" class="text-center"> Manual Pull Test </div>
+                    <div id="width_table" style="background-color: #f3f3f3;">
+                        <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
+                            <div class="" style="width:71px"></div>
+                            <div class="col grid-static-col col-xs-3 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 text-right" style="border-left:1px solid #3b3838;">Width
+                            </div>
+                            <div class="col grid-static-col col-xs-3" style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 text-right" style="border-left:1px solid #3b3838; padding-right: 5px !important;"> Thickness without 
+                            </div>
+                            <div class="col grid-static-col col-xs-3 text-left" style="padding-left: 0px !important;"> padding
+                            </div>
+                            <div class="col grid-static-col col-xs-3 text-right" style="border-left:1px solid #3b3838; padding-right: 5px !important;">Thickness with 
+                            </div>
+                            <div class="col grid-static-col col-xs-3 text-left" style="padding-left: 0px !important;">Padding
+                            </div>
+                            <div class="col grid-static-col col-xs-3" style="border-left:1px solid #3b3838;"> 
+                            </div>
+                            <div class="col grid-static-col col-xs-3" style=""> Manual Pull Test
+                            </div>
+                            <div class="col grid-static-col col-xs-1" style="border-right:1px solid #3b3838;">
+                            </div>
+                            <div class="" style="border-radius: 0px 10px 0px 0px; width:30px">
+                            </div>
+                        </div>
                     </div>
-                `)
+                    `)
             }
             frm.fields_dict[width_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
         }
@@ -931,6 +1102,24 @@ frappe.ui.form.on("Over Wax and Edge Paint Ql", {
                         title: __('<span style="color:#b52a2a">Mandatory</span>'),
                         indicator: 'red',
                         message: __('<p style="color:#b52a2a; font-size: 1rem;">Please upload image of failed overwax finished board for following : <br> Table {0} : Row {1} : {2} </p>',[table_no,  row.idx, row.item_color])
+                    });
+                }
+            }
+        }
+    }
+})
+
+frappe.ui.form.on("Open Box Inspection Details QI", {
+    pad_away_select(frm, cdt, cdn) {
+        let row = locals[cdt][cdn]
+        if (row.pad_away_select) {
+            let table_no = row.parentfield.slice(-1)
+            if (['Fail - Minor', 'Fail - Major', 'Fail - Critical'].includes(row.pad_away_select)) {
+                if (!row.finished_board) {
+                    frappe.msgprint({
+                        title: __('<span style="color:#b52a2a">Mandatory</span>'),
+                        indicator: 'red',
+                        message: __('<p style="color:#b52a2a; font-size: 1rem;">Please upload image of failed Pad finished board for following : <br> Table {0} : Row {1} : {2} </p>',[table_no,  row.idx, row.item_color])
                     });
                 }
             }

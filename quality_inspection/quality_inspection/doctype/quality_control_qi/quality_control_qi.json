@@ -995,7 +995,7 @@
   },
   {
    "depends_on": "eval:doc.no_of_po>0",
-   "description": "<i>MT=Matched , H=Highest, L=Lowest, AV=Average</i>",
+   "description": "<i>MT=Matched , FB = Finished Board</i>",
    "fieldname": "moisture_content_details_1",
    "fieldtype": "Table",
    "options": "Moisture Content Details QI"
@@ -1193,6 +1193,7 @@
   },
   {
    "depends_on": "eval:doc.no_of_po>0",
+   "description": "<i>N=Normal, TWO=Thickness Without, TWI=Thickness With</i>",
    "fieldname": "width_and_thickness_details_1",
    "fieldtype": "Table",
    "options": "Width And Thickness Details QI"
@@ -1262,7 +1263,6 @@
   },
   {
    "depends_on": "eval:doc.no_of_po>1",
-   "description": "<i>N=Normal, TWO=Thickness Without, TWI=Thickness With</i>",
    "fieldname": "width_and_thickness_details_2",
    "fieldtype": "Table",
    "options": "Width And Thickness Details QI"
@@ -1518,7 +1518,7 @@
   },
   {
    "depends_on": "eval:doc.no_of_po>0",
-   "description": "<i>MT=Matched , H=Highest, L=Lowest, AV=Average</i>",
+   "description": "<i>MT=Matched , H=Highest, L=Lowest, PL=Plank</i>",
    "fieldname": "gloss_level_details_1",
    "fieldtype": "Table",
    "options": "Gloss Level Details QI"
@@ -1658,7 +1658,7 @@
    "bold": 1,
    "fieldname": "default_corner_width",
    "fieldtype": "Data",
-   "label": "<b>Default Corner Width</b>",
+   "label": "<b>Default Corner Width</b> (inch)",
    "read_only": 1
   },
   {
@@ -1909,7 +1909,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-06 22:10:42.893903",
+ "modified": "2025-04-10 03:23:00.834994",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Quality Control QI",

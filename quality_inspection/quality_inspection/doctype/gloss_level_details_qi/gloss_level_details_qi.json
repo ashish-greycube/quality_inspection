@@ -41,7 +41,15 @@
   "column_break_nglr",
   "results_select_4",
   "results_html_4",
-  "results_4"
+  "results_4",
+  "section_break_wubb",
+  "finished_board_5",
+  "column_break_zovw",
+  "fb_gl_5",
+  "column_break_crsb",
+  "results_select_5",
+  "results_html_5",
+  "results_5"
  ],
  "fields": [
   {
@@ -206,14 +214,14 @@
    "description": "2 average readings from 2 different planks",
    "fieldname": "section_break_oott",
    "fieldtype": "Section Break",
-   "label": "Sample 4"
+   "label": "Average Plank 1"
   },
   {
    "columns": 3,
    "fieldname": "finished_board_4",
    "fieldtype": "Attach",
    "in_list_view": 1,
-   "label": "AV-Finished Board"
+   "label": "PL1-Finished Board"
   },
   {
    "fieldname": "column_break_uwpj",
@@ -224,7 +232,7 @@
    "fieldname": "fb_gl_4",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "AV-Gloss Level",
+   "label": "PL1-Gloss Level",
    "precision": "2"
   },
   {
@@ -242,7 +250,7 @@
    "fieldname": "results_select_4",
    "fieldtype": "Select",
    "in_list_view": 1,
-   "label": "AV-Result",
+   "label": "PL1-Result",
    "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
@@ -267,14 +275,62 @@
   {
    "fieldname": "results_html_4",
    "fieldtype": "HTML",
-   "label": "AV-Result",
+   "label": "PL1-Result",
    "options": "Results"
+  },
+  {
+   "fieldname": "section_break_wubb",
+   "fieldtype": "Section Break",
+   "label": "Average Plank 2"
+  },
+  {
+   "columns": 3,
+   "fieldname": "finished_board_5",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "PL2-Finished Board"
+  },
+  {
+   "fieldname": "column_break_zovw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "columns": 3,
+   "fieldname": "fb_gl_5",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "PL2-Gloss Level"
+  },
+  {
+   "fieldname": "column_break_crsb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "columns": 3,
+   "default": "To Do",
+   "fieldname": "results_select_5",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "PL2-Result",
+   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
+   "read_only": 1
+  },
+  {
+   "fieldname": "results_html_5",
+   "fieldtype": "HTML",
+   "label": "PL2-Result"
+  },
+  {
+   "columns": 1,
+   "fieldname": "results_5",
+   "fieldtype": "Button",
+   "in_list_view": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-19 21:05:37.458683",
+ "modified": "2025-04-10 02:53:47.117505",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Gloss Level Details QI",

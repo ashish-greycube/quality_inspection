@@ -29,18 +29,19 @@
    "options": "Pallet Type QI"
   },
   {
-   "columns": 2,
+   "columns": 3,
    "fieldname": "current_width",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Corner Reading",
+   "label": "Corner Reading (inch)",
    "precision": "2"
   },
   {
    "columns": 1,
    "fieldname": "status",
    "fieldtype": "Button",
-   "in_list_view": 1
+   "in_list_view": 1,
+   "label": "<i class=\"fa fa-caret-right\" style=\"border:1px solid black;margin:2px 0px -13px -17px;height:23px;padding:0px 3px;font-size:1.6rem;\"></i>"
   },
   {
    "columns": 3,
@@ -54,7 +55,7 @@
    "fieldname": "height_reading",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Height Reading",
+   "label": "Height Reading (cm)",
    "precision": "2"
   },
   {
@@ -103,10 +104,11 @@
    "options": "Corner Width Status"
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-05 23:22:53.923395",
+ "modified": "2025-04-10 03:22:06.158941",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Pallet Information QI",

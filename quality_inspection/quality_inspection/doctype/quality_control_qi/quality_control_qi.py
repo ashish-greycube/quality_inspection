@@ -27,6 +27,7 @@ class QualityControlQI(Document):
 
 	def on_submit(self):
 		self.validate_over_wax_and_edge_paint_child_table()
+		self.validate_open_box_child_table()
 		
 	def get_pallet_information_html(self):
 
@@ -173,8 +174,8 @@ class QualityControlQI(Document):
 		self.over_undetermined_ratio = flt((over[3]), 2)
 		self.over_todo_ratio = flt((over[4]), 2)
 
-		gloss = self.calculate_attachments_details("gloss_level_details_", ['master_sample', 'finished_board_1', 'finished_board_2', 'finished_board_3', 'finished_board_4'], 
-											 ['results_select_1', 'results_select_2', 'results_select_3', 'results_select_4'])
+		gloss = self.calculate_attachments_details("gloss_level_details_", ['master_sample', 'finished_board_1', 'finished_board_2', 'finished_board_3', 'finished_board_4', 'finished_board_5'], 
+											 ['results_select_1', 'results_select_2', 'results_select_3', 'results_select_4', 'results_select_5'])
 		self.gloss_total_attachment = gloss[0]
 		self.gloss_pending_attachment = gloss[1]
 		self.gloss_pass_ration = flt((gloss[2]), 2)
@@ -437,6 +438,25 @@ class QualityControlQI(Document):
 				frappe.throw(
 					msg=_("Please attach pictures for following : <br> {0}").format(joint_items),
 					title=_("Finished board pictures are required for failed over wax."),
+				)
+
+	def validate_open_box_child_table(self):
+		if self.get("no_of_po") and self.no_of_po > 0:
+			items = []
+			for i in range(self.no_of_po):
+				child_table_name="open_box_inspection_details_"+cstr(i+1)
+				if len(self.get(child_table_name)) > 0:
+					for row in self.get(child_table_name):
+						if row.pad_away_select in FAIL_STATUS and not row.finished_board:
+							a = "Table " + cstr(i+1) + " : Row " + cstr(row.idx) + " : " + cstr(row.item_color)							
+							items.append(a)
+			
+			if len(items) > 0:
+				joint_items = ",<br> ".join((ele if ele!=None else '') for ele in items)
+
+				frappe.throw(
+					msg=_("Please attach pictures for following : <br> {0}").format(joint_items),
+					title=_("Finished board pictures are required for failed pad."),
 				)
 
 @frappe.whitelist()
