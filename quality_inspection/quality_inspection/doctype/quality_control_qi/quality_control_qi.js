@@ -226,9 +226,6 @@ frappe.ui.form.on('Quality Control QI', {
                                     })
                                         .then(() => {
                                             refresh_field("tas_po_name_1");
-                                            setTimeout(() => {
-                                                location.reload();
-                                            }, 100)
                                         });
                                 }
                                 else {
@@ -244,9 +241,6 @@ frappe.ui.form.on('Quality Control QI', {
                                     })
                                         .then(() => {
                                             refresh_field("tas_po_name_1");
-                                            setTimeout(() => {
-                                                location.reload();
-                                            }, 100)
                                         });
                                 }
                             }
@@ -615,7 +609,7 @@ let set_row_above_table_header = function(frm){
                                 <div class="" style="width:71px"></div>
                                 <div class="col grid-static-col col-xs-8 " style="border-left:1px solid #3b3838">
                                 </div>
-                                <div class="col grid-static-col col-xs-7 " style="border-left:1px solid #3b3838"> Bevel
+                                <div class="col grid-static-col col-xs-7 text-center" style="border-left:1px solid #3b3838"> Bevel
                                 </div>
                                 <div class="col grid-static-col col-xs-4 " style="border-left:1px solid #3b3838">
                                 </div>
@@ -650,31 +644,31 @@ let set_row_above_table_header = function(frm){
                             </div>
                             <div class="col grid-static-col col-xs-3 " style="">
                             </div>
-                            <div class="col grid-static-col col-xs-3 " style=""> Matched
+                            <div class="col grid-static-col col-xs-3 text-center" style=""> Matched
                             </div>
                             <div class="col grid-static-col col-xs-4 " style="border-right:1px solid #3b3838;">
                             </div>
                             <div class="col grid-static-col col-xs-3 " style="">
                             </div>
-                            <div class="col grid-static-col col-xs-3 " style=""> Highest
+                            <div class="col grid-static-col col-xs-3 text-center" style=""> Highest
                             </div>
                             <div class="col grid-static-col col-xs-4 " style="border-right:1px solid #3b3838;">
                             </div>
                             <div class="col grid-static-col col-xs-3 " style="">
                             </div>
-                            <div class="col grid-static-col col-xs-3 " style=""> Lowest
+                            <div class="col grid-static-col col-xs-3 text-center" style=""> Lowest
                             </div>
                             <div class="col grid-static-col col-xs-4 " style="border-right:1px solid #3b3838;">
                             </div>
                             <div class="col grid-static-col col-xs-3 " style="">
                             </div>
-                            <div class="col grid-static-col col-xs-3 " style=""> Average Plank 1
+                            <div class="col grid-static-col col-xs-3 text-center" style=""> Average Plank 1
                             </div>
                             <div class="col grid-static-col col-xs-4 " style="border-right:1px solid #3b3838;">
                             </div>
                             <div class="col grid-static-col col-xs-3 " style="">
                             </div>
-                            <div class="col grid-static-col col-xs-3 " style=""> Average Plank 2
+                            <div class="col grid-static-col col-xs-3 text-center" style=""> Average Plank 2
                             </div>
                             <div class="col grid-static-col col-xs-4 " style="border-right:1px solid #3b3838;">
                             </div>
@@ -747,11 +741,11 @@ let set_row_above_table_header = function(frm){
                             <div class="" style="width:71px"></div>
                             <div class="col grid-static-col col-xs-5 " style="">
                             </div>
-                            <div class="col grid-static-col col-xs-3 " style="border-left:1px solid #3b3838;"> Bowing
+                            <div class="col grid-static-col col-xs-3 text-center" style="border-left:1px solid #3b3838;"> Bowing
                             </div>
-                            <div class="col grid-static-col col-xs-3 " style="border-left:1px solid #3b3838;" > Squareness
+                            <div class="col grid-static-col col-xs-3 text-center" style="border-left:1px solid #3b3838;" > Squareness
                             </div>
-                            <div class="col grid-static-col col-xs-3 " style="border-left:1px solid #3b3838;" > Ledging Overwood 
+                            <div class="col grid-static-col col-xs-3 text-center" style="border-left:1px solid #3b3838;" > Ledging Overwood 
                             </div>
                             <div class="col grid-static-col col-xs-4 text-right" style="border-left:1px solid #3b3838; padding-right: 5px !important;"> Pad Away From the
                             </div>
