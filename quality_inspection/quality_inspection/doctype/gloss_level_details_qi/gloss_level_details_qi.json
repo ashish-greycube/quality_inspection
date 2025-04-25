@@ -16,40 +16,30 @@
   "fb_gl_1",
   "column_break_pbok",
   "results_select_1",
-  "results_html_1",
-  "results_1",
   "section_break_codi",
   "finished_board_2",
   "column_break_erqq",
   "fb_gl_2",
   "column_break_otyj",
   "results_select_2",
-  "results_html_2",
-  "results_2",
   "section_break_rzfd",
   "finished_board_3",
   "column_break_kqil",
   "fb_gl_3",
   "column_break_zypg",
   "results_select_3",
-  "results_html_3",
-  "results_3",
   "section_break_oott",
   "finished_board_4",
   "column_break_uwpj",
   "fb_gl_4",
   "column_break_nglr",
   "results_select_4",
-  "results_html_4",
-  "results_4",
   "section_break_wubb",
   "finished_board_5",
   "column_break_zovw",
   "fb_gl_5",
   "column_break_crsb",
-  "results_select_5",
-  "results_html_5",
-  "results_5"
+  "results_select_5"
  ],
  "fields": [
   {
@@ -108,18 +98,12 @@
    "fieldtype": "Column Break"
   },
   {
-   "columns": 1,
-   "fieldname": "results_1",
-   "fieldtype": "Button",
-   "in_list_view": 1
-  },
-  {
-   "columns": 3,
+   "columns": 4,
+   "default": "To Do",
    "fieldname": "results_select_1",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "MT-Result",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
   {
@@ -152,18 +136,12 @@
    "fieldtype": "Column Break"
   },
   {
-   "columns": 1,
-   "fieldname": "results_2",
-   "fieldtype": "Button",
-   "in_list_view": 1
-  },
-  {
-   "columns": 3,
+   "columns": 4,
+   "default": "To Do",
    "fieldname": "results_select_2",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "H-Result",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
   {
@@ -196,18 +174,12 @@
    "fieldtype": "Column Break"
   },
   {
-   "columns": 1,
-   "fieldname": "results_3",
-   "fieldtype": "Button",
-   "in_list_view": 1
-  },
-  {
-   "columns": 3,
+   "columns": 4,
+   "default": "To Do",
    "fieldname": "results_select_3",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "L-Result",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
   {
@@ -240,43 +212,13 @@
    "fieldtype": "Column Break"
   },
   {
-   "columns": 1,
-   "fieldname": "results_4",
-   "fieldtype": "Button",
-   "in_list_view": 1
-  },
-  {
-   "columns": 3,
+   "columns": 4,
+   "default": "To Do",
    "fieldname": "results_select_4",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "PL1-Result",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
-  },
-  {
-   "fieldname": "results_html_1",
-   "fieldtype": "HTML",
-   "label": "MT-Result",
-   "options": "Results"
-  },
-  {
-   "fieldname": "results_html_2",
-   "fieldtype": "HTML",
-   "label": "H-Result",
-   "options": "Results"
-  },
-  {
-   "fieldname": "results_html_3",
-   "fieldtype": "HTML",
-   "label": "L-Result",
-   "options": "Results"
-  },
-  {
-   "fieldname": "results_html_4",
-   "fieldtype": "HTML",
-   "label": "PL1-Result",
-   "options": "Results"
   },
   {
    "fieldname": "section_break_wubb",
@@ -306,31 +248,19 @@
    "fieldtype": "Column Break"
   },
   {
-   "columns": 3,
+   "columns": 4,
    "default": "To Do",
    "fieldname": "results_select_5",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "PL2-Result",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
-  },
-  {
-   "fieldname": "results_html_5",
-   "fieldtype": "HTML",
-   "label": "PL2-Result"
-  },
-  {
-   "columns": 1,
-   "fieldname": "results_5",
-   "fieldtype": "Button",
-   "in_list_view": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-04-10 02:53:47.117505",
+ "modified": "2025-04-24 20:01:57.121574",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Gloss Level Details QI",

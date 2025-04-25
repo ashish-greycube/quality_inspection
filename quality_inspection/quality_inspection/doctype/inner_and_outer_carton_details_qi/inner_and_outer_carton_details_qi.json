@@ -14,58 +14,13 @@
   "production_date",
   "column_break_esgh",
   "hologram_select",
-  "hologram_html",
-  "hologram",
   "carb_select",
-  "carb_html",
-  "carb",
   "floor_select",
-  "floor_html",
-  "floor_score",
   "shink_wrap_select",
-  "shink_wrap_html",
-  "shrink_wrap",
   "insert_sheet_select",
-  "insert_sheet_html",
-  "insert_sheet",
   "end_label"
  ],
  "fields": [
-  {
-   "columns": 1,
-   "fieldname": "hologram",
-   "fieldtype": "Button",
-   "in_list_view": 1,
-   "label": "<div style=\"margin-left: -11px; margin-top: -6px;\"><i class=\"fa fa-caret-right\" style=\"font-size:2.5rem;\"></i></div>"
-  },
-  {
-   "columns": 1,
-   "depends_on": "eval:parent.flooring_class=='LVP & WPC'",
-   "fieldname": "carb",
-   "fieldtype": "Button",
-   "in_list_view": 1
-  },
-  {
-   "columns": 1,
-   "fieldname": "floor_score",
-   "fieldtype": "Button",
-   "in_list_view": 1,
-   "label": "<b style=\"border:1px solid black; padding:3px;border-radius:3px;\">Floor Update</b>"
-  },
-  {
-   "columns": 1,
-   "fieldname": "shrink_wrap",
-   "fieldtype": "Button",
-   "in_list_view": 1,
-   "label": "<b style=\"border:1px solid black; padding:3px;border-radius:3px;\">Shrink Update</b>"
-  },
-  {
-   "columns": 1,
-   "fieldname": "insert_sheet",
-   "fieldtype": "Button",
-   "in_list_view": 1,
-   "label": "<b style=\"border:1px solid black; padding:3px;border-radius:3px;\">Insert Update</b>"
-  },
   {
    "columns": 3,
    "fieldname": "carton_weight",
@@ -97,48 +52,48 @@
    "label": "End Label"
   },
   {
-   "columns": 3,
+   "columns": 4,
+   "default": "To Do",
    "fieldname": "hologram_select",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Hologram (optional)",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
   {
-   "columns": 3,
+   "columns": 4,
+   "default": "To Do",
    "fieldname": "carb_select",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Carb II",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
   {
-   "columns": 3,
+   "columns": 4,
+   "default": "To Do",
    "fieldname": "floor_select",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Floor Score(optional)",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
   {
-   "columns": 3,
+   "columns": 4,
+   "default": "To Do",
    "fieldname": "shink_wrap_select",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Inner/Outer Shrink wrap",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
   {
-   "columns": 3,
+   "columns": 4,
+   "default": "To Do",
    "fieldname": "insert_sheet_select",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Insert Sheet",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
   {
@@ -158,36 +113,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "hologram_html",
-   "fieldtype": "HTML",
-   "label": "Hologram (optional)",
-   "options": "Hologram(optional)"
-  },
-  {
-   "fieldname": "carb_html",
-   "fieldtype": "HTML",
-   "label": "Carb II",
-   "options": "Carb II"
-  },
-  {
-   "fieldname": "floor_html",
-   "fieldtype": "HTML",
-   "label": "Floor Score(optional)",
-   "options": "Floor Score(optional)"
-  },
-  {
-   "fieldname": "shink_wrap_html",
-   "fieldtype": "HTML",
-   "label": "Inner/Outer Shrink wrap",
-   "options": "Inner/Outer Shrink wrap"
-  },
-  {
-   "fieldname": "insert_sheet_html",
-   "fieldtype": "HTML",
-   "label": "Insert Sheet",
-   "options": "Insert Sheet"
-  },
-  {
    "fieldname": "column_break_esgh",
    "fieldtype": "Column Break"
   }
@@ -195,7 +120,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-04-10 03:20:13.521990",
+ "modified": "2025-04-24 20:03:42.712964",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Inner and Outer Carton Details QI",

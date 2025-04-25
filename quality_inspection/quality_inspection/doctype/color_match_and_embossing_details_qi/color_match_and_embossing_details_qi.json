@@ -12,13 +12,9 @@
   "master_sample",
   "finished_board",
   "results_column",
-  "results_html",
   "results_select",
-  "results",
   "column_break_bkki",
-  "embossing_html",
-  "embossing_select",
-  "embossing"
+  "embossing_select"
  ],
  "fields": [
   {
@@ -36,33 +32,21 @@
    "label": "Finished Board"
   },
   {
-   "columns": 1,
-   "fieldname": "results",
-   "fieldtype": "Button",
-   "in_list_view": 1
-  },
-  {
-   "columns": 1,
-   "fieldname": "embossing",
-   "fieldtype": "Button",
-   "in_list_view": 1
-  },
-  {
-   "columns": 3,
+   "columns": 4,
+   "default": "To Do",
    "fieldname": "results_select",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Result",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
   {
-   "columns": 3,
+   "columns": 4,
+   "default": "To Do",
    "fieldname": "embossing_select",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Embossing",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
   {
@@ -78,21 +62,9 @@
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "results_html",
-   "fieldtype": "HTML",
-   "label": "Result",
-   "options": "Results"
-  },
-  {
    "fieldname": "column_break_bkki",
    "fieldtype": "Column Break",
    "label": "Embossing"
-  },
-  {
-   "fieldname": "embossing_html",
-   "fieldtype": "HTML",
-   "label": "Embossing",
-   "options": "Embossing"
   },
   {
    "fieldname": "color_match_column",
@@ -108,10 +80,10 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-04-10 20:06:42.137721",
+ "modified": "2025-04-24 20:06:05.074848",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
- "name": "Color Match and Embossing Details Ql",
+ "name": "Color Match and Embossing Details QI",
  "owner": "Administrator",
  "permissions": [],
  "sort_field": "modified",

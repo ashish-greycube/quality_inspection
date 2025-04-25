@@ -23,24 +23,16 @@
   "section_break_twal",
   "master_sample_matching_board",
   "column_break_ioto",
-  "manual_select",
-  "manual_html",
-  "manual_pull_test"
+  "manual_select"
  ],
  "fields": [
   {
-   "columns": 1,
-   "fieldname": "manual_pull_test",
-   "fieldtype": "Button",
-   "in_list_view": 1
-  },
-  {
-   "columns": 3,
+   "columns": 4,
+   "default": "To Do",
    "fieldname": "manual_select",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Manual Pull Test",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
   {
@@ -140,18 +132,12 @@
    "fieldtype": "Float",
    "in_list_view": 1,
    "label": "TWI-Padding"
-  },
-  {
-   "fieldname": "manual_html",
-   "fieldtype": "HTML",
-   "label": "Manual Pull Test",
-   "options": "Manual Pull Test"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-19 21:06:27.227775",
+ "modified": "2025-04-24 20:07:58.392072",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Width And Thickness Details QI",

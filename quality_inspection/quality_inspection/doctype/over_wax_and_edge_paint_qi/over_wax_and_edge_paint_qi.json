@@ -11,14 +11,10 @@
   "bevel_column",
   "bevel",
   "column_break_owqv",
-  "over_wax_html",
   "over_wax_select",
-  "over_wax",
   "finished_board",
   "column_break_bgmd",
-  "edge_paint_html",
-  "edge_paint_select",
-  "edge_paint"
+  "edge_paint_select"
  ],
  "fields": [
   {
@@ -37,27 +33,21 @@
    "label": "Finished Board"
   },
   {
-   "columns": 1,
-   "fieldname": "edge_paint",
-   "fieldtype": "Button",
-   "in_list_view": 1
-  },
-  {
-   "columns": 3,
+   "columns": 4,
+   "default": "To Do",
    "fieldname": "over_wax_select",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Over Wax",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
   {
-   "columns": 3,
+   "columns": 4,
+   "default": "To Do",
    "fieldname": "edge_paint_select",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Edge Paint",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
   {
@@ -86,33 +76,15 @@
    "fieldname": "bevel_column",
    "fieldtype": "Column Break",
    "label": "Bevel"
-  },
-  {
-   "fieldname": "over_wax_html",
-   "fieldtype": "HTML",
-   "label": "Over Wax",
-   "options": "Over Wax"
-  },
-  {
-   "fieldname": "edge_paint_html",
-   "fieldtype": "HTML",
-   "label": "Edge Paint",
-   "options": "Edge Paint"
-  },
-  {
-   "columns": 1,
-   "fieldname": "over_wax",
-   "fieldtype": "Button",
-   "in_list_view": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-04-10 19:03:37.698537",
+ "modified": "2025-04-24 20:05:26.372711",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
- "name": "Over Wax and Edge Paint Ql",
+ "name": "Over Wax and Edge Paint QI",
  "owner": "Administrator",
  "permissions": [],
  "sort_field": "modified",

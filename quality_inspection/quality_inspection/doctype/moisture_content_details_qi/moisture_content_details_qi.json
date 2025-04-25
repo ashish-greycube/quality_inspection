@@ -16,32 +16,24 @@
   "current_1",
   "column_break_hpnj",
   "results_select_1",
-  "results_html_1",
-  "results_1",
   "section_break_nmzn",
   "finished_board_2",
   "column_break_fgmf",
   "current_2",
   "column_break_xtpj",
   "results_select_2",
-  "results_html_2",
-  "results_2",
   "section_break_tfsy",
   "finished_board_3",
   "column_break_cszi",
   "current_3",
   "column_break_zzdg",
   "results_select_3",
-  "results_html_3",
-  "results_3",
   "section_break_gibk",
   "finished_board_4",
   "column_break_qadn",
   "current_4",
   "column_break_gcys",
-  "results_select_4",
-  "results_html_4",
-  "results_4"
+  "results_select_4"
  ],
  "fields": [
   {
@@ -98,19 +90,12 @@
    "fieldtype": "Column Break"
   },
   {
-   "columns": 1,
-   "fieldname": "results_1",
-   "fieldtype": "Button",
-   "in_list_view": 1
-  },
-  {
-   "columns": 3,
+   "columns": 4,
    "default": "To Do",
    "fieldname": "results_select_1",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "FB1-Result",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
   {
@@ -141,19 +126,12 @@
    "fieldtype": "Column Break"
   },
   {
-   "columns": 1,
-   "fieldname": "results_2",
-   "fieldtype": "Button",
-   "in_list_view": 1
-  },
-  {
-   "columns": 3,
+   "columns": 4,
    "default": "To Do",
    "fieldname": "results_select_2",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "FB2-Result",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
   {
@@ -184,19 +162,12 @@
    "fieldtype": "Column Break"
   },
   {
-   "columns": 1,
-   "fieldname": "results_3",
-   "fieldtype": "Button",
-   "in_list_view": 1
-  },
-  {
-   "columns": 3,
+   "columns": 4,
    "default": "To Do",
    "fieldname": "results_select_3",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "FB3-Result",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
   {
@@ -227,50 +198,19 @@
    "fieldtype": "Column Break"
   },
   {
-   "columns": 1,
-   "fieldname": "results_4",
-   "fieldtype": "Button",
-   "in_list_view": 1
-  },
-  {
-   "columns": 3,
+   "columns": 4,
    "default": "To Do",
    "fieldname": "results_select_4",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "FB4-Result",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
-  },
-  {
-   "fieldname": "results_html_1",
-   "fieldtype": "HTML",
-   "label": "FB1-Result",
-   "options": "Results"
-  },
-  {
-   "fieldname": "results_html_2",
-   "fieldtype": "HTML",
-   "label": "FB2-Result",
-   "options": "Results"
-  },
-  {
-   "fieldname": "results_html_3",
-   "fieldtype": "HTML",
-   "label": "FB3-Result",
-   "options": "Results"
-  },
-  {
-   "fieldname": "results_html_4",
-   "fieldtype": "HTML",
-   "label": "FB4-Result",
-   "options": "Results"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-04-10 03:11:06.478048",
+ "modified": "2025-04-24 20:07:05.058887",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Moisture Content Details QI",

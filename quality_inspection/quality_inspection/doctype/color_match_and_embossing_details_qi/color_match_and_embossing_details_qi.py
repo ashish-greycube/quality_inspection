@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class ColorMatchandEmbossingDetailsQl(Document):
+class ColorMatchandEmbossingDetailsQI(Document):
 	pass

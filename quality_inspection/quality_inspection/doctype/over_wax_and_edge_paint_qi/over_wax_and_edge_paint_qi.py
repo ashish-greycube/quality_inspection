@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class OverWaxandEdgePaintQl(Document):
+class OverWaxandEdgePaintQI(Document):
 	pass

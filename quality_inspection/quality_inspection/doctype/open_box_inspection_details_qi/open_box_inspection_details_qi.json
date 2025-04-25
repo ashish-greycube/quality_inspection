@@ -9,40 +9,13 @@
   "item_color",
   "section_break_ywwb",
   "bowing_select",
-  "bowing_html",
-  "bowing",
   "squareness_select",
-  "squareness_html",
-  "squareness",
   "ledging_overwood_select",
-  "ledging_overwood_html",
-  "ledging_overwood",
   "column_break_tpvg",
   "finished_board",
-  "pad_away_select",
-  "pad_away_html",
-  "pad_away"
+  "pad_away_select"
  ],
  "fields": [
-  {
-   "columns": 1,
-   "fieldname": "bowing",
-   "fieldtype": "Button",
-   "in_list_view": 1
-  },
-  {
-   "columns": 1,
-   "fieldname": "squareness",
-   "fieldtype": "Button",
-   "in_list_view": 1
-  },
-  {
-   "columns": 1,
-   "fieldname": "ledging_overwood",
-   "fieldtype": "Button",
-   "in_list_view": 1,
-   "read_only": 1
-  },
   {
    "columns": 4,
    "fieldname": "finished_board",
@@ -52,38 +25,38 @@
   },
   {
    "columns": 3,
+   "default": "To Do",
    "fieldname": "bowing_select",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Bowing",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
   {
    "columns": 3,
+   "default": "To Do",
    "fieldname": "squareness_select",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Squareness",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
   {
    "columns": 3,
+   "default": "To Do",
    "fieldname": "ledging_overwood_select",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Ledging Overwood",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
   {
    "columns": 3,
+   "default": "To Do",
    "fieldname": "pad_away_select",
-   "fieldtype": "Select",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Pad Away From Locking System ",
-   "options": "To Do\nPass\nFail - Minor\nFail - Major\nFail - Critical\nUndetermined",
    "read_only": 1
   },
   {
@@ -102,42 +75,12 @@
    "fieldname": "column_break_tpvg",
    "fieldtype": "Column Break",
    "label": "Pad Away From Locking System "
-  },
-  {
-   "fieldname": "bowing_html",
-   "fieldtype": "HTML",
-   "label": "Bowing",
-   "options": "Bowing"
-  },
-  {
-   "fieldname": "squareness_html",
-   "fieldtype": "HTML",
-   "label": "Squareness",
-   "options": "Squareness"
-  },
-  {
-   "fieldname": "ledging_overwood_html",
-   "fieldtype": "HTML",
-   "label": "Ledging Overwood",
-   "options": "Ledging Overwood"
-  },
-  {
-   "fieldname": "pad_away_html",
-   "fieldtype": "HTML",
-   "label": "Pad Away From Locking System",
-   "options": "Pad Away From Locking System"
-  },
-  {
-   "columns": 1,
-   "fieldname": "pad_away",
-   "fieldtype": "Button",
-   "in_list_view": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-04-10 20:08:06.696210",
+ "modified": "2025-04-24 01:43:41.199565",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Open Box Inspection Details QI",
