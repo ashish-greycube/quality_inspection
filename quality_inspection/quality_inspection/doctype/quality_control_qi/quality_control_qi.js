@@ -7,7 +7,9 @@ frappe.ui.form.on('Quality Control QI', {
     },
 
     refresh(frm) {
-        clickStatusColOfEachRow(frm)
+        if (frm.doc.docstatus == 0){
+            clickStatusColOfEachRow(frm)
+        }
 
         setTimeout(() => {
             $('button.grid-add-row').hide()
@@ -263,6 +265,7 @@ frappe.ui.form.on('Quality Control QI', {
 
 })
 
+//  set css in table columns based on values/data
 const setStatusInTableField = function (frm) {
     for (const table of table_details) {
         if (table.table_field_name == 'pallet_details') {
@@ -281,6 +284,7 @@ const setStatusInTableField = function (frm) {
     }
 }
 
+// click every row to tables to reflact css/button
 const clickStatusColOfEachRow = function (frm) {
     for (const table of table_details) {
         if (table.table_field_name == 'pallet_details') {
@@ -301,6 +305,7 @@ const clickStatusColOfEachRow = function (frm) {
     }
 }
 
+// create child table name list
 const create_child_table_list = function (frm, child_table) {
     let child_table_list = []
     if (frm.doc.no_of_po > 0) {
@@ -372,10 +377,12 @@ const btn_template = `
                 </button>
             `
 
+// get color based on status value
 const getStatusColor = (status) => {
     return statusColorMap[status] || statusColorMap["Undetermined"]
 }
 
+// get next status
 const getNextItem = (currentItem) => {
     const list = Object.keys(statusColorMap)
     const index = list.indexOf(currentItem);
@@ -385,6 +392,7 @@ const getNextItem = (currentItem) => {
     return list[index + 1];
 }
 
+// set css in data field
 const set_style = (el, status) => {
     if (!el.length)
         return;
@@ -461,8 +469,9 @@ function bindStatusOnRender(frm, child_table, fieldname) {
             // console.log($(e.currentTarget).closest(".data-row").find(`input[data-fieldname="${fieldname}"]`), "====================")
         })
 
-        // comment if using bindStatusColumn
-        _attach_button(grid_row, grid_row.doc.doctype, fieldname)
+        if (frm.doc.docstatus == 0){
+            _attach_button(grid_row, grid_row.doc.doctype, fieldname)
+        }
 
     });
 }
@@ -492,6 +501,7 @@ let set_html_details = function(frm){
     make_html(frm, "width_thick", "width_thickness_html")
 }
 
+// based on conditions hide unhide table columns
 let update_child_table_field_property = function (frm) {
     let inner_outer_tables = create_child_table_list(frm, 'inner_and_outer_carton_details_')
     if (inner_outer_tables.length > 0) {
