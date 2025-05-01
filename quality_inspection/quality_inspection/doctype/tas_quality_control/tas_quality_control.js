@@ -1,7 +1,7 @@
 // Copyright (c) 2024, GreyCube Technologies and contributors
 // For license information, please see license.txt
 
-frappe.ui.form.on('Quality Control QI', {
+frappe.ui.form.on('TAS Quality Control', {
     onload(frm) {
         setStatusInTableField(frm)
     },
@@ -74,7 +74,7 @@ frappe.ui.form.on('Quality Control QI', {
                     let get_tas_po = function () {
                         console.log("------get_tas_po------")
                         frappe.call({
-                            method: "quality_inspection.quality_inspection.doctype.quality_control_qi.quality_control_qi.get_tas_po",
+                            method: "quality_inspection.quality_inspection.doctype.tas_quality_control.tas_quality_control.get_tas_po",
                             args: {
                                 vendor: frm.doc.vendor
                             },
@@ -129,7 +129,7 @@ frappe.ui.form.on('Quality Control QI', {
 
                     let get_tas_po_items = function () {
                         frappe.call({
-                            method: "quality_inspection.quality_inspection.doctype.quality_control_qi.quality_control_qi.get_tas_po_items",
+                            method: "quality_inspection.quality_inspection.doctype.tas_quality_control.tas_quality_control.get_tas_po_items",
                             args: {
                                 vendor: frm.doc.vendor,
                             },

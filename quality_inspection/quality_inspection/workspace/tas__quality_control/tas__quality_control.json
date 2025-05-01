@@ -1,28 +1,18 @@
 {
  "charts": [],
- "content": "[{\"id\":\"frW0KLaU9w\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Quality Inspection</span>\",\"col\":12}},{\"id\":\"z1DeTlfwbc\",\"type\":\"card\",\"data\":{\"card_name\":\"Transaction\",\"col\":4}},{\"id\":\"fybyf5s9wQ\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"gcoPX13IWZ\",\"type\":\"card\",\"data\":{\"card_name\":\"LOV\",\"col\":4}},{\"id\":\"C_z_YgvFzI\",\"type\":\"card\",\"data\":{\"card_name\":\"Master\",\"col\":4}}]",
- "creation": "2025-01-29 19:22:34.700145",
+ "content": "[{\"id\":\"nxPQvEjF2R\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">TAS Quality Control </span>\",\"col\":12}},{\"id\":\"ZuH9N8ORhr\",\"type\":\"card\",\"data\":{\"card_name\":\"Transaction\",\"col\":4}},{\"id\":\"lP6S25r9qR\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"LCmMo6euFa\",\"type\":\"card\",\"data\":{\"card_name\":\"LOV\",\"col\":4}},{\"id\":\"NUNZK8CL1l\",\"type\":\"card\",\"data\":{\"card_name\":\"Master\",\"col\":4}}]",
+ "creation": "2025-04-30 03:24:34.380964",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
  "for_user": "",
  "hide_custom": 0,
  "icon": "quantity-1",
- "idx": 1,
+ "idx": 0,
  "indicator_color": "",
  "is_hidden": 0,
- "label": "QI",
+ "label": "TAS  Quality Control",
  "links": [
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "TAS Purchase Order",
-   "link_count": 0,
-   "link_to": "TAS Purchase Order",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
   {
    "hidden": 0,
    "is_query_report": 0,
@@ -35,9 +25,28 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Quality Control",
+   "label": "TAS Quality Control",
    "link_count": 0,
-   "link_to": "Quality Control QI",
+   "link_to": "TAS Quality Control",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Settings",
+   "link_count": 1,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Quality Inspection Settings",
+   "link_count": 0,
+   "link_to": "Quality Inspection Settings QI",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -84,25 +93,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Settings",
-   "link_count": 1,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Quality Inspection Settings",
-   "link_count": 0,
-   "link_to": "Quality Inspection Settings QI",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Master",
    "link_count": 3,
    "link_type": "DocType",
@@ -140,17 +130,17 @@
    "type": "Link"
   }
  ],
- "modified": "2025-03-19 20:46:15.809202",
+ "modified": "2025-04-30 03:30:50.568238",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
- "name": "QI",
+ "name": "TAS  Quality Control",
  "number_cards": [],
  "owner": "Administrator",
  "parent_page": "",
  "public": 1,
  "quick_lists": [],
  "roles": [],
- "sequence_id": 31.0,
+ "sequence_id": 2.0,
  "shortcuts": [],
- "title": "QI"
+ "title": "TAS  Quality Control"
 }

@@ -1889,7 +1889,7 @@
    "fieldtype": "Link",
    "label": "Amended From",
    "no_copy": 1,
-   "options": "Quality Control QI",
+   "options": "TAS Quality Control",
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
@@ -1909,10 +1909,10 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-24 00:29:38.562382",
+ "modified": "2025-04-30 03:08:01.377861",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
- "name": "Quality Control QI",
+ "name": "TAS Quality Control",
  "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
@@ -1931,6 +1931,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

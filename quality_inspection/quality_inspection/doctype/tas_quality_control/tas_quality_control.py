@@ -15,7 +15,7 @@ PASS_STATUS = ["Pass"]
 UNDETERMINED = ["Undetermined"]
 TODO_STATUS = ["To Do"]
 FAIL_STATUS = ['Fail - Minor', 'Fail - Major', 'Fail - Critical']
-class QualityControlQI(Document):
+class TASQualityControl(Document):
 
 	def onload(self):
 		self.get_pallet_information_html()
@@ -483,76 +483,6 @@ def get_tas_po_items(vendor):
 # WHERE tas.vendor = '001573' and ti.name NOT IN (SELECT qi.tas_po_item_ref FROM `tabQuality Control Item QI` as qi WHERE qi.docstatus = 1) GROUP BY tas_po;
 
 	return tas_po_items
-
-@frappe.whitelist()
-@frappe.validate_and_sanitize_search_inputs
-def item_query(doctype, txt, searchfield, start, page_len, filters, as_dict=False):
-
-	vendor = filters.get("vendor")
-	allow_child_item = filters.get("allow_child_item")
-
-	##### for testing purpose
-	tas_po = frappe.get_doc('TAS Purchase Order', '00104023901')
-	if allow_child_item == 0:
-		return [tas_po]
-	elif allow_child_item == 1:
-		
-		po_doc = tas_po
-
-		for item in po_doc.items:
-			if item.item_no == 'JOEG29H':
-				po_doc.items.remove(item)
-			else:
-				continue
-
-		# items = []
-		# item_list = ['JOCTA29A', 'JOHRTS29']
-		# for item in tas_po.items:
-		# 	if item.item_no in item_list:
-		# 		item_doc = frappe.get_doc('TAS Purchase Order Item', item.name)
-		# 		items.append(item_doc.name)
-		# print(items, "itemssss")
-
-		# item_dict = frappe._dict({ 'name': '00104023901', 'item_no' : 'JOCTA29A', 'qty':1, 'color':'red'})
-
-		# item_dict = frappe.db.sql("""
-		# 	SELECT tas.name, ti.item_no FROM `tabTAS Purchase Order Item` as ti INNER JOIN `tabTAS Purchase Order` AS tas ON tas.name = ti.parent 
-		# 		WHERE tas.name = '00104023901' 
-		# 		and ti.item_no  = 'JOEG29H'
-		# 	""", as_dict=1)
-		test = [po_doc]
-		# print(item_dict, "=====item_dict==")
-		return test
-
-
-	# print(vendor, "============vendor")
-	# print(allow_child_item, "====allow_child_item")
-
-	# checked_items_list = []
-	
-	# qi_list = frappe.db.get_all("Quality Control QI", filters={"docstatus":1, "vendor": vendor}, fields=["name"])
-
-	# inspected_items_details = {}
-
-	# for qi in qi_list:
-	# 	qi_doc = frappe.get_doc("Quality Control QI", qi.name)
-	# 	for i in range(qi_doc.no_of_po):
-	# 		child_table_name="quality_control_item_"+cstr(i+1)
-			
-	# 		if len(qi_doc.get(child_table_name)) > 0:
-	# 			for row in qi_doc.get(child_table_name):
-	# 				item_no = row.item_color.split("-")[0]
-	# 				checked_items_list.append(item_no)
-
-# @frappe.whitelist()
-# def get_tas_po(vendor):
-# 	tas_po_list = frappe.db.get_list(
-# 		"TAS Purchase Order",
-# 		filters={"vendor": vendor},
-# 		fields=["name"],
-# 	)
-
-# 	return tas_po_list
 
 @frappe.whitelist()
 def download_excel(doctype,docname,child_fieldname,file_name,data=None):

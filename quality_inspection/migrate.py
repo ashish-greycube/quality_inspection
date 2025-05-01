@@ -2,9 +2,9 @@ import frappe
 
 def after_migrate():
     update_dashboard_link_for_core_doctype(doctype='TAS Purchase Order',
-                                           link_doctype='Quality Control QI',
+                                           link_doctype='TAS Quality Control',
                                            link_fieldname='tas_po', 
-                                           parent_doctype='Quality Control QI',
+                                           parent_doctype='TAS Quality Control',
                                            table_fieldname='pallet_details')
     
     ### Pallet Type QI ###
