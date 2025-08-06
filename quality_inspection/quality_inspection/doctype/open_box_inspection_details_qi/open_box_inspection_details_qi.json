@@ -9,11 +9,19 @@
   "item_color",
   "section_break_ywwb",
   "bowing_select",
-  "squareness_select",
   "ledging_overwood_select",
+  "column_break_otyb",
+  "max_opening_photo",
+  "max_opening",
+  "max_opening_result",
+  "section_break_npfd",
   "column_break_tpvg",
   "finished_board",
-  "pad_away_select"
+  "pad_away_select",
+  "column_break_kejd",
+  "depth_photo",
+  "bp_press_depth",
+  "depth_result"
  ],
  "fields": [
   {
@@ -24,7 +32,7 @@
    "label": "Finished Board "
   },
   {
-   "columns": 3,
+   "columns": 4,
    "default": "To Do",
    "fieldname": "bowing_select",
    "fieldtype": "Data",
@@ -33,16 +41,7 @@
    "read_only": 1
   },
   {
-   "columns": 3,
-   "default": "To Do",
-   "fieldname": "squareness_select",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Squareness",
-   "read_only": 1
-  },
-  {
-   "columns": 3,
+   "columns": 4,
    "default": "To Do",
    "fieldname": "ledging_overwood_select",
    "fieldtype": "Data",
@@ -51,7 +50,7 @@
    "read_only": 1
   },
   {
-   "columns": 3,
+   "columns": 4,
    "default": "To Do",
    "fieldname": "pad_away_select",
    "fieldtype": "Data",
@@ -60,7 +59,7 @@
    "read_only": 1
   },
   {
-   "columns": 5,
+   "columns": 4,
    "fieldname": "item_color",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -75,17 +74,78 @@
    "fieldname": "column_break_tpvg",
    "fieldtype": "Column Break",
    "label": "Pad Away From Locking System "
+  },
+  {
+   "fieldname": "column_break_otyb",
+   "fieldtype": "Column Break",
+   "label": "Max Opening Between Boards"
+  },
+  {
+   "columns": 4,
+   "fieldname": "max_opening_photo",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Max Opening Photo"
+  },
+  {
+   "columns": 4,
+   "fieldname": "max_opening",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Max Opening"
+  },
+  {
+   "columns": 4,
+   "default": "To Do",
+   "fieldname": "max_opening_result",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Max Opening Result",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_npfd",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_kejd",
+   "fieldtype": "Column Break",
+   "label": "Depth for BP Press"
+  },
+  {
+   "columns": 4,
+   "fieldname": "depth_photo",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Depth Photo"
+  },
+  {
+   "columns": 4,
+   "fieldname": "bp_press_depth",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "BP Press Depth"
+  },
+  {
+   "columns": 4,
+   "default": "To Do",
+   "fieldname": "depth_result",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Depth Result",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-04-24 01:43:41.199565",
+ "modified": "2025-07-17 22:12:21.555982",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Open Box Inspection Details QI",
  "owner": "Administrator",
  "permissions": [],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

@@ -18,7 +18,11 @@
   "floor_select",
   "shink_wrap_select",
   "insert_sheet_select",
-  "end_label"
+  "title_iv",
+  "end_label",
+  "column_break_rpof",
+  "mfg_production_run",
+  "item_matches_ir_tag"
  ],
  "fields": [
   {
@@ -115,17 +119,49 @@
   {
    "fieldname": "column_break_esgh",
    "fieldtype": "Column Break"
+  },
+  {
+   "columns": 4,
+   "default": "To Do",
+   "fieldname": "title_iv",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title IV",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_rpof",
+   "fieldtype": "Column Break"
+  },
+  {
+   "columns": 4,
+   "default": "To Do",
+   "fieldname": "mfg_production_run",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Mfg Production Run#",
+   "read_only": 1
+  },
+  {
+   "columns": 4,
+   "default": "To Do",
+   "fieldname": "item_matches_ir_tag",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Item# matches IR TAG",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-04-24 20:03:42.712964",
+ "modified": "2025-08-04 22:08:18.148258",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Inner and Outer Carton Details QI",
  "owner": "Administrator",
  "permissions": [],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

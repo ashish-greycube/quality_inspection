@@ -4,12 +4,12 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.model.mapper import get_mapped_doc
-from frappe.utils import cstr, flt, getdate, nowdate, add_to_date
-import openpyxl
-from openpyxl.drawing.image import Image
-from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
-import os
+from frappe.utils import cstr, flt, getdate, nowdate, add_to_date, now
+
+from frappe.utils.pdf import get_pdf, prepare_options, inline_private_images, get_cookie_options
+import json
+from six import string_types
+# from frappe.www.printview import get_print_style
 
 PASS_STATUS = ["Pass"]
 UNDETERMINED = ["Undetermined"]
@@ -21,12 +21,14 @@ class TASQualityControl(Document):
 		self.get_pallet_information_html()
 
 	def validate(self):
-		self.set_pallet_and_moisture_default_value()
+		self.set_default_values_and_guidelines()
 		self.set_attachments_details()
 		self.set_color_count_for_color_match_and_embossing()
+		self.fill_missing_data_details()
+		# self.check_all_data_mark_as_completed()	
 
 	def on_submit(self):
-		self.validate_over_wax_and_edge_paint_child_table()
+		# self.validate_over_wax_and_edge_paint_child_table()
 		self.validate_open_box_child_table()
 		
 	def get_pallet_information_html(self):
@@ -80,24 +82,34 @@ class TASQualityControl(Document):
 
 		if self.get("no_of_po") and self.get("no_of_po") > 0:
 			if child_table == "pallet_details":
-				total_select_fields = len(self.pallet_details)	
+				# total_select_fields = len(self.pallet_details)	* len(select_field_list)
+				total_select_fields = 0
 
 				for row in self.get(child_table):
 
 					for attach in attach_field_list:
-						if not row.get(attach):
-							pendings = pendings + 1
-						total_attachments = total_attachments + 1
+						if row.pallet_type != "Plywood" and attach == "width":
+							continue
+						else:
+							if not row.get(attach):
+								pendings = pendings + 1
+							total_attachments = total_attachments + 1
 
 					for select in select_field_list:
-						if row.get(select) in PASS_STATUS:
-							total_pass = total_pass + 1
-						elif row.get(select) in UNDETERMINED:
-							total_undetermined = total_undetermined + 1
-						elif row.get(select) in TODO_STATUS:
-							total_todo = total_todo + 1
+						if row.pallet_type != "Plywood" and select == "button_select":
+							continue
+						elif row.pallet_type != "Hardwood" and select == "iipa":
+							continue
 						else:
-							pass
+							total_select_fields = total_select_fields + 1
+							if row.get(select) in PASS_STATUS:
+								total_pass = total_pass + 1
+							elif row.get(select) in UNDETERMINED:
+								total_undetermined = total_undetermined + 1
+							elif row.get(select) in TODO_STATUS:
+								total_todo = total_todo + 1
+							else:
+								pass
 
 				pass_ration = ((total_pass * 100)/ total_select_fields)
 				undetermined_ratio = ((total_undetermined * 100) / total_select_fields)
@@ -145,7 +157,7 @@ class TASQualityControl(Document):
 		return total_attachments, pendings, pass_ration, undetermined_ratio, todo_ration
 	
 	def set_attachments_details(self):
-		pallet = self.calculate_attachments_details("pallet_details", ['width', 'height'], ['button_select'])
+		pallet = self.calculate_attachments_details("pallet_details", ['installation_photo','width', 'height'], ['button_select', 'installation_status', 'iipa'])
 		self.pallet_total_attachment = pallet[0]
 		self.pallet_pending_attachment = pallet[1]
 		self.pallet_pass_ration = flt((pallet[2]), 2)
@@ -153,14 +165,14 @@ class TASQualityControl(Document):
 		self.pallet_todo_ratio = flt((pallet[4]), 2)
 
 		inner = self.calculate_attachments_details("inner_and_outer_carton_details_", ['end_label'],
-											 ['hologram_select', 'carb_select', 'floor_select', 'shink_wrap_select', 'insert_sheet_select'])
+											 ['hologram_select', 'carb_select', 'floor_select', 'shink_wrap_select', 'insert_sheet_select', 'title_iv', 'mfg_production_run', 'item_matches_ir_tag'])
 		self.inner_total_attachment = inner[0]
 		self.inner_pending_attachment = inner[1]
 		self.inner_pass_ration = flt((inner[2]), 2)
 		self.inner_undetermined_ratio = flt((inner[3]), 2)
 		self.inner_todo_ratio = flt((inner[4]), 2)
 
-		color = self.calculate_attachments_details("color_match_and_embossing_details_", ['master_sample', 'finished_board'], ['results_select', 'embossing_select'])
+		color = self.calculate_attachments_details("color_match_and_embossing_details_", ['master_sample', 'finished_board', 'pattern_repeat_photo'], ['results_select', 'embossing_select', 'pattern_repeat'])
 		self.color_total_attachment = color[0]
 		self.color_pending_attachment = color[1]
 		self.color_pass_ration = flt((color[2]), 2)
@@ -191,8 +203,8 @@ class TASQualityControl(Document):
 		self.moisture_undetermined_ratio = flt((moisture[3]), 2)
 		self.moisture_todo_ratio = flt((moisture[4]), 2)
 
-		open = self.calculate_attachments_details("open_box_inspection_details_", ['finished_board'],
-											['bowing_select', 'squareness_select', 'ledging_overwood_select', 'pad_away_select'])
+		open = self.calculate_attachments_details("open_box_inspection_details_", ['max_opening_photo','finished_board', 'depth_photo'],
+											['bowing_select', 'ledging_overwood_select', 'max_opening_result','pad_away_select', 'depth_result'])
 		self.open_total_attachment = open[0]
 		self.open_pending_attachment = open[1]
 		self.open_pass_ration = flt((open[2]), 2)
@@ -271,7 +283,7 @@ class TASQualityControl(Document):
 							# po1.item = po.item_no
 							po1.item_name = item_doc[0].item_desc
 							po1.qty = item_doc[0].qty
-							po1.item_color = cstr(item_doc[0].item_no) + "-" +(cstr(item_doc[0].color) or 'red')
+							po1.item_color = cstr(item_doc[0].item_no) + "-" +(cstr(item_doc[0].color).upper() or '')
 							po1.tas_po_ref = item_doc[0].parent
 							po1.tas_po_item_ref = item_doc[0].name
 
@@ -339,7 +351,7 @@ class TASQualityControl(Document):
 								po1 = self.append(child_table_name, {})
 								po1.item_name = item.item_desc
 								po1.qty = item.qty
-								po1.item_color = cstr(item.item_no) + "-" + (cstr(item.color) or 'red')
+								po1.item_color = cstr(item.item_no) + "-" + (cstr(item.color).upper() or '')
 								po1.tas_po_ref = item.parent
 								po1.tas_po_item_ref = item.name
 
@@ -395,34 +407,45 @@ class TASQualityControl(Document):
 				row = self.append("pallet_details")
 				row.tas_po = po
 
+	def set_default_values_and_guidelines(self):
+		qi_settings = frappe.get_doc('Quality Inspection Settings QI')
 
-	def set_pallet_and_moisture_default_value(self):
-		pallet_default_value = frappe.db.get_single_value('Quality Inspection Settings QI', 'pallet_default_value')
-		open_box_guidelines = frappe.db.get_single_value('Quality Inspection Settings QI', 'open_box_inspection')
-		width_thickness_guidelines = frappe.db.get_single_value('Quality Inspection Settings QI', 'width_thickness')
-		gloss_level_guide = frappe.db.get_single_value('Quality Inspection Settings QI', 'gloss_level')
-
-		if pallet_default_value:
-			self.default_corner_width = ">=" + cstr(pallet_default_value)
+		if qi_settings.pallet_default_value:
+			self.default_corner_width = ">=" + cstr(qi_settings.pallet_default_value)
 
 		# moisture equipment default value
 		default_value = ""
 		if self.moisture_equipment and len(self.moisture_equipment) > 0:
 			default_value = frappe.db.get_value('Equipment QI', self.moisture_equipment, 'equipment_default_value')
-		
 		self.default_moisture = default_value
 
-		if open_box_guidelines:
-			self.guidelines = open_box_guidelines
+		# set guidelines
+		if qi_settings.hide_pallet_information_guide == 0 and qi_settings.pallet_information_guide:
+			self.pallet_information_guide = qi_settings.pallet_information_guide
 
-		if width_thickness_guidelines:
-			self.assembling_gap = width_thickness_guidelines
-			
-		if gloss_level_guide:
-			self.gloss_level_guide = gloss_level_guide
+		if qi_settings.hide_inner_outer_carton_guide == 0 and qi_settings.inner_outer_carton_guide:
+			self.inner_outer_carton_guide = qi_settings.inner_outer_carton_guide
+		
+		if qi_settings.hide_color_match_embossing_guide == 0 and qi_settings.color_match_embossing_guide:
+			self.color_match_embossing_guide = qi_settings.color_match_embossing_guide
+
+		if qi_settings.hide_bevel_over_wax_guide == 0 and qi_settings.bevel_over_wax_guide:
+			self.bevel_over_wax_guide = qi_settings.bevel_over_wax_guide
+
+		if qi_settings.hide_gloss_level_guide == 0 and qi_settings.gloss_level_guide:
+			self.gloss_level_guide = qi_settings.gloss_level_guide
+
+		if qi_settings.hide_moisture_content_guide == 0 and qi_settings.moisture_content_guide:
+			self.moisture_content_guide = qi_settings.moisture_content_guide
+
+		if qi_settings.open_box_inspection_guide:
+			self.open_box_inspection_guide = qi_settings.open_box_inspection_guide
+
+		if qi_settings.width_thickness_guide:
+			self.assembling_gap = qi_settings.width_thickness_guide
 
 	def validate_over_wax_and_edge_paint_child_table(self):
-		if self.get("no_of_po") and self.no_of_po > 0:
+		if self.get("no_of_po") and self.no_of_po > 0 and self.flooring_class != "LVP & WPC":
 			items = []
 			for i in range(self.no_of_po):
 				child_table_name="over_wax_and_edge_paint_"+cstr(i+1)
@@ -459,6 +482,144 @@ class TASQualityControl(Document):
 					title=_("Finished board pictures are required for failed pad."),
 				)
 
+	def create_child_table_list(self, child_table_name):
+		child_table_list = []
+		if self.no_of_po and self.no_of_po > 0:
+			for i in range(self.no_of_po):
+				child_table = child_table_name + cstr(i+1)
+				child_table_list.append(child_table)
+
+		return child_table_list
+	
+	# def check_missing_row_field_is_already_exists(self, row_ref, field_name):
+	# 	row_exists = False
+	# 	if len(self.missing_data_details) > 0:
+	# 		for row in self.missing_data_details:
+	# 			if row.row_ref == row_ref and row.field_name_ref == field_name:
+	# 				row_exists = True
+	# 				break
+
+	# 	return row_exists
+
+	def fill_missing_data_details(self):
+
+		if self.workflow_state and self.workflow_state == "Completed" and len(self.missing_data_details) < 1:
+			print("Inside Workflow State Condition")
+			TABLE_LIST = [
+				{"table_name": "pallet_details", "tab_name": "Pallet Information", "parent_name": "Tas PO Details"},
+				{"table_name": "inner_and_outer_carton_details_", "tab_name": "Inner & Outer Carton", "parent_name": "po_over_"},
+				{"table_name": "color_match_and_embossing_details_", "tab_name": "Color Match & Embossing", "parent_name": "po_color_"},
+				{"table_name": "over_wax_and_edge_paint_", "tab_name": "Bevel, Over Wax & Edge Paint", "parent_name": "po_over_"},
+				{"table_name": "gloss_level_details_", "tab_name": "Gloss Level", "parent_name": "po_gloss_"},
+				{"table_name": "moisture_content_details_", "tab_name": "Moisture Content", "parent_name": "po_moisture_"},
+				{"table_name": "open_box_inspection_details_", "tab_name": "Open Box Inspection", "parent_name": "po_open_"},
+				{"table_name": "width_and_thickness_details_", "tab_name": "Width & Thickness", "parent_name": "po_width_"},
+			]
+			
+			for table in TABLE_LIST:
+				# print(table.get("table_name"), "==========================table.get(table_name)==============")
+				if table.get("table_name") == "pallet_details":
+					child_table_list = [table.get("table_name")]
+				else:
+					child_table_list = self.create_child_table_list(table.get("table_name"))
+
+				if len(child_table_list) > 0:
+					for child_table in child_table_list:
+						if len(self.get(child_table)) > 0:
+
+							### get row fields details from meta
+							for row in self.get(child_table):
+								
+								######### using meta 
+								row_fields = row.meta.fields
+								
+								for field in row_fields:
+									# row_already_exists = self.check_missing_row_field_is_already_exists(row.name, field.fieldname)
+									# print(row_already_exists, "=====================row_already_exists==================")
+
+									missing_row_data = False
+									if field.fieldtype in ["Attach", "Currency", "Data", "Date", "Datetime", "Float", "Int","Link", "Percent", "Select"] and field.hidden == 0:
+										
+										if table.get("table_name") == "inner_and_outer_carton_details_" and field.fieldname == "carb_select" and self.flooring_class == "LVP & WPC":
+											missing_row_data = False
+
+										elif table.get("table_name") == "over_wax_and_edge_paint_" and field.fieldname == "over_wax_select" and self.flooring_class == "LVP & WPC":
+											missing_row_data = False
+
+										elif table.get("table_name") == "over_wax_and_edge_paint_" and field.fieldname == "edge_paint_select" and self.flooring_class == "HARDWOOD FLOORING":
+											missing_row_data = False
+										
+										elif table.get("table_name") == "pallet_details" and field.fieldname in ["current_width", "width", "button_select"] and row.pallet_type != "Plywood":
+											missing_row_data = False
+										
+										elif table.get("table_name") == "pallet_details" and field.fieldname in ["iipa"] and row.pallet_type != "Hardwood":
+											missing_row_data = False
+
+										elif field.fieldtype == "Data":
+											if not row.get(field.fieldname) or row.get(field.fieldname) in TODO_STATUS:
+												missing_row_data = True
+											
+										elif not row.get(field.fieldname):
+											missing_row_data = True
+									
+									# print(missing_row_data, "=========================missing_row_data=====================")
+									if missing_row_data == True:
+										missing_row = self.append("missing_data_details", {})
+										missing_row.table_row_no = row.idx
+										missing_row.field_label = field.label
+										missing_row.field_name_ref = field.fieldname
+										missing_row.row_ref = row.name
+										missing_row.tab_name = table.get("tab_name")
+
+										if table.get("table_name") == "pallet_details":
+											missing_row.po_or_item_color = row.tas_po
+											missing_row.child_or_parent_name = table.get("parent_name")
+										else:
+											parent_field_name = table.get("parent_name") + child_table[-1]
+											# print(parent_field_name, "==========")
+											missing_row.po_or_item_color = row.item_color
+											missing_row.child_or_parent_name = self.get(parent_field_name)
+
+	def check_all_data_mark_as_completed(self):
+		if self.workflow_state and self.workflow_state in ["Completed", "Pending Approval", "Pending Review"] and len(self.missing_data_details) > 0:
+			mark_as_completed = True
+
+			for row in self.missing_data_details:
+				if row.mark_as_completed == 0:
+					mark_as_completed = False
+					break
+			
+			if mark_as_completed == False:
+				frappe.throw(_("Please mark all rows as 'Complete' in the Missing tab before proceeding."))
+
+	@frappe.whitelist()
+	def fill_remarks_table(self, remarks):
+		# print("========================fill_remarks_table======================", remarks)
+		
+		if remarks:
+			data = remarks[0]
+			# remarks = remarks.as_dict()
+			if data.get("notes"):
+				row = self.append("quality_remarks", {})
+				row.action = self.workflow_state
+				row.actor = frappe.session.user
+				row.date_time = now()
+				row.notes = data.get("notes")
+				
+				field_details = []
+				if data.get("field_notes"):
+					for f in data.get("field_notes"):
+						field_details.append(f.get("tab_wise_field_name"))
+						# d = row.append("field_notes", {})
+						# d.tab_wise_field_name = f.get("tab_wise_field_name")
+				
+					row.field_notes = ", ".join((ele if ele!=None else '') for ele in field_details)
+
+				self.save()
+				# row.fields = data.get("field_notes") or None
+
+
+
 @frappe.whitelist()
 def get_tas_po(vendor):
 	tas_po_list = frappe.db.sql("""
@@ -485,140 +646,52 @@ def get_tas_po_items(vendor):
 	return tas_po_items
 
 @frappe.whitelist()
-def download_excel(doctype,docname,child_fieldname,file_name,data=None):
-	attachment_list = []
-	ignore_fieldtype_in_list_view = ["Section Break", "Column Break", "HTML", "Button", "Image"]
-	idx_no = 1
-	qo_doc = frappe.get_doc(doctype, docname)
-	file_header = ["Sr. NO."]
-	file_data = []
-	# file_data_list = [idx_no]
-	for row in qo_doc.get(child_fieldname):
-		file_data_list = [idx_no]
-		child_doc = frappe.get_doc(row.doctype, row.name)
-		field_data = child_doc.meta.fields
-		for f in field_data:
-			if not data:
-				if f.in_list_view == 1:
-					if f.fieldtype not in ignore_fieldtype_in_list_view:
-						if f.label not in file_header:
-							file_header.append(f.label)
-						if f.fieldtype == "Check":
-							if child_doc.get(f.fieldname) == 1:
-								file_data_list.append("Yes")
-							else:
-								file_data_list.append("No")
-							
-						elif f.fieldtype == "Attach":
-							print("Attach",f.fieldname)
-							if child_doc.get(f.fieldname) in [ None,""]:
-								print(child_doc.get(f.fieldname),'child_doc.get(f.fieldname)')
-								attachment_list.append("")
-							else:
-								print(child_doc.get(f.fieldname),"===")
-								attachment_list.append(child_doc.get(f.fieldname))
-							# file_header.append(f.label+" URL")
-							# file_data_list.append("""<img src={0} alt="img" width="500" height="600">""".format(child_doc.get(f.fieldname)))
-							file_data_list.append("")
-						
-						else:
-							if child_doc.get(f.fieldname) in [ None,""]:
-								file_data_list.append("-")
-							else:
-								print(child_doc.get(f.fieldname),"d.get(f.fieldname)",f.fieldname,"++++++++++++++++++++++++++")
-								file_data_list.append(child_doc.get(f.fieldname))
-					
-				# file_data_list.append()
-		file_data.append(file_data_list)
-		idx_no += 1
-	print(file_data_list,"================")
-	print(file_data,"file data")
-	public_file_path = frappe.get_site_path("public", "files")
-	workbook = openpyxl.Workbook(write_only=True)
-	# file_name=f"SBI-{docname}.xlsx"
-	file_url=os.path.join(public_file_path,file_name)
-	sheet = workbook.create_sheet(doctype, 0)
-	sheet.append(file_header)
-	for ele in file_data:
-		# print(ele,"ele-->")
-		sheet.append(ele)
-	# sheet.append(file_footer)
-	workbook.save(file_url)
+def get_document_report_pdf(doc):
+	import pdfkit
 
-	workBook = openpyxl.load_workbook(file_url)
-	workSheet = workBook.active
-	header_font_style = Font(bold=True, size=12, name="Calibri")
-	color_code = "D3D3D3"
+	if isinstance(doc, string_types):
+		doc = json.loads(doc)
 
-	for i in range(1, workSheet.max_column + 1):
-		workSheet.cell(1, i).font = header_font_style
-		workSheet.cell(1, i).fill = PatternFill(start_color=color_code, end_color=color_code, fill_type="solid")
-		# workSheet.cell(workSheet.max_row, i).font = Font(bold=True, size=10, name="Calibri")
-		workSheet.row_dimensions[1].height = 20
+	# base_template_path = "frappe/www/printview.html"
+	# html = frappe.get_template("quality_inspection/templates/document_report_pdf.html").render(dict(doc=doc))
+	# html = frappe.render_template(
+	# 			base_template_path,
+	# 			{"body": html, "css": get_print_style(),"lang": frappe.local.lang, "title":"Quality Inspection Report"}
+	# 		)
+
+	template_path = "quality_inspection/templates/document_report_pdf.html"
+	html = frappe.render_template(template_path,  dict(doc=doc))
+	# print(html, "================html")
+
 	
-	for j in range(1, workSheet.max_row + 1):
-		workSheet.cell(j, 1).font = header_font_style
-		workSheet.cell(j, 1).fill = PatternFill(start_color=color_code, end_color=color_code, fill_type="solid")
+	options = {
+		'enable-internal-links': '',
+		"page-size": "A3", 
+		"margin-top": "10mm", "margin-right": "10mm", "margin-bottom": "10mm", "margin-left": "10mm",
+		"disable-javascript": "", 
+		"disable-local-file-access": "",
+		'encoding': "UTF-8",
+		'user-style-sheet': 'frappe/templates/styles/standard.css',
+		'custom-header': [
+        ('Accept-Encoding', 'gzip'),
+    ],
+	}
 
-	print(file_header,"File header")
-	print(attachment_list,"attachment_list")
-	border_thin = Side(style='thin')
-	attachment_idx = 0
-	for i in range (1, workSheet.max_row + 1):
-		for j in range(1, workSheet.max_column + 1):
-			workSheet.cell(i, j).alignment = Alignment(horizontal="center", vertical="center")
-			workSheet.cell(i, j).border = Border(top=border_thin, left=border_thin, right=border_thin, bottom=border_thin)
-			print(workSheet.cell(i, j).value,i,j,"---")
-			if workSheet.cell(i, j).value==None:
-				# cell = workSheet.cell(i, j)
-				print(workSheet.cell(i, j).column_letter,"cell")
-				cell = "{0}{1}".format(workSheet.cell(i, j).column_letter,workSheet.cell(i, j).row)
-				print(cell,"cell id")
-				print(frappe.local.site,"")
-				print(frappe.utils.get_site_url(frappe.local.site))
-				# print(workSheet.cell(i, j).col_idx,"col")
-				# print(workSheet.cell(i, j).row,"row")
-				# print(workSheet.cell(i, j).column,"column")
-				# print(workSheet.cell(i, j).number_format,"number_format")
-				print(attachment_idx,len(attachment_list))
-				if len(attachment_list)>0:
-					if attachment_idx <= len(attachment_list):
-						# print(i-2,attachment_list[attachment_idx],"=================",cell,j,i)
-						if len(attachment_list[attachment_idx]) > 2:
-							img = Image(frappe.local.site+"/public"+attachment_list[attachment_idx])
-							img.width = 50
-							img.height = 15
-							workSheet.add_image(img,cell)
-						else :
-							workSheet.cell(i, j).value = attachment_list[attachment_idx]
-					attachment_idx += 1
-				
-# /home/greycubedev/v15-bench/sites/refteck15/public/files/2025-01-27_12-25.png
+	# print(options, "==============before options")
 
-	for column_cells in workSheet.columns:
-		new_column_length = max(len(str(cell.value)) for cell in column_cells)
-		new_column_letter = (chr(64+(column_cells[0].column)))
-		if new_column_length > 0:
-			workSheet.column_dimensions[new_column_letter].width = new_column_length+5 # *1.10
+	### cookies (for private images)
+	options.update(get_cookie_options())
+	html = inline_private_images(html)
 
-	print(workSheet.cell(16, 10).value,"calue")
-	for ws in workSheet:
-		print(ws,"ws")
-		for w in ws:
-			print(w.row,w.column)
+	# print(options, "==============after options")
 
-	cell = "D2"
+	# html, options = prepare_options(html, options)
 
-	width =  workSheet.column_dimensions['E'].width
-	print(width,"width")
-	height = workSheet.row_dimensions[16].height
-	print(height,"height")
+	docname = doc.get("name")
+	frappe.local.response.filename = "{name}.pdf".format(name=docname.replace(" ", "-").replace("/", "-"))
+	# frappe.local.response.filecontent = get_pdf(html, options=options)
 
-	# img = Image("/home/greycubedev/Downloads/laptop.jpeg")
-	# img.width = 50
-	# img.height = 15
-	# workSheet.add_image(img,cell)
-	print(file_header,"---------------------------------------------------------------------------")
-	workBook.save(file_url)
+	frappe.local.response.filecontent = pdfkit.from_string(html, options=options or {}, verbose=True)
+	frappe.local.response.type = "pdf"
 
-	return frappe.utils.get_url()+"/files/"+file_name
+	# pdfkit.from_string(html, options=options or {}, verbose=True)

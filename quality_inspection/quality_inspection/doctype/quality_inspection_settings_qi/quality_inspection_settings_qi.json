@@ -8,11 +8,29 @@
   "defaults_tab",
   "pallet_default_value",
   "tab_break_iiih",
-  "gloss_level",
-  "section_break_lsce",
-  "open_box_inspection",
-  "section_break_ozoe",
-  "width_thickness"
+  "hide_pallet_information_guide",
+  "pallet_information_guide",
+  "section_break_hxzf",
+  "hide_inner_outer_carton_guide",
+  "inner_outer_carton_guide",
+  "section_break_kmjj",
+  "hide_color_match_embossing_guide",
+  "color_match_embossing_guide",
+  "section_break_yyyd",
+  "hide_bevel_over_wax_guide",
+  "bevel_over_wax_guide",
+  "section_break_hziu",
+  "hide_gloss_level_guide",
+  "gloss_level_guide",
+  "section_break_stdw",
+  "hide_moisture_content_guide",
+  "moisture_content_guide",
+  "section_break_wkju",
+  "hide_open_box_inspection_guide",
+  "open_box_inspection_guide",
+  "section_break_vwlf",
+  "hide_width_thickness_guide",
+  "width_thickness_guide"
  ],
  "fields": [
   {
@@ -22,11 +40,6 @@
    "in_list_view": 1,
    "label": "<b>Pallet Default Value</b> (inches)",
    "reqd": 1
-  },
-  {
-   "fieldname": "open_box_inspection",
-   "fieldtype": "Text Editor",
-   "label": "<b>Open Box Inspection</b>"
   },
   {
    "fieldname": "tab_break_iiih",
@@ -39,29 +52,127 @@
    "label": "Defaults"
   },
   {
-   "fieldname": "section_break_ozoe",
+   "fieldname": "section_break_yyyd",
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "width_thickness",
+   "fieldname": "section_break_kmjj",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_hxzf",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_hziu",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_stdw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_wkju",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_vwlf",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "bevel_over_wax_guide",
+   "fieldtype": "Text Editor",
+   "label": "<b>Bevel, Over Wax &amp; Edge Paint</b>"
+  },
+  {
+   "default": "0",
+   "fieldname": "hide_pallet_information_guide",
+   "fieldtype": "Check",
+   "label": "Hide Pallet Information Guideline"
+  },
+  {
+   "default": "0",
+   "fieldname": "hide_bevel_over_wax_guide",
+   "fieldtype": "Check",
+   "label": "Hide Bevel Over Wax & Edge Paint Guideline"
+  },
+  {
+   "default": "0",
+   "fieldname": "hide_color_match_embossing_guide",
+   "fieldtype": "Check",
+   "label": "Hide Color Match & Embossing Guideline"
+  },
+  {
+   "default": "0",
+   "fieldname": "hide_inner_outer_carton_guide",
+   "fieldtype": "Check",
+   "label": "Hide Inner Outer Carton Guideline"
+  },
+  {
+   "default": "0",
+   "fieldname": "hide_gloss_level_guide",
+   "fieldtype": "Check",
+   "label": "Hide Gloss level Guideline"
+  },
+  {
+   "default": "0",
+   "fieldname": "hide_moisture_content_guide",
+   "fieldtype": "Check",
+   "label": "Hide Moisture Content Guideline"
+  },
+  {
+   "default": "0",
+   "fieldname": "hide_open_box_inspection_guide",
+   "fieldtype": "Check",
+   "label": "Hide Open Box Inspection Guideline"
+  },
+  {
+   "default": "0",
+   "fieldname": "hide_width_thickness_guide",
+   "fieldtype": "Check",
+   "label": "Hide Width Thickness Guideline"
+  },
+  {
+   "fieldname": "color_match_embossing_guide",
+   "fieldtype": "Text Editor",
+   "label": "<b>Color Match &amp; Embossing</b>"
+  },
+  {
+   "fieldname": "open_box_inspection_guide",
+   "fieldtype": "Text Editor",
+   "label": "<b>Open Box Inspection</b>"
+  },
+  {
+   "fieldname": "width_thickness_guide",
    "fieldtype": "Text Editor",
    "label": "<b>Width &amp; Thickness</b>"
   },
   {
-   "fieldname": "gloss_level",
+   "fieldname": "gloss_level_guide",
    "fieldtype": "Text Editor",
    "label": "<b>Gloss Level</b>"
   },
   {
-   "fieldname": "section_break_lsce",
-   "fieldtype": "Section Break"
+   "fieldname": "pallet_information_guide",
+   "fieldtype": "Text Editor",
+   "label": "<b>Pallet Information</b>"
+  },
+  {
+   "fieldname": "inner_outer_carton_guide",
+   "fieldtype": "Text Editor",
+   "label": "<b>Inner &amp; Outer Carton</b>"
+  },
+  {
+   "fieldname": "moisture_content_guide",
+   "fieldtype": "Text Editor",
+   "label": "<b>Moisture Content</b>"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-03-23 19:48:18.697042",
+ "modified": "2025-07-21 01:21:43.747551",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Quality Inspection Settings QI",
@@ -78,6 +189,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

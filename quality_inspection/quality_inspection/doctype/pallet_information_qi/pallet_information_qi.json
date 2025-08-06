@@ -9,10 +9,15 @@
   "tas_po",
   "pallet_type",
   "section_break_htuq",
+  "installation_column",
+  "installation_id",
+  "installation_photo",
+  "installation_status",
   "corner_width_column",
   "current_width",
   "width",
   "button_select",
+  "iipa",
   "height_column",
   "height_reading",
   "height"
@@ -28,6 +33,7 @@
   },
   {
    "columns": 3,
+   "depends_on": "eval:doc.pallet_type==\"Plywood\"",
    "fieldname": "current_width",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -36,6 +42,7 @@
   },
   {
    "columns": 3,
+   "depends_on": "eval:doc.pallet_type==\"Plywood\"",
    "fieldname": "width",
    "fieldtype": "Attach",
    "in_list_view": 1,
@@ -57,8 +64,9 @@
    "label": "Height Photo"
   },
   {
-   "columns": 3,
+   "columns": 4,
    "default": "To Do",
+   "depends_on": "eval:doc.pallet_type==\"Plywood\"",
    "fieldname": "button_select",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -87,18 +95,58 @@
    "fieldname": "height_column",
    "fieldtype": "Column Break",
    "label": "Height"
+  },
+  {
+   "fieldname": "installation_column",
+   "fieldtype": "Column Break",
+   "label": "Installation"
+  },
+  {
+   "columns": 3,
+   "fieldname": "installation_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Installation ID",
+   "options": "Installation ID QI"
+  },
+  {
+   "columns": 3,
+   "fieldname": "installation_photo",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Installation Photo"
+  },
+  {
+   "columns": 4,
+   "default": "To Do",
+   "fieldname": "installation_status",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Installation Status",
+   "read_only": 1
+  },
+  {
+   "columns": 4,
+   "default": "To Do",
+   "depends_on": "eval:doc.pallet_type==\"Hardwood\"",
+   "fieldname": "iipa",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "IIPA",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-04-27 18:50:38.433522",
+ "modified": "2025-07-07 03:01:40.547202",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Pallet Information QI",
  "owner": "Administrator",
  "permissions": [],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

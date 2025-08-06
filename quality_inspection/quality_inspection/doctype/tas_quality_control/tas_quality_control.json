@@ -12,6 +12,7 @@
   "column_break_fvru",
   "vendor",
   "flooring_class",
+  "humidity_and_temperature",
   "amended_from",
   "section_break_gvfx",
   "tas_po_name_1",
@@ -44,6 +45,8 @@
   "pallet_undetermined_ratio",
   "pallet_todo_ratio",
   "default_corner_width",
+  "section_break_bilg",
+  "pallet_information_guide",
   "section_break_wxpv",
   "pallet_details",
   "tab_3_tab",
@@ -55,6 +58,8 @@
   "inner_pass_ration",
   "inner_undetermined_ratio",
   "inner_todo_ratio",
+  "section_break_garc",
+  "inner_outer_carton_guide",
   "section_break_jccn",
   "carton_po_1",
   "inner_and_outer_carton_details_1",
@@ -86,6 +91,8 @@
   "color_count",
   "color_undetermined_ratio",
   "color_todo_ratio",
+  "section_break_hhki",
+  "color_match_embossing_guide",
   "section_break_newx",
   "po_color_1",
   "color_match_and_embossing_details_1",
@@ -116,6 +123,8 @@
   "over_pass_ration",
   "over_undetermined_ratio",
   "over_todo_ratio",
+  "section_break_kkrj",
+  "bevel_over_wax_guide",
   "section_break_jznz",
   "po_over_1",
   "over_wax_and_edge_paint_1",
@@ -179,6 +188,8 @@
   "default_moisture",
   "moisture_undetermined_ratio",
   "moisture_todo_ratio",
+  "section_break_meoy",
+  "moisture_content_guide",
   "section_break_brmr",
   "po_moisture_1",
   "moisture_content_details_1",
@@ -210,7 +221,7 @@
   "open_undetermined_ratio",
   "open_todo_ratio",
   "section_break_ltwz",
-  "guidelines",
+  "open_box_inspection_guide",
   "section_break_ckig",
   "po_open_1",
   "open_box_inspection_details_1",
@@ -263,7 +274,12 @@
   "po_width_9",
   "width_and_thickness_details_9",
   "po_width_10",
-  "width_and_thickness_details_10"
+  "width_and_thickness_details_10",
+  "tab_11_tab",
+  "missing_data_details",
+  "tab_10_tab",
+  "tab_field_list",
+  "quality_remarks"
  ],
  "fields": [
   {
@@ -1736,12 +1752,6 @@
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "guidelines",
-   "fieldtype": "Text Editor",
-   "label": "<b>Guidelines:</b>",
-   "read_only": 1
-  },
-  {
    "bold": 1,
    "fieldname": "moisture_equipment",
    "fieldtype": "Link",
@@ -1903,12 +1913,106 @@
    "fieldtype": "Text Editor",
    "label": "<b>Guidelines:</b>",
    "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.flooring_class==\"HARDWOOD FLOORING\"",
+   "fieldname": "humidity_and_temperature",
+   "fieldtype": "Data",
+   "label": "<b>Relative humidity and temperature at time of inspection</b>"
+  },
+  {
+   "depends_on": "eval:doc.quality_remarks.length > 0",
+   "fieldname": "tab_10_tab",
+   "fieldtype": "Tab Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "tab_field_list",
+   "fieldtype": "Table MultiSelect",
+   "label": "Tab Field List",
+   "options": "Tab Wise Field Table QI"
+  },
+  {
+   "fieldname": "section_break_bilg",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "pallet_information_guide",
+   "fieldtype": "Text Editor",
+   "label": "<b>Guideline</b>",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_hhki",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "color_match_embossing_guide",
+   "fieldtype": "Text Editor",
+   "label": "<b>Guideline</b>",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_kkrj",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "bevel_over_wax_guide",
+   "fieldtype": "Text Editor",
+   "label": "<b>Guideline</b>",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_garc",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "inner_outer_carton_guide",
+   "fieldtype": "Text Editor",
+   "label": "<b>Guideline</b>",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_meoy",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "moisture_content_guide",
+   "fieldtype": "Text Editor",
+   "label": "<b>Guideline</b>",
+   "read_only": 1
+  },
+  {
+   "fieldname": "open_box_inspection_guide",
+   "fieldtype": "Text Editor",
+   "label": "<b>Guidelines:</b>",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.missing_data_details.length > 0",
+   "fieldname": "tab_11_tab",
+   "fieldtype": "Tab Break",
+   "label": "Missing Data"
+  },
+  {
+   "fieldname": "missing_data_details",
+   "fieldtype": "Table",
+   "label": "Missing Data Details",
+   "options": "Missing Data Fields Details QI"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "quality_remarks",
+   "fieldtype": "Table",
+   "label": "Quality Remarks",
+   "options": "Quality Remark Table QI"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-07-07 21:19:15.346647",
+ "make_attachments_public": 1,
+ "modified": "2025-08-03 21:06:09.363163",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "TAS Quality Control",
@@ -1934,5 +2038,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "track_changes": 1
+ "track_changes": 1,
+ "track_seen": 1
 }
