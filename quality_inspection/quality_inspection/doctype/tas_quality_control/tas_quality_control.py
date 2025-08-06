@@ -25,7 +25,7 @@ class TASQualityControl(Document):
 		self.set_attachments_details()
 		self.set_color_count_for_color_match_and_embossing()
 		self.fill_missing_data_details()
-		# self.check_all_data_mark_as_completed()	
+		self.check_all_data_mark_as_completed()	
 
 	def on_submit(self):
 		# self.validate_over_wax_and_edge_paint_child_table()
