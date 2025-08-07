@@ -615,6 +615,7 @@ class TASQualityControl(Document):
 				
 					row.field_notes = ", ".join((ele if ele!=None else '') for ele in field_details)
 
+				self.flags.ignore_validate = True
 				self.save()
 				# row.fields = data.get("field_notes") or None
 
