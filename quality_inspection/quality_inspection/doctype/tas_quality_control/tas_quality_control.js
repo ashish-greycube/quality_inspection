@@ -283,7 +283,7 @@ frappe.ui.form.on('TAS Quality Control', {
 const take_notes_on_workflow_action_change = function (frm) {
     let dialog_field = []
 
-    if (frm.doc.workflow_state && ["Pending Approval", "Pending Review", "Approved", "Rejected", "Cancelled"].includes(frm.doc.workflow_state)) {
+    if (frm.doc.workflow_state && ["Approved", "Rejected", "Cancelled"].includes(frm.doc.workflow_state)) {
         dialog_field.push(
             {
                 fieldtype: "Table MultiSelect",
