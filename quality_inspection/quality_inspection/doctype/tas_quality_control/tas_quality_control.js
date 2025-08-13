@@ -599,7 +599,11 @@ let set_pallet_details_each_row_property = function (frm) {
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('button_select', false);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('iipa', false);
         }
-    });
+    })
+
+    frm.fields_dict["pallet_details"].grid.grid_rows.forEach((row, idx) => {
+        row.columns['button_select'].click()
+    })
 }
 
 // based on conditions hide unhide table columns

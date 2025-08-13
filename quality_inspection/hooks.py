@@ -81,6 +81,10 @@ app_include_css = "/assets/quality_inspection/css/quality_inspection.css"
 # 	"filters": "quality_inspection.utils.jinja_filters"
 # }
 
+jinja = {
+    "methods": "quality_inspection.quality_inspection.doctype.tas_quality_control.tas_quality_control.doc_tab_wise_field_list"
+}
+
 # Installation
 # ------------
 

@@ -278,7 +278,6 @@
   "tab_11_tab",
   "missing_data_details",
   "tab_10_tab",
-  "tab_field_list",
   "quality_remarks"
  ],
  "fields": [
@@ -1927,12 +1926,6 @@
    "label": "Notes"
   },
   {
-   "fieldname": "tab_field_list",
-   "fieldtype": "Table MultiSelect",
-   "label": "Tab Field List",
-   "options": "Tab Wise Field Table QI"
-  },
-  {
    "fieldname": "section_break_bilg",
    "fieldtype": "Section Break"
   },
@@ -2013,7 +2006,7 @@
  "is_submittable": 1,
  "links": [],
  "make_attachments_public": 1,
- "modified": "2025-08-06 20:41:19.079706",
+ "modified": "2025-08-06 21:41:25.768255",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "TAS Quality Control",
