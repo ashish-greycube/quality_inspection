@@ -251,6 +251,14 @@ after_migrate = "quality_inspection.migrate.after_migrate"
 
 fixtures = [
     {
+        "dt": "Workflow State",
+        "filters": [["name", "in", ("Draft", "Completed", "Pending Approval", "Approved", "On Hold", "Rejected", "Cancelled")]]
+    },
+    {
+        "dt": "Workflow Action Master",
+        "filters": [["name", "in", ("Mark Complete", "Submit & Send For Approval", "Approve", "On Hold", "Reject", "Cancel")]]
+    },
+    {
 		"dt": "Workflow",
 		"filters": [["name", "=", "TQC"]]
     }
