@@ -22,7 +22,9 @@ frappe.ui.form.on('TAS Quality Control', {
         }
 
         setTimeout(() => {
-            $('button.grid-add-row').hide()
+            // $('button.grid-add-row').hide()
+            $(`div.form-group button.grid-add-row`).hide()
+            $(`div.modal-dialog button.grid-add-row`).show()
         }, 1000)
 
         update_child_table_field_property(frm)
@@ -55,7 +57,7 @@ frappe.ui.form.on('TAS Quality Control', {
                         {
                             fieldtype: "Check",
                             fieldname: "allow_child_item_selection",
-                            label: __("Allow Child Item Selection"),
+                            label: __("Allow Primary item selection"),
                             read_only: 0,
                             default: 1,
                             onchange: function (e) {
@@ -282,25 +284,73 @@ frappe.ui.form.on('TAS Quality Control', {
 
 const take_notes_on_workflow_action_change = function (frm) {
     let dialog_field = []
-
-    if (frm.doc.workflow_state && ["Approved", "Rejected", "Cancelled"].includes(frm.doc.workflow_state)) {
-        dialog_field.push(
-            {
-                fieldtype: "Table MultiSelect",
-                fieldname: "field_notes",
-                label: __("Fields"),
-                options: "Tab Wise Field Table QI",
-                read_only: 0,
-            })
-    }
+    
     dialog_field.push(
+        {
+            fieldtype: "Table MultiSelect",
+            fieldname: "tags",
+            label: __("Tags"),
+            options: "Quality Tags Table QI",
+            read_only: 0,
+        }
+        // {
+        //     fieldtype: "Small Text",
+        //     fieldname: "tags",
+        //     label: __("Tags"),
+        //     read_only: 0,
+        //     description: "Enter multiple tags, separated by commas."
+        // }
+    )
+
+    let table_fields = [
+        {
+            fieldtype: "Link",
+            fieldname: "tab_field",
+            label: __("Tab-Fieldname"),
+            options: "Tab Wise Field Name QI",
+            read_only: 0,
+            in_list_view: 1,
+        },
         {
             fieldtype: "Small Text",
             fieldname: "notes",
             label: __("Notes"),
             read_only: 0,
+            in_list_view: 1,
         }
-    )
+    ]
+
+    if (frm.doc.workflow_state && ["Approved", "Rejected", "On Hold", "Cancelled"].includes(frm.doc.workflow_state)) {
+        // dialog_field.push(
+        //     {
+        //         fieldtype: "Table MultiSelect",
+        //         fieldname: "field_notes",
+        //         label: __("Fields"),
+        //         options: "Tab Wise Field Table QI",
+        //         read_only: 0,
+        //     })
+        dialog_field.push(
+            {
+                label: "Notes (Field Wise)",
+                fieldname: "field_wise_notes",
+                fieldtype: "Table",
+                cannot_add_rows: false,
+                cannot_delete_rows: false,
+                in_place_edit: false,
+                reqd: 0,
+                fields: table_fields,
+            })
+    }
+    else {
+        dialog_field.push(
+            {
+                fieldtype: "Small Text",
+                fieldname: "notes",
+                label: __("Notes"),
+                read_only: 0,
+            })
+    }
+    
 
     // let promise = new Promise((resolve, reject) => {
     frappe.dom.unfreeze()
@@ -429,7 +479,7 @@ const table_details = [
     {
         'table_name': "Open Box Inspection Details QI",
         'table_field_name': "open_box_inspection_details_",
-        'button_list': ['bowing_select', 'ledging_overwood_select', 'max_opening_result', 'pad_away_select', 'depth_result']
+        'button_list': ['bowing_select', 'ledging_overwood_select', 'max_opening_result', 'pad_away_select', 'master_depth_result','depth_result']
     },
     {
         'table_name': "Width And Thickness Details QI",
@@ -871,6 +921,12 @@ let set_row_above_table_header = function (frm) {
                             <div class="col grid-static-col col-xs-4 text-right" style="border-left:1px solid #3b3838; padding-right: 5px !important;"> Pad Away From the
                             </div>
                             <div class="col grid-static-col col-xs-4 text-left" style="padding-left: 0px !important;"> Locking System
+                            </div>
+                            <div class="col grid-static-col col-xs-4 " style="border-left:1px solid #3b3838;">
+                            </div>
+                            <div class="col grid-static-col col-xs-4 " style="">Master Depth for BP Press
+                            </div>
+                            <div class="col grid-static-col col-xs-4 " style="" >
                             </div>
                             <div class="col grid-static-col col-xs-4 " style="border-left:1px solid #3b3838;">
                             </div>

@@ -18,6 +18,10 @@
   "column_break_tpvg",
   "finished_board",
   "pad_away_select",
+  "column_break_xahi",
+  "master_depth_photo",
+  "master_bp_press_depth",
+  "master_depth_result",
   "column_break_kejd",
   "depth_photo",
   "bp_press_depth",
@@ -134,12 +138,40 @@
    "in_list_view": 1,
    "label": "Depth Result",
    "read_only": 1
+  },
+  {
+   "fieldname": "column_break_xahi",
+   "fieldtype": "Column Break",
+   "label": "Master Depth for BP Press"
+  },
+  {
+   "columns": 4,
+   "fieldname": "master_depth_photo",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Depth Photo"
+  },
+  {
+   "columns": 4,
+   "fieldname": "master_bp_press_depth",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "BP Press Depth"
+  },
+  {
+   "columns": 4,
+   "default": "To Do",
+   "fieldname": "master_depth_result",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Depth Result",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-07-17 22:12:21.555982",
+ "modified": "2025-08-14 00:41:25.190684",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Open Box Inspection Details QI",

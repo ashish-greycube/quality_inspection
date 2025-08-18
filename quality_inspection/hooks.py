@@ -249,3 +249,9 @@ after_migrate = "quality_inspection.migrate.after_migrate"
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
+fixtures = [
+    {
+		"dt": "Workflow",
+		"filters": [["name", "=", "TQC"]]
+    }
+]

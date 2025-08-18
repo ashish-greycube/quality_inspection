@@ -278,6 +278,7 @@
   "tab_11_tab",
   "missing_data_details",
   "tab_10_tab",
+  "tags",
   "quality_remarks"
  ],
  "fields": [
@@ -1999,6 +2000,14 @@
    "fieldtype": "Table",
    "label": "Quality Remarks",
    "options": "Quality Remark Table QI"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "tags",
+   "fieldtype": "Table MultiSelect",
+   "label": "Tags",
+   "options": "Quality Tags Table QI",
+   "read_only": 1
   }
  ],
  "hide_toolbar": 1,
@@ -2006,7 +2015,7 @@
  "is_submittable": 1,
  "links": [],
  "make_attachments_public": 1,
- "modified": "2025-08-06 21:41:25.768255",
+ "modified": "2025-08-18 00:17:59.665712",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "TAS Quality Control",

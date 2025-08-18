@@ -203,8 +203,8 @@ class TASQualityControl(Document):
 		self.moisture_undetermined_ratio = flt((moisture[3]), 2)
 		self.moisture_todo_ratio = flt((moisture[4]), 2)
 
-		open = self.calculate_attachments_details("open_box_inspection_details_", ['max_opening_photo','finished_board', 'depth_photo'],
-											['bowing_select', 'ledging_overwood_select', 'max_opening_result','pad_away_select', 'depth_result'])
+		open = self.calculate_attachments_details("open_box_inspection_details_", ['max_opening_photo','finished_board', 'master_depth_photo', 'depth_photo'],
+											['bowing_select', 'ledging_overwood_select', 'max_opening_result','pad_away_select', 'master_depth_result','depth_result'])
 		self.open_total_attachment = open[0]
 		self.open_pending_attachment = open[1]
 		self.open_pass_ration = flt((open[2]), 2)
@@ -581,7 +581,7 @@ class TASQualityControl(Document):
 											missing_row.child_or_parent_name = self.get(parent_field_name)
 
 	def check_all_data_mark_as_completed(self):
-		if self.workflow_state and self.workflow_state in ["Completed", "Pending Approval", "Pending Review"] and len(self.missing_data_details) > 0:
+		if self.workflow_state and self.workflow_state in ["Completed", "Pending Approval"] and len(self.missing_data_details) > 0:
 			mark_as_completed = True
 
 			for row in self.missing_data_details:
@@ -599,24 +599,48 @@ class TASQualityControl(Document):
 		if remarks:
 			data = remarks[0]
 			# remarks = remarks.as_dict()
-			if data.get("notes"):
+			# if data.get("notes"):
+			print(data, "======data======")
+			# if self.tags:
+			# 	self.tags = self.tags + " ," + (data.get("tags") or '')
+			# else:
+			# self.tags = (self.tags or "") + (data.get("tags") or '')
+			if data.get("tags") and len(data.get("tags")):
+				for t in data.get("tags"):
+					self.append("tags", {
+						"tags": t.get("tags")
+					})
+					
+
+			print(self.tags, "==========self.tags====")
+
+			if data.get("field_wise_notes") and len(data.get("field_wise_notes")) > 0:
+				for d in data.get("field_wise_notes"):
+					row = self.append("quality_remarks", {})
+					row.action = self.workflow_state
+					row.actor = frappe.session.user
+					row.date_time = now()
+					row.notes = d.get("notes")
+					row.field_notes = d.get("tab_field")
+
+			elif data.get("notes"):
 				row = self.append("quality_remarks", {})
 				row.action = self.workflow_state
 				row.actor = frappe.session.user
 				row.date_time = now()
 				row.notes = data.get("notes")
 				
-				field_details = []
-				if data.get("field_notes"):
-					for f in data.get("field_notes"):
-						field_details.append(f.get("tab_wise_field_name"))
-						# d = row.append("field_notes", {})
-						# d.tab_wise_field_name = f.get("tab_wise_field_name")
+				# field_details = []
+				# if data.get("field_notes"):
+				# 	for f in data.get("field_notes"):
+				# 		field_details.append(f.get("tab_wise_field_name"))
+				# 		# d = row.append("field_notes", {})
+				# 		# d.tab_wise_field_name = f.get("tab_wise_field_name")
 				
-					row.field_notes = ", ".join((ele if ele!=None else '') for ele in field_details)
+				# 	row.field_notes = ", ".join((ele if ele!=None else '') for ele in field_details)
 
-				self.flags.ignore_validate = True
-				self.save()
+			self.flags.ignore_validate = True
+			self.save()
 				# row.fields = data.get("field_notes") or None
 
 
@@ -768,13 +792,14 @@ def doc_tab_wise_field_list():
 		},
 		{ 	"tab_name": "Open Box Inspection", "result_field_prefix": "open_",  "tas_po_field": "po_open_", "table_fieldname" : "open_box_inspection_details_",
 			"table_field_list": [
-				{"label": "Bowing", "fieldname": ["bowing_select"], "width": "20%"},
-				{"label": "Ledging Overwood", "fieldname": ["ledging_overwood_select"], "width": "20%"},
-				{"label": "Max Opening Between Boards", "fieldname": ["max_opening", "max_opening_result"], "width": "20%"},
-				{"label": "Pad Away From the Locking System", "fieldname": ["pad_away_select"], "width": "20%"},
-				{"label": "Depth for BP Press", "fieldname": ["bp_press_depth", "depth_result"], "width": "20%"},
+				{"label": "Bowing", "fieldname": ["bowing_select"], "width": "16.6%"},
+				{"label": "Ledging Overwood", "fieldname": ["ledging_overwood_select"], "width": "16.6%"},
+				{"label": "Max Opening Between Boards", "fieldname": ["max_opening", "max_opening_result"], "width": "16.6%"},
+				{"label": "Pad Away From the Locking System", "fieldname": ["pad_away_select"], "width": "16.6%"},
+				{"label": "Master Depth for BP Press", "fieldname": ["master_bp_press_depth", "master_depth_result"], "width": "16.6%"},
+				{"label": "Depth for BP Press", "fieldname": ["bp_press_depth", "depth_result"], "width": "16.6%"},
 			],
-			"attachment_fields": ['max_opening_photo','finished_board', 'depth_photo'],
+			"attachment_fields": ['max_opening_photo','finished_board', 'master_depth_photo', 'depth_photo'],
 		}, 
 		{ 	"tab_name": "Width & Thickness", "result_field_prefix": "width_",  "tas_po_field": "po_width_", "table_fieldname" : "width_and_thickness_details_",
 			"table_field_list": [
