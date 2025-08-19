@@ -610,6 +610,7 @@ class TASQualityControl(Document):
 					self.append("tags", {
 						"tags": t.get("tags")
 					})
+					self.add_tag(t.get("tags"))
 					
 
 			print(self.tags, "==========self.tags====")
