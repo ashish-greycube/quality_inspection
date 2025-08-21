@@ -31,8 +31,7 @@
                     <h2><b>No Of PO: </b> {{doc.no_of_po}} </h2>
                 </td>
                 <td>
-                    <h2><b>Flooring Class: </b>{{doc.flooring_class}}</h2>
-                    <p>This determines participation of quality parameters</p>
+                    <h2><b>Company: </b> {{doc.company}}</h2>
                 </td>
             </tr>
             <tr>
@@ -49,11 +48,18 @@
                     </table>
                 </td>
                 <td>
-                    {% if doc.humidity_and_temperature %}
-                    <h2><b>Relative humidity and temperature at time of inspection :</b> {{doc.humidity_and_temperature}}</h2>
-                    {% endif %}
+                    <h2><b>Flooring Class: </b>{{doc.flooring_class}}</h2>
+                    <p>This determines participation of quality parameters</p>
+
                 </td>
             </tr>
+            {% if doc.humidity_and_temperature %}
+            <tr>
+                <td colspan="2">
+                    <h3><b>Relative humidity and temperature at time of inspection :</b> {{doc.humidity_and_temperature}}</h3>
+                </td>
+            </tr>
+            {% endif %}
         </table>
 
         <!----------------------- Other Pages --------------------------->

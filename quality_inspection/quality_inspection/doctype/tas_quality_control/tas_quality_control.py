@@ -407,6 +407,7 @@ class TASQualityControl(Document):
 				row = self.append("pallet_details")
 				row.tas_po = po
 
+	@frappe.whitelist()
 	def set_default_values_and_guidelines(self):
 		qi_settings = frappe.get_doc('Quality Inspection Settings QI')
 

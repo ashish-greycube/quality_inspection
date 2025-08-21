@@ -1,9 +1,14 @@
 // Copyright (c) 2024, GreyCube Technologies and contributors
 // For license information, please see license.txt
 
+//////////////// Whenever a child table field is updated, the following will also be updated: ////////////////
+// JS: table_details, set_row_above_table_header
+// PY: doc_tab_wise_field_list (field_list), set_attachments_details
+
 frappe.ui.form.on('TAS Quality Control', {
     onload(frm) {
         setStatusInTableField(frm)
+        frm.call("set_default_values_and_guidelines")
         // ("[data-fieldname='color_equipment']").scrollIntoView();
     },
 
@@ -651,9 +656,11 @@ let set_pallet_details_each_row_property = function (frm) {
         }
     })
 
-    frm.fields_dict["pallet_details"].grid.grid_rows.forEach((row, idx) => {
+    if (frm.doc.docstatus == 0){
+        frm.fields_dict["pallet_details"].grid.grid_rows.forEach((row, idx) => {
         row.columns['button_select'].click()
     })
+    }
 }
 
 // based on conditions hide unhide table columns
@@ -712,9 +719,9 @@ let set_row_above_table_header = function (frm) {
                                 <div class="" style="width:71px"></div>
                                 <div class="col grid-static-col col-xs-4 " style="">
                                 </div>
-                                <div class="col grid-static-col col-xs-4 text-right" style="border-left:1px solid #3b3838"> Color Match </div>
-                                <div class="col grid-static-col col-xs-4 " style=""></div>
-                                <div class="col grid-static-col col-xs-4 text-center" style="border-left:1px solid #3b3838"> Results </div>
+                                <div class="col grid-static-col col-xs-4" style="border-left:1px solid #3b3838"> </div>
+                                <div class="col grid-static-col col-xs-4 text-center" style="">  Color Match </div>
+                                <div class="col grid-static-col col-xs-4 text-center" style="">  </div>
                                 <div class="col grid-static-col col-xs-4 text-center" style="border-left:1px solid #3b3838"> Embossing </div>
                                 <div class="col grid-static-col col-xs-4 text-right" style="border-left:1px solid #3b3838">Pattern</div>
                                 <div class="col grid-static-col col-xs-4 " style="padding-left: 0px !important;">Repeat</div>
