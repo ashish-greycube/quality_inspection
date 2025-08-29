@@ -2,9 +2,10 @@
 # For license information, please see license.txt
 
 import frappe
+import erpnext
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import cstr, flt, getdate, nowdate, add_to_date, now
+from frappe.utils import cstr, flt, getdate, nowdate, add_to_date, now, get_url
 
 from frappe.utils.pdf import get_pdf, prepare_options, inline_private_images, get_cookie_options
 import json
@@ -687,18 +688,56 @@ def get_document_report_pdf(doc):
 	# 		)
 
 	template_path = "quality_inspection/templates/document_report_pdf.html"
+
+	company = doc.get("company") or erpnext.get_default_company()
+	letter_head = get_letter_head_name(company)
+	header_html, footer_html = frappe.db.get_value("Letter Head", letter_head, ["content", "footer"])
+	# print(footer_html, "==============footer_html====================", type(footer_html), "===========")
+
 	html = frappe.render_template(template_path,  dict(doc=doc))
 	# print(html, "================html")
 
+	import tempfile
+
+	header = tempfile.NamedTemporaryFile(delete=True,suffix='.html')
+	with open(header.name, 'w') as h:
+		h.write("""
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<meta charset="UTF-8">
+				</head>
+				<body>
+		  			{0}
+				</body>
+				</html>
+				""".format(header_html.format(get_url=get_url())))
+		
+	footer = tempfile.NamedTemporaryFile(delete=True,suffix='.html')
+	with open(footer.name, 'w') as f:
+		f.write("""
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<meta charset="UTF-8">
+				</head>
+				<body>
+					{0}
+				</body>
+				</html>
+				""".format(footer_html.format(get_url=get_url())))
 	
 	options = {
 		'enable-internal-links': '',
 		"page-size": "A3", 
-		"margin-top": "10mm", "margin-right": "10mm", "margin-bottom": "10mm", "margin-left": "10mm",
+		"margin-top": "28mm", "margin-right": "10mm", "margin-bottom": "28mm", "margin-left": "10mm",
 		"disable-javascript": "", 
 		"disable-local-file-access": "",
 		'encoding': "UTF-8",
 		'user-style-sheet': 'frappe/templates/styles/standard.css',
+		'header-html': header.name,
+		'footer-html': footer.name,
+		'footer-font-size': "9",
 		'custom-header': [
         ('Accept-Encoding', 'gzip'),
     ],
@@ -721,7 +760,19 @@ def get_document_report_pdf(doc):
 	frappe.local.response.filecontent = pdfkit.from_string(html, options=options or {}, verbose=True)
 	frappe.local.response.type = "pdf"
 
+	header.close()
+	footer.close()
+
+
 	# pdfkit.from_string(html, options=options or {}, verbose=True)
+
+def get_letter_head_name(company):
+	company_letter_head = frappe.db.get_value("Company", company, "default_letter_head")
+	if company_letter_head:
+		return company_letter_head
+	else:
+		default_letter_head = frappe.db.get_value("Letter Head", {"is_default": 1}, "name")
+		return default_letter_head
 
 @frappe.whitelist()
 def doc_tab_wise_field_list():
