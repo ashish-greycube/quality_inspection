@@ -13,14 +13,14 @@
   "installation_id",
   "installation_photo",
   "installation_status",
-  "corner_width_column",
+  "corner_reading_column",
+  "corner_height",
   "current_width",
   "width",
   "button_select",
+  "ippc_column",
   "iipa",
-  "height_column",
-  "height_reading",
-  "height"
+  "ippc_photo"
  ],
  "fields": [
   {
@@ -37,7 +37,7 @@
    "fieldname": "current_width",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Corner Reading (inch)",
+   "label": "Corner Width (inch)",
    "precision": "2"
   },
   {
@@ -47,21 +47,6 @@
    "fieldtype": "Attach",
    "in_list_view": 1,
    "label": "Corner Photo"
-  },
-  {
-   "columns": 3,
-   "fieldname": "height_reading",
-   "fieldtype": "Float",
-   "in_list_view": 1,
-   "label": "Height Reading (cm)",
-   "precision": "2"
-  },
-  {
-   "columns": 3,
-   "fieldname": "height",
-   "fieldtype": "Attach",
-   "in_list_view": 1,
-   "label": "Height Photo"
   },
   {
    "columns": 4,
@@ -85,16 +70,6 @@
   {
    "fieldname": "section_break_htuq",
    "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "corner_width_column",
-   "fieldtype": "Column Break",
-   "label": "Corner Width"
-  },
-  {
-   "fieldname": "height_column",
-   "fieldtype": "Column Break",
-   "label": "Height"
   },
   {
    "fieldname": "installation_column",
@@ -132,15 +107,41 @@
    "fieldname": "iipa",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "IIPA",
+   "label": "IPPC",
    "read_only": 1
+  },
+  {
+   "fieldname": "ippc_column",
+   "fieldtype": "Column Break",
+   "label": "IPPC"
+  },
+  {
+   "columns": 3,
+   "fieldname": "ippc_photo",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "IPPC Photo"
+  },
+  {
+   "fieldname": "corner_reading_column",
+   "fieldtype": "Column Break",
+   "label": "Corner Reading"
+  },
+  {
+   "columns": 3,
+   "depends_on": "eval:doc.pallet_type==\"Plywood\"",
+   "fieldname": "corner_height",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Corner Height (inch)",
+   "precision": "2"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-07-07 03:01:40.547202",
+ "modified": "2025-09-02 04:44:05.897800",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Pallet Information QI",

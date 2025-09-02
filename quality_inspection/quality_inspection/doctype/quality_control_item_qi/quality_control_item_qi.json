@@ -47,6 +47,7 @@
   {
    "fieldname": "tas_po_item_ref",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "TAS PO Item Ref",
    "read_only": 1
   }
@@ -55,12 +56,13 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-31 19:52:37.780046",
+ "modified": "2025-09-01 21:50:54.881739",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Quality Control Item QI",
  "owner": "Administrator",
  "permissions": [],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

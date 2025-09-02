@@ -91,6 +91,8 @@ class TASQualityControl(Document):
 					for attach in attach_field_list:
 						if row.pallet_type != "Plywood" and attach == "width":
 							continue
+						elif row.pallet_type != "Hardwood" and attach == "ippc_photo":
+							continue
 						else:
 							if not row.get(attach):
 								pendings = pendings + 1
@@ -132,9 +134,9 @@ class TASQualityControl(Document):
 								total_attachments = total_attachments + 1
 
 							for select in select_field_list:
-								if child_table_name == "inner_and_outer_carton_details_" + cstr(i+1) and self.flooring_class == "LVP & WPC" and select == "carb_select":
+								if child_table_name == "inner_and_outer_carton_details_" + cstr(i+1) and self.flooring_class == "LV Glue down - WPC RC/SPC" and select == "carb_select":
 									continue
-								elif child_table_name == "over_wax_and_edge_paint_" + cstr(i+1) and self.flooring_class == "LVP & WPC" and select == "over_wax_select":
+								elif child_table_name == "over_wax_and_edge_paint_" + cstr(i+1) and self.flooring_class == "LV Glue down - WPC RC/SPC" and select == "over_wax_select":
 									continue
 								elif child_table_name == "over_wax_and_edge_paint_" + cstr(i+1) and self.flooring_class == "HARDWOOD FLOORING" and select == "edge_paint_select":
 									continue
@@ -158,7 +160,7 @@ class TASQualityControl(Document):
 		return total_attachments, pendings, pass_ration, undetermined_ratio, todo_ration
 	
 	def set_attachments_details(self):
-		pallet = self.calculate_attachments_details("pallet_details", ['installation_photo','width', 'height'], ['button_select', 'installation_status', 'iipa'])
+		pallet = self.calculate_attachments_details("pallet_details", ['installation_photo','width', 'ippc_photo'], ['button_select', 'installation_status', 'iipa'])
 		self.pallet_total_attachment = pallet[0]
 		self.pallet_pending_attachment = pallet[1]
 		self.pallet_pass_ration = flt((pallet[2]), 2)
@@ -213,7 +215,7 @@ class TASQualityControl(Document):
 		self.open_todo_ratio = flt((open[4]), 2)
 
 		width = self.calculate_attachments_details("width_and_thickness_details_", 
-											 ['finished_board_1', 'finished_board_2', 'finished_board_3', 'master_sample_matching_board'],
+											 ['finished_board_2', 'finished_board_3', 'master_sample_matching_board'],
 											 ['manual_select'])
 		self.width_total_attachment = width[0]
 		self.width_pending_attachment = width[1]
@@ -273,8 +275,8 @@ class TASQualityControl(Document):
 					if unique == po.get('tas_po'):
 						item_doc = frappe.db.get_all("TAS Purchase Order Item",
 								   parent_doctype="TAS Purchase Order",
-								   filters={"parent": po.get('tas_po'), "item_no": po.get('item_no'), "qty": po.get('qty') },
-								   fields=["name", "parent", "item_no", "item_desc", "qty", "color"],
+								   filters={"parent": po.get('tas_po'), "item_no": po.get('item_no'), "custom_qty_ord": po.get('qty') },
+								   fields=["name", "parent", "item_no", "item_desc", "custom_qty_ord", "color"],
 								   limit=1
 								   )
 						
@@ -283,7 +285,7 @@ class TASQualityControl(Document):
 							po1 = self.append(child_table_name, {})
 							# po1.item = po.item_no
 							po1.item_name = item_doc[0].item_desc
-							po1.qty = item_doc[0].qty
+							po1.qty = item_doc[0].custom_qty_ord
 							po1.item_color = cstr(item_doc[0].item_no) + "-" +(cstr(item_doc[0].color).upper() or '')
 							po1.tas_po_ref = item_doc[0].parent
 							po1.tas_po_item_ref = item_doc[0].name
@@ -341,7 +343,7 @@ class TASQualityControl(Document):
 						child_table_name="quality_control_item_"+cstr(idx+1)
 						
 						not_used_items = frappe.db.sql(""" 
-							SELECT ti.item_no ,ti.item_desc, ti.qty , ti.color, ti.parent, ti.name  
+							SELECT ti.item_no ,ti.item_desc, ti.custom_qty_ord as qty , ti.color, ti.parent, ti.name  
 								FROM `tabTAS Purchase Order Item` as ti 
 								WHERE ti.parent = '{0}' 
 								and ti.name NOT IN (SELECT qi.tas_po_item_ref FROM `tabQuality Control Item QI` as qi WHERE qi.docstatus = 1)
@@ -447,7 +449,7 @@ class TASQualityControl(Document):
 			self.assembling_gap = qi_settings.width_thickness_guide
 
 	def validate_over_wax_and_edge_paint_child_table(self):
-		if self.get("no_of_po") and self.no_of_po > 0 and self.flooring_class != "LVP & WPC":
+		if self.get("no_of_po") and self.no_of_po > 0 and self.flooring_class != "LV Glue down - WPC RC/SPC":
 			items = []
 			for i in range(self.no_of_po):
 				child_table_name="over_wax_and_edge_paint_"+cstr(i+1)
@@ -542,19 +544,19 @@ class TASQualityControl(Document):
 									missing_row_data = False
 									if field.fieldtype in ["Attach", "Currency", "Data", "Date", "Datetime", "Float", "Int","Link", "Percent", "Select"] and field.hidden == 0:
 										
-										if table.get("table_name") == "inner_and_outer_carton_details_" and field.fieldname == "carb_select" and self.flooring_class == "LVP & WPC":
+										if table.get("table_name") == "inner_and_outer_carton_details_" and field.fieldname == "carb_select" and self.flooring_class == "LV Glue down - WPC RC/SPC":
 											missing_row_data = False
 
-										elif table.get("table_name") == "over_wax_and_edge_paint_" and field.fieldname == "over_wax_select" and self.flooring_class == "LVP & WPC":
+										elif table.get("table_name") == "over_wax_and_edge_paint_" and field.fieldname == "over_wax_select" and self.flooring_class == "LV Glue down - WPC RC/SPC":
 											missing_row_data = False
 
 										elif table.get("table_name") == "over_wax_and_edge_paint_" and field.fieldname == "edge_paint_select" and self.flooring_class == "HARDWOOD FLOORING":
 											missing_row_data = False
 										
-										elif table.get("table_name") == "pallet_details" and field.fieldname in ["current_width", "width", "button_select"] and row.pallet_type != "Plywood":
+										elif table.get("table_name") == "pallet_details" and field.fieldname in ["corner_height","current_width", "width", "button_select"] and row.pallet_type != "Plywood":
 											missing_row_data = False
 										
-										elif table.get("table_name") == "pallet_details" and field.fieldname in ["iipa"] and row.pallet_type != "Hardwood":
+										elif table.get("table_name") == "pallet_details" and field.fieldname in ["iipa", "ippc_photo"] and row.pallet_type != "Hardwood":
 											missing_row_data = False
 
 										elif field.fieldtype == "Data":
@@ -662,7 +664,7 @@ def get_tas_po(vendor):
 @frappe.whitelist()
 def get_tas_po_items(vendor):	
 	tas_po_items = frappe.db.sql("""
-		SELECT tas.name as tas_po, ti.item_no, ti.qty, ti.color, ti.name as item_name 
+		SELECT tas.name as tas_po, ti.item_no, ti.custom_qty_ord as qty, ti.color, ti.name as item_name 
 			From `tabTAS Purchase Order Item` as ti INNER JOIN `tabTAS Purchase Order` as tas ON  tas.name = ti.parent 
 			WHERE tas.vendor = '{0}' 
 							  and ti.name NOT IN (SELECT qi.tas_po_item_ref FROM `tabQuality Control Item QI` as qi WHERE qi.docstatus = 1);
@@ -783,12 +785,12 @@ def doc_tab_wise_field_list():
 				{"label": "Pallet Type", "fieldname": ["pallet_type"], "width": "12.5%"},
 				{"label": "Installation ID", "fieldname": ["installation_id"], "width": "12.5%"},
 				{"label": "Installation Status", "fieldname": ["installation_status"], "width": "12.5%"},
-				{"label": "Corner Reading (inch)", "fieldname": ["current_width"], "width": "12.5%"},
+				{"label": "Corner Reading (inch)", "fieldname": ["corner_height","current_width"], "width": "12.5%"},
 				{"label": "Corner Status", "fieldname": ["button_select"], "width": "12.5%"},
 				{"label": "IIPA", "fieldname": ["iipa"], "width": "12.5%"},
 				{"label": "Height Reading (cm)", "fieldname": ["height_reading"], "width": "12.5%"},
 			],
-			"attachment_fields": ["installation_photo", "width", "height"]
+			"attachment_fields": ["installation_photo", "width", "ippc_photo"]
 		},
 		{ 	"tab_name": "Inner & Outer Carton", "result_field_prefix": "inner_",  "tas_po_field": "carton_po_", "table_fieldname" : "inner_and_outer_carton_details_",
 			"table_field_list": [
@@ -856,12 +858,13 @@ def doc_tab_wise_field_list():
 		}, 
 		{ 	"tab_name": "Width & Thickness", "result_field_prefix": "width_",  "tas_po_field": "po_width_", "table_fieldname" : "width_and_thickness_details_",
 			"table_field_list": [
-				{"label": "Width", "fieldname": ["width_1"], "width": "25%"},
-				{"label": "Thickness without padding", "fieldname": ["thickness_without_padding_1"], "width": "25%"},
-				{"label": "Thickness with Padding", "fieldname": ["thickness_with_padding_1"], "width": "25%"},
-				{"label": "Manual Pull Test", "fieldname": ["manual_select"], "width": "25%"},
+				{"label": "Length (mm)", "fieldname": ["length"], "width": "20%"},
+				{"label": "Width (mm)", "fieldname": ["width_1"], "width": "20%"},
+				{"label": "Thickness without padding", "fieldname": ["thickness_without_padding_1"], "width": "20%"},
+				{"label": "Thickness with Padding", "fieldname": ["thickness_with_padding_1"], "width": "20%"},
+				{"label": "Manual Pull Test", "fieldname": ["manual_select"], "width": "20%"},
 			],
-			"attachment_fields": ['finished_board_1', 'finished_board_2', 'finished_board_3', 'master_sample_matching_board'],
+			"attachment_fields": ['finished_board_2', 'finished_board_3', 'master_sample_matching_board'],
 		},
 	]
 	return field_list

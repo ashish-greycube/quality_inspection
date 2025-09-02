@@ -18,7 +18,9 @@
   "section_break_ipiw",
   "pattern_repeat",
   "column_break_vuxo",
-  "pattern_repeat_photo"
+  "pattern_repeat_photo",
+  "column_break_pwqb",
+  "pattern_repeat_count"
  ],
  "fields": [
   {
@@ -104,12 +106,23 @@
    "fieldtype": "Attach",
    "in_list_view": 1,
    "label": "Pattern Repeat Photo"
+  },
+  {
+   "fieldname": "column_break_pwqb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "columns": 4,
+   "fieldname": "pattern_repeat_count",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Pattern Repeat Count"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-07-17 21:04:35.970962",
+ "modified": "2025-09-01 22:14:06.684877",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Color Match and Embossing Details QI",

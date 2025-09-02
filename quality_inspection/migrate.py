@@ -78,6 +78,12 @@ def after_migrate():
         print("Equipment QI: Vernier Calipers created")
 
     qi = frappe.get_doc('Quality Inspection Settings QI')
+    if qi.pallet_information_guide == "" or qi.pallet_information_guide == None or qi.pallet_information_guide == '<div class="ql-editor read-mode"><p><br></p></div>':
+        qi.pallet_information_guide = '<div class="ql-editor read-mode"><p><strong>Installation Instructions:</strong></p><ol><li data-list="bullet"><span class="ql-ui" contenteditable="false"></span>If installation instructions are inconsistent with the installation ID then we need a photo</li><li data-list="bullet"><span class="ql-ui" contenteditable="false"></span>In case of misprint, printing old instructions etc</li></ol><p><strong>IPPC:</strong></p><ol><li data-list="bullet"><span class="ql-ui" contenteditable="false"></span>Solid wood pallet with IPPC stamp or plywood pallet with 8” corner blocks</li></ol><p><br></p></div>'
+
+    if qi.inner_outer_carton_guide == "" or qi.inner_outer_carton_guide == None or qi.inner_outer_carton_guide == '<div class="ql-editor read-mode"><p><br></p></div>':
+        qi.inner_outer_carton_guide = '<div class="ql-editor read-mode"><ol><li data-list="bullet"><span class="ql-ui" contenteditable="false"></span>Hologram &amp; Carb II check to be inspected only for WPC RC/SPC</li></ol></div>'
+
     if qi.gloss_level_guide == "" or qi.gloss_level_guide == None or qi.gloss_level_guide == '<div class="ql-editor read-mode"><p><br></p></div>':
         qi.gloss_level_guide = '<div class="ql-editor read-mode"><ol><li data-list="ordered"><span class="ql-ui" contenteditable="false"></span>Take five boards from all of the cartons to test gloss levels</li><li data-list="ordered"><span class="ql-ui" contenteditable="false"></span>Reading from finished board that matches master sample</li><li data-list="ordered"><span class="ql-ui" contenteditable="false"></span>Highest reading found on the finished board used for (1)</li><li data-list="ordered"><span class="ql-ui" contenteditable="false"></span>Lowest reading found on the finished board used for (1)</li><li data-list="ordered"><span class="ql-ui" contenteditable="false"></span>2 average readings from 2 different planks</li><li data-list="ordered"><span class="ql-ui" contenteditable="false"></span>Gloss level: PASS = +/- 1°, FAIL = +/- 2°</li></ol></div>'
         

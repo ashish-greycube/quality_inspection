@@ -501,6 +501,7 @@ const statusColorMap = {
     "Fail - Major": "#FF8343",
     "Fail - Critical": "#B43F3F",
     "Undetermined": "#FABC3F",
+    "Not Applicable": "#5EABD6",
 }
 
 const btn_template = `
@@ -637,22 +638,28 @@ let set_html_details = function (frm) {
 let set_pallet_details_each_row_property = function (frm) {
     frm.doc.pallet_details.forEach(e => {
         if (e.pallet_type && e.pallet_type == "Plywood") {
+            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('corner_height', true);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('current_width', true);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('width', true);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('button_select', true);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('iipa', false);
+            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('ippc_photo', false);
         }
         else if (e.pallet_type && e.pallet_type == "Hardwood") {
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('iipa', true);
+            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('ippc_photo', true);
+            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('corner_height', false);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('current_width', false);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('width', false);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('button_select', false);
         }
         else {
+            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('corner_height', false);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('current_width', false);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('width', false);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('button_select', false);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('iipa', false);
+            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('ippc_photo', false);
         }
     })
 
@@ -668,7 +675,7 @@ let update_child_table_field_property = function (frm) {
     let inner_outer_tables = create_child_table_list(frm, 'inner_and_outer_carton_details_')
     if (inner_outer_tables.length > 0) {
         for (const inner_table of inner_outer_tables) {
-            if (frm.doc.flooring_class == 'LVP & WPC') {
+            if (frm.doc.flooring_class == 'LV Glue down - WPC RC/SPC') {
                 frm.fields_dict[inner_table].grid.update_docfield_property("carb_select", "hidden", 1);
                 frm.fields_dict[inner_table].grid.update_docfield_property("carb_select", "in_list_view", 0);
                 frm.fields_dict[inner_table].grid.reset_grid();
@@ -684,7 +691,7 @@ let update_child_table_field_property = function (frm) {
     let over_wax_tables = create_child_table_list(frm, 'over_wax_and_edge_paint_')
     if (over_wax_tables.length > 0) {
         for (const over_table of over_wax_tables) {
-            if (frm.doc.flooring_class == 'LVP & WPC') {
+            if (frm.doc.flooring_class == 'LV Glue down - WPC RC/SPC') {
                 frm.fields_dict[over_table].grid.update_docfield_property("over_wax_select", "hidden", 1);
                 frm.fields_dict[over_table].grid.update_docfield_property("over_wax_select", "in_list_view", 0);
             }
@@ -708,6 +715,33 @@ let update_child_table_field_property = function (frm) {
 
 
 let set_row_above_table_header = function (frm) {
+    if (frm.doc.pallet_details.length  > 0){
+        if (frm.fields_dict.pallet_details.grid.wrapper.find('.grid-heading-row').find('#pallet_table').length == 0) {
+            frm.fields_dict.pallet_details.grid.wrapper.find('div.grid-heading-row').prepend(`
+                <div id="pallet_table" style="background-color: #f3f3f3;">
+                    <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
+                        <div class="" style="width:71px"></div>
+                        <div class="col grid-static-col col-xs-3" style=""></div>
+                        <div class="col grid-static-col col-xs-3" style=""></div>
+                        <div class="col grid-static-col col-xs-3" style="border-left:1px solid #3b3838"></div>
+                        <div class="col grid-static-col col-xs-3 text-center" style="">Installation</div>
+                        <div class="col grid-static-col col-xs-4" style=""> </div>
+                        <div class="col grid-static-col col-xs-3" style="border-left:1px solid #3b3838"></div>
+                        <div class="col grid-static-col col-xs-3 text-right" style="padding-right: 0px !important;">Corner</div>
+                        <div class="col grid-static-col col-xs-3" style="">Reading</div>
+                        <div class="col grid-static-col col-xs-4" style=""></div>
+                        <div class="col grid-static-col col-xs-4 text-right" style="border-left:1px solid #3b3838">IPPC</div> 
+                        <div class="col grid-static-col col-xs-3" style=""></div>
+                        <div class="" style="border-radius: 0px 10px 0px 0px; width: 30px;">
+                        </div>
+                    </div>
+                </div>
+                `)
+        }
+        frm.fields_dict.pallet_details.grid.wrapper.find('.grid-heading-row').css('height', 'auto')
+    }
+
+
     let color_match_tables = create_child_table_list(frm, 'color_match_and_embossing_details_')
     if (color_match_tables.length > 0) {
         for (const color_table of color_match_tables) {
@@ -723,8 +757,9 @@ let set_row_above_table_header = function (frm) {
                                 <div class="col grid-static-col col-xs-4 text-center" style="">  Color Match </div>
                                 <div class="col grid-static-col col-xs-4 text-center" style="">  </div>
                                 <div class="col grid-static-col col-xs-4 text-center" style="border-left:1px solid #3b3838"> Embossing </div>
-                                <div class="col grid-static-col col-xs-4 text-right" style="border-left:1px solid #3b3838">Pattern</div>
-                                <div class="col grid-static-col col-xs-4 " style="padding-left: 0px !important;">Repeat</div>
+                                <div class="col grid-static-col col-xs-4" style="border-left:1px solid #3b3838"></div>
+                                <div class="col grid-static-col col-xs-4 text-center" style="">Pattern Repeat</div>
+                                <div class="col grid-static-col col-xs-4" style="">  </div>
                                 <div class="" style="border-radius: 0px 10px 0px 0px; width: 30px;">
                                 </div>
                             </div>
@@ -739,7 +774,7 @@ let set_row_above_table_header = function (frm) {
     if (over_wax_tables.length > 0) {
         for (const over_wax_table of over_wax_tables) {
             if (frm.fields_dict[over_wax_table].grid.wrapper.find('.grid-heading-row').find('#over_wax_table').length == 0) {
-                if (frm.doc.flooring_class == 'LVP & WPC') {
+                if (frm.doc.flooring_class == 'LV Glue down - WPC RC/SPC') {
                     frm.fields_dict[over_wax_table].grid.wrapper.find('div.grid-heading-row').prepend(`
                             <div id="over_wax_table" style="background-color: #f3f3f3;" >
                                 <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
