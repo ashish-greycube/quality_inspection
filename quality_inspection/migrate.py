@@ -139,8 +139,8 @@ def create_tab_wise_field_name_documents():
             if field.fieldtype in ["Currency", "Data", "Date", "Datetime", "Float", "Int","Link", "Percent", "Select"] :
                 doc_name = data.get("tab_name") + "-" + field.label
 
-                if not frappe.db.exists("Tab Wise Field Name QI", doc_name, cache=True):
-                    print(doc_name, "===============doc_name=================")
+                if not frappe.db.exists("Tab Wise Field Name QI", doc_name):
+                    print(doc_name)
 
                     new_doc = frappe.new_doc("Tab Wise Field Name QI")
                     new_doc.tab_fieldname = doc_name
