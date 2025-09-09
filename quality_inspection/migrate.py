@@ -7,6 +7,7 @@ def after_migrate():
                                            parent_doctype='TAS Quality Control',
                                            table_fieldname='pallet_details')
     create_tab_wise_field_name_documents()
+    create_installation_id_documents_and_set_flooting_class()
     
     ### Pallet Type QI ###
 
@@ -147,3 +148,26 @@ def create_tab_wise_field_name_documents():
                     new_doc.save(ignore_permissions=True)
         
     print("Tab Wise Field Name Created!!.")
+
+
+INSTALLATION_IDS = [
+	{"flooring_class" : "LAMINATE FLOORING", "id": "CI_WRLAA24.1_V1"},{"flooring_class" : "LAMINATE FLOORING", "id": "CI_WRLAHT24.1_V1"},
+	{"flooring_class" : "RC/SPC/WPC/LVGD", "id": "CI_LVGD24.1_V1"},{"flooring_class" : "RC/SPC/WPC/LVGD", "id": "CI_LVGD25.1 (A3)"},
+	{"flooring_class" : "RC/SPC/WPC/LVGD", "id": "CI_LVGDET24.1 (A3)"},{"flooring_class" : "RC/SPC/WPC/LVGD", "id": "CI_LVLLGD24.1_V1"},
+	{"flooring_class" : "RC/SPC/WPC/LVGD", "id": "CI_PVCFR_25.1 (A3)"},{"flooring_class" : "RC/SPC/WPC/LVGD", "id": "CI_VCFAA24.1_V1"},
+	{"flooring_class" : "HARDWOOD FLOORING", "id": "CI_BWAA24.1"},{"flooring_class" : "HARDWOOD FLOORING", "id": "TWAA24.1"},
+	]
+
+def create_installation_id_documents_and_set_flooting_class():
+    for data in INSTALLATION_IDS:
+        if frappe.db.exists("Installation ID QI", data.get("id")):
+            fc = frappe.get_value("Installation ID QI", data.get("id"), "flooring_class")
+            if not fc:
+                frappe.db.set_value("Installation ID QI", data.get("id"), "flooring_class", data.get("flooring_class"))
+                print("Installation ID: {0} flooring class set to {1}".format(data.get("id"), data.get("flooring_class")))
+        else:
+            new_doc = frappe.new_doc("Installation ID QI")
+            new_doc.installation_id = data.get("id")
+            new_doc.flooring_class = data.get("flooring_class")
+            new_doc.save(ignore_permissions=True)
+            print("Installation ID: {0} created".format(data.get("id")))

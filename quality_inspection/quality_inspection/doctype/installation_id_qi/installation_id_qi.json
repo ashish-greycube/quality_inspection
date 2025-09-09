@@ -6,7 +6,8 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "installation_id"
+  "installation_id",
+  "flooring_class"
  ],
  "fields": [
   {
@@ -16,12 +17,21 @@
    "label": "Installation ID",
    "reqd": 1,
    "unique": 1
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "flooring_class",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Flooring Class",
+   "options": "\nHARDWOOD FLOORING\nLAMINATE FLOORING\nRC/SPC/WPC/LVGD"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-09-01 21:11:48.614964",
+ "modified": "2025-09-07 23:46:26.537593",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Installation ID QI",

@@ -134,9 +134,9 @@ class TASQualityControl(Document):
 								total_attachments = total_attachments + 1
 
 							for select in select_field_list:
-								if child_table_name == "inner_and_outer_carton_details_" + cstr(i+1) and self.flooring_class == "LV Glue down - WPC RC/SPC" and select == "carb_select":
+								if child_table_name == "inner_and_outer_carton_details_" + cstr(i+1) and self.flooring_class == "RC/SPC/WPC/LVGD" and select == "carb_select":
 									continue
-								elif child_table_name == "over_wax_and_edge_paint_" + cstr(i+1) and self.flooring_class == "LV Glue down - WPC RC/SPC" and select == "over_wax_select":
+								elif child_table_name == "over_wax_and_edge_paint_" + cstr(i+1) and self.flooring_class == "RC/SPC/WPC/LVGD" and select == "over_wax_select":
 									continue
 								elif child_table_name == "over_wax_and_edge_paint_" + cstr(i+1) and self.flooring_class == "HARDWOOD FLOORING" and select == "edge_paint_select":
 									continue
@@ -449,7 +449,7 @@ class TASQualityControl(Document):
 			self.assembling_gap = qi_settings.width_thickness_guide
 
 	def validate_over_wax_and_edge_paint_child_table(self):
-		if self.get("no_of_po") and self.no_of_po > 0 and self.flooring_class != "LV Glue down - WPC RC/SPC":
+		if self.get("no_of_po") and self.no_of_po > 0 and self.flooring_class != "RC/SPC/WPC/LVGD":
 			items = []
 			for i in range(self.no_of_po):
 				child_table_name="over_wax_and_edge_paint_"+cstr(i+1)
@@ -544,10 +544,10 @@ class TASQualityControl(Document):
 									missing_row_data = False
 									if field.fieldtype in ["Attach", "Currency", "Data", "Date", "Datetime", "Float", "Int","Link", "Percent", "Select"] and field.hidden == 0:
 										
-										if table.get("table_name") == "inner_and_outer_carton_details_" and field.fieldname == "carb_select" and self.flooring_class == "LV Glue down - WPC RC/SPC":
+										if table.get("table_name") == "inner_and_outer_carton_details_" and field.fieldname == "carb_select" and self.flooring_class == "RC/SPC/WPC/LVGD":
 											missing_row_data = False
 
-										elif table.get("table_name") == "over_wax_and_edge_paint_" and field.fieldname == "over_wax_select" and self.flooring_class == "LV Glue down - WPC RC/SPC":
+										elif table.get("table_name") == "over_wax_and_edge_paint_" and field.fieldname == "over_wax_select" and self.flooring_class == "RC/SPC/WPC/LVGD":
 											missing_row_data = False
 
 										elif table.get("table_name") == "over_wax_and_edge_paint_" and field.fieldname == "edge_paint_select" and self.flooring_class == "HARDWOOD FLOORING":
@@ -595,6 +595,16 @@ class TASQualityControl(Document):
 			
 			if mark_as_completed == False:
 				frappe.throw(_("Please mark all rows as 'Complete' in the Missing tab before proceeding."))
+
+	@frappe.whitelist()
+	def add_new_tag(self, new_tag):
+		if new_tag:
+			if not frappe.db.exists("Quality Tags QI", new_tag):
+				new_tag_doc = frappe.new_doc("Quality Tags QI")
+				new_tag_doc.tags = new_tag
+				new_tag_doc.save(ignore_permissions=True)
+		
+		return new_tag
 
 	@frappe.whitelist()
 	def fill_remarks_table(self, remarks):

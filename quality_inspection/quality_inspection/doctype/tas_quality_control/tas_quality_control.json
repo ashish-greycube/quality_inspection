@@ -298,7 +298,8 @@
    "fieldtype": "Date",
    "in_list_view": 1,
    "in_standard_filter": 1,
-   "label": "<b>Date of Inspection</b>"
+   "label": "<b>Date of Inspection</b>",
+   "permlevel": 1
   },
   {
    "description": "This determines participation of quality parameters\n\n\n\n\n\n\n",
@@ -306,7 +307,8 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "<b>Flooring Class</b>",
-   "options": "\nHARDWOOD FLOORING\nLAMINATE FLOORING\nLV Glue down - WPC RC/SPC",
+   "options": "\nHARDWOOD FLOORING\nLAMINATE FLOORING\nRC/SPC/WPC/LVGD",
+   "permlevel": 1,
    "reqd": 1
   },
   {
@@ -319,7 +321,8 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "<b>Vendor</b>",
-   "options": "Supplier"
+   "options": "Supplier",
+   "permlevel": 1
   },
   {
    "fieldname": "tab_2_tab",
@@ -331,6 +334,7 @@
    "fieldname": "no_of_po",
    "fieldtype": "Int",
    "label": "<b>No of PO</b>",
+   "permlevel": 1,
    "read_only": 1
   },
   {
@@ -509,180 +513,210 @@
    "depends_on": "eval:doc.no_of_po>0",
    "fieldname": "inner_and_outer_carton_details_1",
    "fieldtype": "Table",
-   "options": "Inner and Outer Carton Details QI"
+   "options": "Inner and Outer Carton Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "inner_and_outer_carton_details_2",
    "fieldtype": "Table",
-   "options": "Inner and Outer Carton Details QI"
+   "options": "Inner and Outer Carton Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "inner_and_outer_carton_details_3",
    "fieldtype": "Table",
-   "options": "Inner and Outer Carton Details QI"
+   "options": "Inner and Outer Carton Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "inner_and_outer_carton_details_4",
    "fieldtype": "Table",
-   "options": "Inner and Outer Carton Details QI"
+   "options": "Inner and Outer Carton Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "inner_and_outer_carton_details_5",
    "fieldtype": "Table",
-   "options": "Inner and Outer Carton Details QI"
+   "options": "Inner and Outer Carton Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "inner_and_outer_carton_details_6",
    "fieldtype": "Table",
-   "options": "Inner and Outer Carton Details QI"
+   "options": "Inner and Outer Carton Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "inner_and_outer_carton_details_7",
    "fieldtype": "Table",
-   "options": "Inner and Outer Carton Details QI"
+   "options": "Inner and Outer Carton Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "inner_and_outer_carton_details_8",
    "fieldtype": "Table",
-   "options": "Inner and Outer Carton Details QI"
+   "options": "Inner and Outer Carton Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "inner_and_outer_carton_details_9",
    "fieldtype": "Table",
-   "options": "Inner and Outer Carton Details QI"
+   "options": "Inner and Outer Carton Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "inner_and_outer_carton_details_10",
    "fieldtype": "Table",
-   "options": "Inner and Outer Carton Details QI"
+   "options": "Inner and Outer Carton Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>0",
    "fieldname": "color_match_and_embossing_details_1",
    "fieldtype": "Table",
-   "options": "Color Match and Embossing Details QI"
+   "options": "Color Match and Embossing Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "color_match_and_embossing_details_2",
    "fieldtype": "Table",
-   "options": "Color Match and Embossing Details QI"
+   "options": "Color Match and Embossing Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "color_match_and_embossing_details_3",
    "fieldtype": "Table",
-   "options": "Color Match and Embossing Details QI"
+   "options": "Color Match and Embossing Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "color_match_and_embossing_details_4",
    "fieldtype": "Table",
-   "options": "Color Match and Embossing Details QI"
+   "options": "Color Match and Embossing Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "color_match_and_embossing_details_5",
    "fieldtype": "Table",
-   "options": "Color Match and Embossing Details QI"
+   "options": "Color Match and Embossing Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "color_match_and_embossing_details_6",
    "fieldtype": "Table",
-   "options": "Color Match and Embossing Details QI"
+   "options": "Color Match and Embossing Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "color_match_and_embossing_details_7",
    "fieldtype": "Table",
-   "options": "Color Match and Embossing Details QI"
+   "options": "Color Match and Embossing Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "color_match_and_embossing_details_8",
    "fieldtype": "Table",
-   "options": "Color Match and Embossing Details QI"
+   "options": "Color Match and Embossing Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "color_match_and_embossing_details_9",
    "fieldtype": "Table",
-   "options": "Color Match and Embossing Details QI"
+   "options": "Color Match and Embossing Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "color_match_and_embossing_details_10",
    "fieldtype": "Table",
-   "options": "Color Match and Embossing Details QI"
+   "options": "Color Match and Embossing Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>0",
    "fieldname": "over_wax_and_edge_paint_1",
    "fieldtype": "Table",
-   "options": "Over Wax and Edge Paint QI"
+   "options": "Over Wax and Edge Paint QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "over_wax_and_edge_paint_2",
    "fieldtype": "Table",
-   "options": "Over Wax and Edge Paint QI"
+   "options": "Over Wax and Edge Paint QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "over_wax_and_edge_paint_3",
    "fieldtype": "Table",
-   "options": "Over Wax and Edge Paint QI"
+   "options": "Over Wax and Edge Paint QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "over_wax_and_edge_paint_4",
    "fieldtype": "Table",
-   "options": "Over Wax and Edge Paint QI"
+   "options": "Over Wax and Edge Paint QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "over_wax_and_edge_paint_5",
    "fieldtype": "Table",
-   "options": "Over Wax and Edge Paint QI"
+   "options": "Over Wax and Edge Paint QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "over_wax_and_edge_paint_7",
    "fieldtype": "Table",
-   "options": "Over Wax and Edge Paint QI"
+   "options": "Over Wax and Edge Paint QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "over_wax_and_edge_paint_8",
    "fieldtype": "Table",
-   "options": "Over Wax and Edge Paint QI"
+   "options": "Over Wax and Edge Paint QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "over_wax_and_edge_paint_9",
    "fieldtype": "Table",
-   "options": "Over Wax and Edge Paint QI"
+   "options": "Over Wax and Edge Paint QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "over_wax_and_edge_paint_10",
    "fieldtype": "Table",
-   "options": "Over Wax and Edge Paint QI"
+   "options": "Over Wax and Edge Paint QI",
+   "permlevel": 2
   },
   {
    "fieldname": "pallet_details",
    "fieldtype": "Table",
-   "options": "Pallet Information QI"
+   "options": "Pallet Information QI",
+   "permlevel": 2
   },
   {
    "bold": 1,
@@ -829,38 +863,44 @@
    "fieldname": "inner_equipment",
    "fieldtype": "Table MultiSelect",
    "label": "<b>Equipment In Use</b>",
-   "options": "Equipment Use In QI"
+   "options": "Equipment Use In QI",
+   "permlevel": 2
   },
   {
    "bold": 1,
    "fieldname": "pallet_equipment",
    "fieldtype": "Table MultiSelect",
    "label": "<b>Equipment In Use</b>",
-   "options": "Equipment Use In QI"
+   "options": "Equipment Use In QI",
+   "permlevel": 2
   },
   {
    "fieldname": "color_equipment",
    "fieldtype": "Table MultiSelect",
    "label": "<b>Equipment In Use</b>",
-   "options": "Equipment Use In QI"
+   "options": "Equipment Use In QI",
+   "permlevel": 2
   },
   {
    "fieldname": "over_equipment",
    "fieldtype": "Table MultiSelect",
    "label": "<b>Equipment In Use</b>",
-   "options": "Equipment Use In QI"
+   "options": "Equipment Use In QI",
+   "permlevel": 2
   },
   {
    "fieldname": "equipment_in_use",
    "fieldtype": "Table MultiSelect",
    "label": "<b>Equipment In Use</b>",
-   "options": "Equipment Use In QI"
+   "options": "Equipment Use In QI",
+   "permlevel": 2
   },
   {
    "fieldname": "width_equipment",
    "fieldtype": "Table MultiSelect",
    "label": "<b>Equipment In Use</b>",
-   "options": "Equipment Use In QI"
+   "options": "Equipment Use In QI",
+   "permlevel": 2
   },
   {
    "fieldname": "inner",
@@ -941,7 +981,8 @@
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "over_wax_and_edge_paint_6",
    "fieldtype": "Table",
-   "options": "Over Wax and Edge Paint QI"
+   "options": "Over Wax and Edge Paint QI",
+   "permlevel": 2
   },
   {
    "bold": 1,
@@ -1018,61 +1059,71 @@
    "description": "<i>MT=Matched , FB = Finished Board</i>",
    "fieldname": "moisture_content_details_1",
    "fieldtype": "Table",
-   "options": "Moisture Content Details QI"
+   "options": "Moisture Content Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "moisture_content_details_2",
    "fieldtype": "Table",
-   "options": "Moisture Content Details QI"
+   "options": "Moisture Content Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "moisture_content_details_3",
    "fieldtype": "Table",
-   "options": "Moisture Content Details QI"
+   "options": "Moisture Content Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "moisture_content_details_4",
    "fieldtype": "Table",
-   "options": "Moisture Content Details QI"
+   "options": "Moisture Content Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "moisture_content_details_5",
    "fieldtype": "Table",
-   "options": "Moisture Content Details QI"
+   "options": "Moisture Content Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "moisture_content_details_6",
    "fieldtype": "Table",
-   "options": "Moisture Content Details QI"
+   "options": "Moisture Content Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "moisture_content_details_7",
    "fieldtype": "Table",
-   "options": "Moisture Content Details QI"
+   "options": "Moisture Content Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "moisture_content_details_8",
    "fieldtype": "Table",
-   "options": "Moisture Content Details QI"
+   "options": "Moisture Content Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "moisture_content_details_9",
    "fieldtype": "Table",
-   "options": "Moisture Content Details QI"
+   "options": "Moisture Content Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "moisture_content_details_10",
    "fieldtype": "Table",
-   "options": "Moisture Content Details QI"
+   "options": "Moisture Content Details QI",
+   "permlevel": 2
   },
   {
    "bold": 1,
@@ -1148,61 +1199,71 @@
    "depends_on": "eval:doc.no_of_po>0",
    "fieldname": "open_box_inspection_details_1",
    "fieldtype": "Table",
-   "options": "Open Box Inspection Details QI"
+   "options": "Open Box Inspection Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "open_box_inspection_details_2",
    "fieldtype": "Table",
-   "options": "Open Box Inspection Details QI"
+   "options": "Open Box Inspection Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "open_box_inspection_details_3",
    "fieldtype": "Table",
-   "options": "Open Box Inspection Details QI"
+   "options": "Open Box Inspection Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "open_box_inspection_details_4",
    "fieldtype": "Table",
-   "options": "Open Box Inspection Details QI"
+   "options": "Open Box Inspection Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "open_box_inspection_details_5",
    "fieldtype": "Table",
-   "options": "Open Box Inspection Details QI"
+   "options": "Open Box Inspection Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "open_box_inspection_details_6",
    "fieldtype": "Table",
-   "options": "Open Box Inspection Details QI"
+   "options": "Open Box Inspection Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "open_box_inspection_details_7",
    "fieldtype": "Table",
-   "options": "Open Box Inspection Details QI"
+   "options": "Open Box Inspection Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "open_box_inspection_details_8",
    "fieldtype": "Table",
-   "options": "Open Box Inspection Details QI"
+   "options": "Open Box Inspection Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "open_box_inspection_details_9",
    "fieldtype": "Table",
-   "options": "Open Box Inspection Details QI"
+   "options": "Open Box Inspection Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "open_box_inspection_details_10",
    "fieldtype": "Table",
-   "options": "Open Box Inspection Details QI"
+   "options": "Open Box Inspection Details QI",
+   "permlevel": 2
   },
   {
    "bold": 1,
@@ -1216,7 +1277,8 @@
    "description": "<i>N=Normal, TWO=Thickness Without, TWI=Thickness With</i>",
    "fieldname": "width_and_thickness_details_1",
    "fieldtype": "Table",
-   "options": "Width And Thickness Details QI"
+   "options": "Width And Thickness Details QI",
+   "permlevel": 2
   },
   {
    "bold": 1,
@@ -1285,55 +1347,64 @@
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "width_and_thickness_details_2",
    "fieldtype": "Table",
-   "options": "Width And Thickness Details QI"
+   "options": "Width And Thickness Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "width_and_thickness_details_3",
    "fieldtype": "Table",
-   "options": "Width And Thickness Details QI"
+   "options": "Width And Thickness Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "width_and_thickness_details_4",
    "fieldtype": "Table",
-   "options": "Width And Thickness Details QI"
+   "options": "Width And Thickness Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "width_and_thickness_details_5",
    "fieldtype": "Table",
-   "options": "Width And Thickness Details QI"
+   "options": "Width And Thickness Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "width_and_thickness_details_6",
    "fieldtype": "Table",
-   "options": "Width And Thickness Details QI"
+   "options": "Width And Thickness Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "width_and_thickness_details_7",
    "fieldtype": "Table",
-   "options": "Width And Thickness Details QI"
+   "options": "Width And Thickness Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "width_and_thickness_details_8",
    "fieldtype": "Table",
-   "options": "Width And Thickness Details QI"
+   "options": "Width And Thickness Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "width_and_thickness_details_9",
    "fieldtype": "Table",
-   "options": "Width And Thickness Details QI"
+   "options": "Width And Thickness Details QI",
+   "permlevel": 2
   },
   {
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "width_and_thickness_details_10",
    "fieldtype": "Table",
-   "options": "Width And Thickness Details QI"
+   "options": "Width And Thickness Details QI",
+   "permlevel": 2
   },
   {
    "default": "0",
@@ -1509,7 +1580,8 @@
    "fieldname": "gloss_equipment",
    "fieldtype": "Table MultiSelect",
    "label": "<b>Equipment In Use</b>",
-   "options": "Equipment Use In QI"
+   "options": "Equipment Use In QI",
+   "permlevel": 2
   },
   {
    "fieldname": "gloss_total_attachment",
@@ -1541,7 +1613,8 @@
    "description": "<i>MT=Matched , H=Highest, L=Lowest, PL=Plank</i>",
    "fieldname": "gloss_level_details_1",
    "fieldtype": "Table",
-   "options": "Gloss Level Details QI"
+   "options": "Gloss Level Details QI",
+   "permlevel": 2
   },
   {
    "bold": 1,
@@ -1554,7 +1627,8 @@
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "gloss_level_details_2",
    "fieldtype": "Table",
-   "options": "Gloss Level Details QI"
+   "options": "Gloss Level Details QI",
+   "permlevel": 2
   },
   {
    "bold": 1,
@@ -1567,7 +1641,8 @@
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "gloss_level_details_3",
    "fieldtype": "Table",
-   "options": "Gloss Level Details QI"
+   "options": "Gloss Level Details QI",
+   "permlevel": 2
   },
   {
    "bold": 1,
@@ -1580,7 +1655,8 @@
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "gloss_level_details_4",
    "fieldtype": "Table",
-   "options": "Gloss Level Details QI"
+   "options": "Gloss Level Details QI",
+   "permlevel": 2
   },
   {
    "bold": 1,
@@ -1593,7 +1669,8 @@
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "gloss_level_details_5",
    "fieldtype": "Table",
-   "options": "Gloss Level Details QI"
+   "options": "Gloss Level Details QI",
+   "permlevel": 2
   },
   {
    "bold": 1,
@@ -1606,7 +1683,8 @@
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "gloss_level_details_6",
    "fieldtype": "Table",
-   "options": "Gloss Level Details QI"
+   "options": "Gloss Level Details QI",
+   "permlevel": 2
   },
   {
    "bold": 1,
@@ -1619,7 +1697,8 @@
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "gloss_level_details_7",
    "fieldtype": "Table",
-   "options": "Gloss Level Details QI"
+   "options": "Gloss Level Details QI",
+   "permlevel": 2
   },
   {
    "bold": 1,
@@ -1632,7 +1711,8 @@
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "gloss_level_details_8",
    "fieldtype": "Table",
-   "options": "Gloss Level Details QI"
+   "options": "Gloss Level Details QI",
+   "permlevel": 2
   },
   {
    "bold": 1,
@@ -1645,7 +1725,8 @@
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "gloss_level_details_9",
    "fieldtype": "Table",
-   "options": "Gloss Level Details QI"
+   "options": "Gloss Level Details QI",
+   "permlevel": 2
   },
   {
    "bold": 1,
@@ -1658,7 +1739,8 @@
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "gloss_level_details_10",
    "fieldtype": "Table",
-   "options": "Gloss Level Details QI"
+   "options": "Gloss Level Details QI",
+   "permlevel": 2
   },
   {
    "fieldname": "color_count",
@@ -1760,7 +1842,8 @@
    "fieldname": "moisture_equipment",
    "fieldtype": "Link",
    "label": "<b>Equipment In Use</b>",
-   "options": "Equipment QI"
+   "options": "Equipment QI",
+   "permlevel": 2
   },
   {
    "fieldname": "inner_undetermined_ratio",
@@ -1998,14 +2081,16 @@
    "fieldname": "missing_data_details",
    "fieldtype": "Table",
    "label": "Missing Data Details",
-   "options": "Missing Data Fields Details QI"
+   "options": "Missing Data Fields Details QI",
+   "permlevel": 2
   },
   {
    "allow_on_submit": 1,
    "fieldname": "quality_remarks",
    "fieldtype": "Table",
    "label": "Quality Remarks",
-   "options": "Quality Remark Table QI"
+   "options": "Quality Remark Table QI",
+   "permlevel": 2
   },
   {
    "allow_on_submit": 1,
@@ -2016,37 +2101,39 @@
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "company",
    "fieldtype": "Link",
    "label": "Company",
    "options": "Company",
+   "permlevel": 1,
    "reqd": 1
   },
   {
-   "depends_on": "eval:doc.flooring_class==\"HARDWOOD FLOORING\"",
    "fieldname": "temperature",
    "fieldtype": "Data",
-   "label": "<b>Temperature</b>"
+   "label": "<b>Temperature</b>",
+   "permlevel": 1
   },
   {
    "default": "now",
-   "depends_on": "eval:doc.flooring_class==\"HARDWOOD FLOORING\"",
    "fieldname": "time_of_inspection",
    "fieldtype": "Time",
-   "label": "<b>Time Of Inspection</b>"
+   "label": "<b>Time Of Inspection</b>",
+   "permlevel": 1
   },
   {
-   "depends_on": "eval:doc.flooring_class==\"HARDWOOD FLOORING\"",
    "fieldname": "relative_humidity",
    "fieldtype": "Data",
-   "label": "<b>Relative humidity</b>"
+   "label": "<b>Relative humidity</b>",
+   "permlevel": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
  "make_attachments_public": 1,
- "modified": "2025-09-02 21:21:35.249169",
+ "modified": "2025-09-08 23:29:45.546276",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "TAS Quality Control",
@@ -2065,6 +2152,76 @@
    "role": "System Manager",
    "share": 1,
    "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "QI User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "permlevel": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "QI User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 2,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "QI User",
+   "share": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "QI Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "QI Manager",
+   "share": 1
+  },
+  {
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "permlevel": 2,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "QI Manager",
+   "share": 1,
    "write": 1
   }
  ],

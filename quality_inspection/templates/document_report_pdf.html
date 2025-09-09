@@ -50,11 +50,10 @@
                 <td>
                     <h2><b>Flooring Class: </b>{{doc.flooring_class}}</h2>
                     <p>This determines participation of quality parameters</p>
-                    {% if doc.flooring_class == "HARDWOOD FLOORING" %}
-                        <h3><b>Relative humidity :</b> </h3> {{doc.relative_humidity or ''}}
-                        <h3><b>Temperature :</b> </h3> {{doc.temperature or ''}}
-                        <h3><b>Time Of Inspection :</b> </h3> {{doc.time_of_inspection or ''}}
-                     {% endif %}
+                    
+                    <h3><b>Relative humidity :</b> </h3> {{doc.relative_humidity or ''}}
+                    <h3><b>Temperature :</b> </h3> {{doc.temperature or ''}}
+                    <h3><b>Time Of Inspection :</b> </h3> {{doc.time_of_inspection or ''}}
                 </td>
                 
             </tr>

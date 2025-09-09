@@ -10,6 +10,13 @@ frappe.ui.form.on('TAS Quality Control', {
         setStatusInTableField(frm)
         frm.call("set_default_values_and_guidelines")
         // ("[data-fieldname='color_equipment']").scrollIntoView();
+        frm.set_query('installation_id', 'pallet_details', () => {
+            return {
+                filters: {
+                    flooring_class: frm.doc.flooring_class || '',
+                }
+            }
+        })
     },
 
     refresh(frm) {
@@ -32,12 +39,16 @@ frappe.ui.form.on('TAS Quality Control', {
             $(`div.modal-dialog button.grid-add-row`).show()
         }, 1000)
 
+        setTimeout(() => {
+            $(`div[data-page-route="TAS Quality Control"] div.col-lg-2.layout-side-section`).hide()
+        }, 50)
+
         update_child_table_field_property(frm)
         set_html_details(frm)
         set_row_above_table_header(frm)
         set_pallet_details_each_row_property(frm)
 
-        if (!frm.is_new() && frm.doc.docstatus === 0) {
+        if (!frm.is_new() && frm.doc.docstatus === 0 && (frappe.user.has_role("System Manager") || frappe.user.has_role("QI Manager"))) {
             frm.add_custom_button(__("TAS Po"), function () {
 
                 if (frm.doc.vendor == "" || frm.doc.vendor == undefined) {
@@ -292,6 +303,48 @@ const take_notes_on_workflow_action_change = function (frm) {
     
     dialog_field.push(
         {
+            fieldtype: "Data",
+            fieldname: "new_tag",
+            read_only: 0
+        },
+        { fieldtype: "Column Break", fieldname: "column_break_1" },
+        {
+            fieldtype: "Button",
+            fieldname: "create_tag",
+            label: __("Create Tag"),
+            click: function (e) {
+                let new_tag = dialog.get_value('new_tag')
+                if (new_tag) {
+                    if (new_tag.trim().length > 0) {
+                        frappe.call({
+                            method: "add_new_tag",
+                            doc: frm.doc,
+                            args: {
+                                new_tag: new_tag.trim()
+                            },
+                            callback: function (r) {
+                                if (r.message) {
+                                    console.log(r.message, "===========r.message==========")
+                                    console.log(dialog.get_value('tags'), "===========dialog.get_value('tags')=================")
+                                    let current_tags = dialog.get_value('tags') || []
+                                    
+                                    current_tags.push({'tags': new_tag.trim()})
+                                    dialog.set_value('tags', current_tags)
+                                    // dialog.fields_dict.tags.refresh()
+                                    dialog.set_value('new_tag', '')
+                                }
+                            }
+                        })
+
+                    }
+                }
+            }
+        },
+        {
+            fieldtype: "Section Break",
+            fieldname: "section_break_1"
+        },
+        {
             fieldtype: "Table MultiSelect",
             fieldname: "tags",
             label: __("Tags"),
@@ -326,14 +379,6 @@ const take_notes_on_workflow_action_change = function (frm) {
     ]
 
     if (frm.doc.workflow_state && ["Approved", "Rejected", "On Hold", "Cancelled"].includes(frm.doc.workflow_state)) {
-        // dialog_field.push(
-        //     {
-        //         fieldtype: "Table MultiSelect",
-        //         fieldname: "field_notes",
-        //         label: __("Fields"),
-        //         options: "Tab Wise Field Table QI",
-        //         read_only: 0,
-        //     })
         dialog_field.push(
             {
                 label: "Notes (Field Wise)",
@@ -644,6 +689,9 @@ let set_pallet_details_each_row_property = function (frm) {
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('button_select', true);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('iipa', false);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('ippc_photo', false);
+            
+            frm.fields_dict['pallet_details'].grid.wrapper.find(`div[data-name="${e.name}"] div[data-fieldname="iipa"] button.float-status-btn`).css('display', 'none')
+            frm.fields_dict['pallet_details'].grid.wrapper.find(`div[data-name="${e.name}"] div[data-fieldname="button_select"] button.float-status-btn`).css('display', '')
         }
         else if (e.pallet_type && e.pallet_type == "Hardwood") {
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('iipa', true);
@@ -652,6 +700,10 @@ let set_pallet_details_each_row_property = function (frm) {
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('current_width', false);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('width', false);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('button_select', false);
+
+            frm.fields_dict['pallet_details'].grid.wrapper.find(`div[data-name="${e.name}"] div[data-fieldname="button_select"] button.float-status-btn`).css('display', 'none')
+            frm.fields_dict['pallet_details'].grid.wrapper.find(`div[data-name="${e.name}"] div[data-fieldname="iipa"] button.float-status-btn`).css('display', '')
+
         }
         else {
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('corner_height', false);
@@ -660,6 +712,10 @@ let set_pallet_details_each_row_property = function (frm) {
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('button_select', false);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('iipa', false);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('ippc_photo', false);
+
+            frm.fields_dict['pallet_details'].grid.wrapper.find(`div[data-name="${e.name}"] div[data-fieldname="iipa"] button.float-status-btn`).css('display', 'none')
+            frm.fields_dict['pallet_details'].grid.wrapper.find(`div[data-name="${e.name}"] div[data-fieldname="button_select"] button.float-status-btn`).css('display', 'none')
+            
         }
     })
 
@@ -675,7 +731,7 @@ let update_child_table_field_property = function (frm) {
     let inner_outer_tables = create_child_table_list(frm, 'inner_and_outer_carton_details_')
     if (inner_outer_tables.length > 0) {
         for (const inner_table of inner_outer_tables) {
-            if (frm.doc.flooring_class == 'LV Glue down - WPC RC/SPC') {
+            if (frm.doc.flooring_class == 'RC/SPC/WPC/LVGD') {
                 frm.fields_dict[inner_table].grid.update_docfield_property("carb_select", "hidden", 1);
                 frm.fields_dict[inner_table].grid.update_docfield_property("carb_select", "in_list_view", 0);
                 frm.fields_dict[inner_table].grid.reset_grid();
@@ -691,7 +747,7 @@ let update_child_table_field_property = function (frm) {
     let over_wax_tables = create_child_table_list(frm, 'over_wax_and_edge_paint_')
     if (over_wax_tables.length > 0) {
         for (const over_table of over_wax_tables) {
-            if (frm.doc.flooring_class == 'LV Glue down - WPC RC/SPC') {
+            if (frm.doc.flooring_class == 'RC/SPC/WPC/LVGD') {
                 frm.fields_dict[over_table].grid.update_docfield_property("over_wax_select", "hidden", 1);
                 frm.fields_dict[over_table].grid.update_docfield_property("over_wax_select", "in_list_view", 0);
             }
@@ -774,7 +830,7 @@ let set_row_above_table_header = function (frm) {
     if (over_wax_tables.length > 0) {
         for (const over_wax_table of over_wax_tables) {
             if (frm.fields_dict[over_wax_table].grid.wrapper.find('.grid-heading-row').find('#over_wax_table').length == 0) {
-                if (frm.doc.flooring_class == 'LV Glue down - WPC RC/SPC') {
+                if (frm.doc.flooring_class == 'RC/SPC/WPC/LVGD') {
                     frm.fields_dict[over_wax_table].grid.wrapper.find('div.grid-heading-row').prepend(`
                             <div id="over_wax_table" style="background-color: #f3f3f3;" >
                                 <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
