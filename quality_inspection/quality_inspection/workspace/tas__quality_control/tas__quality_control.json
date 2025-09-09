@@ -54,8 +54,47 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "LOV",
+   "label": "Master",
    "link_count": 3,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "TAS Purchase Order",
+   "link_count": 0,
+   "link_to": "TAS Purchase Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Item",
+   "link_count": 0,
+   "link_to": "Item",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Vendor",
+   "link_count": 0,
+   "link_to": "Supplier",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "LOV",
+   "link_count": 4,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -93,44 +132,15 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Master",
-   "link_count": 3,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "TAS Purchase Order",
+   "label": "Installation ID",
    "link_count": 0,
-   "link_to": "TAS Purchase Order",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Item",
-   "link_count": 0,
-   "link_to": "Item",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Vendor",
-   "link_count": 0,
-   "link_to": "Supplier",
+   "link_to": "Installation ID QI",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
   }
  ],
- "modified": "2025-04-30 03:30:50.568238",
+ "modified": "2025-09-09 03:08:10.114771",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "TAS  Quality Control",

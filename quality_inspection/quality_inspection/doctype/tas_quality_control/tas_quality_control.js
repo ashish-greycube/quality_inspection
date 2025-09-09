@@ -48,7 +48,7 @@ frappe.ui.form.on('TAS Quality Control', {
         set_row_above_table_header(frm)
         set_pallet_details_each_row_property(frm)
 
-        if (!frm.is_new() && frm.doc.docstatus === 0 && (frappe.user.has_role("System Manager") || frappe.user.has_role("QI Manager"))) {
+        if (!frm.is_new() && frm.doc.docstatus === 0 && (frappe.user.has_role("System Manager") || frappe.user.has_role("QI User"))) {
             frm.add_custom_button(__("TAS Po"), function () {
 
                 if (frm.doc.vendor == "" || frm.doc.vendor == undefined) {
