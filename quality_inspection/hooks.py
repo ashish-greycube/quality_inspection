@@ -90,6 +90,7 @@ jinja = {
 
 # before_install = "quality_inspection.install.before_install"
 # after_install = "quality_inspection.install.after_install"
+before_migrate = "quality_inspection.migrate.before_migrate"
 after_migrate = "quality_inspection.migrate.after_migrate"
 
 # Uninstallation

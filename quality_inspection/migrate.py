@@ -1,5 +1,8 @@
 import frappe
 
+def before_migrate():
+    create_quality_roles_if_not_exists()
+
 def after_migrate():
     update_dashboard_link_for_core_doctype(doctype='TAS Purchase Order',
                                            link_doctype='TAS Quality Control',
@@ -171,3 +174,14 @@ def create_installation_id_documents_and_set_flooting_class():
             new_doc.flooring_class = data.get("flooring_class")
             new_doc.save(ignore_permissions=True)
             print("Installation ID: {0} created".format(data.get("id")))
+
+def create_quality_roles_if_not_exists():
+    roles = ["QI Manager", "QI User"]
+    for role in roles:
+        if not frappe.db.exists("Role", role):
+            new_role = frappe.new_doc("Role")
+            new_role.role_name = role
+            new_role.save(ignore_permissions=True)
+            print("Role: {0} created".format(role))
+        else:
+            pass
