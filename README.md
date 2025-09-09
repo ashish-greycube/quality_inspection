@@ -28,6 +28,20 @@ Quality Inspection For OutSourced Goods
 bench build
 ```
 
+### Require Setup
+
+1. Before installation or update, create two new roles: QI Manager and QI User.
+
+2. Copy the following letterheads for the QI Report print:
+
+	T&A SUPPLY CO INC - https://quality.greycube.in/app/letter-head/T%26A <br>
+	PACIFIC MAT & COMML - https://quality.greycube.in/app/letter-head/Pac%20Mat <br>
+	ARCH DIRECTIONS - https://quality.greycube.in/app/letter-head/AD
+
+3. Set the default letterhead in the Company doctype.
+
+<img width="1428" height="432" alt="image" src="https://github.com/user-attachments/assets/8b35f18a-9d08-43e4-955f-27dcc3763b43" />
+
 #### License
 
 mit
