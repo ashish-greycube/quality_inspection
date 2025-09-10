@@ -2,6 +2,7 @@
 
 Quality Inspection For OutSourced Goods
 
+Below Mentioned Steps do manually on fresh install.
 ### Follow Below Steps For Scrollable child table
 
 #### Replace the following files:
