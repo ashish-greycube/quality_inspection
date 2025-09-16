@@ -42,6 +42,12 @@ bench build
 3. Set the default letterhead in the Company doctype.
 
 <img width="1428" height="432" alt="image" src="https://github.com/user-attachments/assets/8b35f18a-9d08-43e4-955f-27dcc3763b43" />
+<br><br>
+
+4. Give Read access to QI User & QI Manager Role. e.g,
+   
+<img width="1494" height="483" alt="image" src="https://github.com/user-attachments/assets/61d3968a-8079-4627-8eaf-87f3b38e57b8" />
+
 
 #### License
 
