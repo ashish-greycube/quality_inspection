@@ -6,6 +6,7 @@ import erpnext
 from frappe import _
 from frappe.model.document import Document
 from frappe.utils import cstr, flt, getdate, nowdate, add_to_date, now, get_url
+from frappe.desk.form.assign_to import get as get_assignees, add as add_assign
 
 from frappe.utils.pdf import get_pdf, prepare_options, inline_private_images, get_cookie_options
 import json
@@ -27,6 +28,7 @@ class TASQualityControl(Document):
 		self.set_color_count_for_color_match_and_embossing()
 		self.fill_missing_data_details()
 		self.check_all_data_mark_as_completed()	
+		self.add_assign_to_user()
 
 	def on_submit(self):
 		# self.validate_over_wax_and_edge_paint_child_table()
@@ -596,6 +598,24 @@ class TASQualityControl(Document):
 			if mark_as_completed == False:
 				frappe.throw(_("Please mark all rows as 'Complete' in the Missing tab before proceeding."))
 
+	def add_assign_to_user(self):
+		if self.user:
+			assignees = get_assignees({"doctype": self.doctype, "name": self.name})
+
+			assign_to_found = False
+			if len(assignees) > 0:
+				for owner in assignees:
+					if self.user == owner.owner:
+						assign_to_found = True
+						break
+
+			if assign_to_found == False:
+				add_assign({
+				"doctype": self.doctype,
+				"name": self.name,
+				"assign_to": [self.user],
+			})
+
 	@frappe.whitelist()
 	def add_new_tag(self, new_tag):
 		if new_tag:
@@ -878,3 +898,15 @@ def doc_tab_wise_field_list():
 		},
 	]
 	return field_list
+
+@frappe.whitelist()
+@frappe.validate_and_sanitize_search_inputs
+def get_qi_users_list(doctype, txt, searchfield, start, page_len, filters):
+	from frappe.core.doctype.role.role import get_users
+
+	user_list = get_users('QI User')
+
+	users = frappe.get_all("User", filters={"enabled":1, "email": ("like", f"{txt}%"), "name": ["in", user_list]}, fields=["distinct name", "full_name"], as_list=1)
+	# print(users, "=============users=============")
+	unique = tuple(set(users))
+	return unique

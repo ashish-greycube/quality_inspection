@@ -17,6 +17,12 @@ frappe.ui.form.on('TAS Quality Control', {
                 }
             }
         })
+
+        frm.set_query('user', () => {
+            return {
+                query: "quality_inspection.quality_inspection.doctype.tas_quality_control.tas_quality_control.get_qi_users_list",
+            };
+        })
     },
 
     refresh(frm) {
@@ -324,8 +330,8 @@ const take_notes_on_workflow_action_change = function (frm) {
                             },
                             callback: function (r) {
                                 if (r.message) {
-                                    console.log(r.message, "===========r.message==========")
-                                    console.log(dialog.get_value('tags'), "===========dialog.get_value('tags')=================")
+                                    // console.log(r.message, "===========r.message==========")
+                                    // console.log(dialog.get_value('tags'), "===========dialog.get_value('tags')=================")
                                     let current_tags = dialog.get_value('tags') || []
                                     
                                     current_tags.push({'tags': new_tag.trim()})
@@ -351,13 +357,6 @@ const take_notes_on_workflow_action_change = function (frm) {
             options: "Quality Tags Table QI",
             read_only: 0,
         }
-        // {
-        //     fieldtype: "Small Text",
-        //     fieldname: "tags",
-        //     label: __("Tags"),
-        //     read_only: 0,
-        //     description: "Enter multiple tags, separated by commas."
-        // }
     )
 
     let table_fields = [
@@ -600,7 +599,10 @@ function bindStatusOnRender(frm, child_table, fieldname) {
             const $btn = $(btn_template);
 
             $cell.css('position', 'relative');
-            $cell.append($btn);
+
+            if (!frm.is_new() && frm.doc.docstatus === 0 && (frappe.user.has_role("System Manager") || frappe.user.has_role("QI User"))) {
+                $cell.append($btn);
+            }
 
             $btn.on('click', function (e) {
                 e.stopPropagation();
@@ -1096,6 +1098,13 @@ let set_row_above_table_header = function (frm) {
 //         }
 //     }
 // })
+
+frappe.ui.form.on("Pallet Information QI", {
+    pallet_type(frm, cdt, cdn) {
+        // console.log("==================pallet_type==================")
+        set_pallet_details_each_row_property(frm)
+    }
+})
 
 frappe.ui.form.on("Open Box Inspection Details QI", {
     pad_away_select(frm, cdt, cdn) {

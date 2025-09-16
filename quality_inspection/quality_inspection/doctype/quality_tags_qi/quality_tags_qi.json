@@ -22,7 +22,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-08-18 21:46:12.685419",
+ "modified": "2025-09-15 00:49:45.595297",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Quality Tags QI",
@@ -38,6 +38,18 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "All",
    "share": 1,
    "write": 1
   }
