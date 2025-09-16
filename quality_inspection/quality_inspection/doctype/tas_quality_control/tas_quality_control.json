@@ -2138,14 +2138,15 @@
    "fieldname": "user",
    "fieldtype": "Link",
    "label": "<b>QI User</b>",
-   "options": "User"
+   "options": "User",
+   "permlevel": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
  "make_attachments_public": 1,
- "modified": "2025-09-15 23:54:20.104724",
+ "modified": "2025-09-16 03:45:38.513290",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "TAS Quality Control",
