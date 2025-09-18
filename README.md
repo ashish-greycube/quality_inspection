@@ -48,6 +48,12 @@ bench build
    
 <img width="1494" height="483" alt="image" src="https://github.com/user-attachments/assets/61d3968a-8079-4627-8eaf-87f3b38e57b8" />
 
+5. To view the TAS Quality control Form, a user must have one of the following roles: <br>
+**System Manager, QI Manager, or QI User.**
+
+<img width="1690" height="1016" alt="image" src="https://github.com/user-attachments/assets/e48286bc-618a-4fc9-a334-7ea3e1823ad3" />
+
+
 
 #### License
 
