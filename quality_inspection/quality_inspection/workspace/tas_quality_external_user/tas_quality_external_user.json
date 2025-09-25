@@ -1,0 +1,53 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"fhSN7RI3yY\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">TAS Quality External User</span>\",\"col\":12}},{\"id\":\"xeeqK7cScL\",\"type\":\"card\",\"data\":{\"card_name\":\"Transaction\",\"col\":4}}]",
+ "creation": "2025-09-24 05:37:58.577930",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "quantity-1",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "TAS Quality External User",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Transaction",
+   "link_count": 1,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "TAS Quality Control",
+   "link_count": 0,
+   "link_to": "TAS Quality Control",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2025-09-24 05:38:50.958717",
+ "modified_by": "Administrator",
+ "module": "Quality Inspection",
+ "name": "TAS Quality External User",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "Quality User External"
+  }
+ ],
+ "sequence_id": 32.0,
+ "shortcuts": [],
+ "title": "TAS Quality External User"
+}

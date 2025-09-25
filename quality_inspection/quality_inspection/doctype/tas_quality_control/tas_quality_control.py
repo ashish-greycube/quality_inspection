@@ -754,6 +754,7 @@ def get_document_report_pdf(doc):
 					<meta charset="UTF-8">
 				</head>
 				<body>
+		 		 <br>
 					{0}
 				</body>
 				</html>
@@ -762,12 +763,13 @@ def get_document_report_pdf(doc):
 	options = {
 		'enable-internal-links': '',
 		"page-size": "A3", 
-		"margin-top": "28mm", "margin-right": "10mm", "margin-bottom": "28mm", "margin-left": "10mm",
+		"margin-top": "28mm", "margin-right": "10mm", "margin-bottom": "30mm", "margin-left": "10mm",
 		"disable-javascript": "", 
 		"disable-local-file-access": "",
 		'encoding': "UTF-8",
 		'user-style-sheet': 'frappe/templates/styles/standard.css',
 		'header-html': header.name,
+		'footer-center': '[page]',
 		'footer-html': footer.name,
 		'footer-font-size': "9",
 		'custom-header': [
@@ -824,17 +826,18 @@ def doc_tab_wise_field_list():
 		},
 		{ 	"tab_name": "Inner & Outer Carton", "result_field_prefix": "inner_",  "tas_po_field": "carton_po_", "table_fieldname" : "inner_and_outer_carton_details_",
 			"table_field_list": [
-				{"label": "Carton Weight (lbs)", "fieldname": ["carton_weight"], "width": "9.09%"},
-				{"label": "Country Of Origin", "fieldname": ["country_of_origin"], "width": "9.09%"},
-				{"label": "Production Date", "fieldname": ["production_date"], "width": "9.09%"},
-				{"label": "Hologram", "fieldname": ["hologram_select"], "width": "9.09%"},
-				{"label": "Carb II", "fieldname": ["carb_select"], "width": "9.09%"},
-				{"label": "Floor Score", "fieldname": ["floor_select"], "width": "9.09%"},
-				{"label": "Inner/Outer Shrink wrap", "fieldname": ["shink_wrap_select"], "width": "9.09%"},
-				{"label": "Insert Sheet", "fieldname": ["insert_sheet_select"], "width": "9.09%"},
-				{"label": "Title IV", "fieldname": ["title_iv"], "width": "9.09%"},
-				{"label": "Mfg Production Run#", "fieldname": ["mfg_production_run"], "width": "9.09%"},
-				{"label": "Item# matches IR TAG", "fieldname": ["item_matches_ir_tag"], "width": "9.09%"},
+				{"label": "Carton Weight (lbs)", "fieldname": ["carton_weight"], "width": "8.33%"},
+				{"label": "Country Of Origin", "fieldname": ["country_of_origin"], "width": "8.33%"},
+				{"label": "Production Date", "fieldname": ["production_date"], "width": "8.33%"},
+				{"label": "Hologram", "fieldname": ["hologram_select"], "width": "8.33%"},
+				{"label": "Carb II", "fieldname": ["carb_select"], "width": "8.33%"},
+				{"label": "Floor Score", "fieldname": ["floor_select"], "width": "8.33%"},
+				{"label": "Inner/Outer Shrink wrap", "fieldname": ["shink_wrap_select"], "width": "8.33%"},
+				{"label": "Insert Sheet", "fieldname": ["insert_sheet_select"], "width": "8.33%"},
+				{"label": "Title IV", "fieldname": ["title_iv"], "width": "8.33%"},
+				{"label": "Production Run No.#", "fieldname": ["production_run_no"], "width": "8.33%"},
+				{"label": "Mfg Production Run#", "fieldname": ["mfg_production_run"], "width": "8.33%"},
+				{"label": "Item# matches IR TAG", "fieldname": ["item_matches_ir_tag"], "width": "8.33%"},
 			],
 			"attachment_fields": ["end_label"]
 		},
@@ -904,7 +907,10 @@ def doc_tab_wise_field_list():
 def get_qi_users_list(doctype, txt, searchfield, start, page_len, filters):
 	from frappe.core.doctype.role.role import get_users
 
-	user_list = get_users('QI User')
+	qi_user_internal = get_users("Quality User Internal")
+	qi_user_external = get_users("Quality User External")
+
+	user_list = list(set(qi_user_internal + qi_user_external))
 
 	users = frappe.get_all("User", filters={"enabled":1, "email": ("like", f"{txt}%"), "name": ["in", user_list]}, fields=["distinct name", "full_name"], as_list=1)
 	# print(users, "=============users=============")

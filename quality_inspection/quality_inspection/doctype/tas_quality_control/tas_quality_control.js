@@ -54,7 +54,7 @@ frappe.ui.form.on('TAS Quality Control', {
         set_row_above_table_header(frm)
         set_pallet_details_each_row_property(frm)
 
-        if (!frm.is_new() && frm.doc.docstatus === 0 && (frappe.user.has_role("System Manager") || frappe.user.has_role("QI User"))) {
+        if (!frm.is_new() && frm.doc.docstatus === 0 && (frappe.user.has_role("System Manager") || frappe.user.has_role("QI Manager") || frappe.user.has_role("Quality User Internal"))) {
             frm.add_custom_button(__("TAS Po"), function () {
 
                 if (frm.doc.vendor == "" || frm.doc.vendor == undefined) {
@@ -308,48 +308,48 @@ const take_notes_on_workflow_action_change = function (frm) {
     let dialog_field = []
     
     dialog_field.push(
-        {
-            fieldtype: "Data",
-            fieldname: "new_tag",
-            read_only: 0
-        },
-        { fieldtype: "Column Break", fieldname: "column_break_1" },
-        {
-            fieldtype: "Button",
-            fieldname: "create_tag",
-            label: __("Create Tag"),
-            click: function (e) {
-                let new_tag = dialog.get_value('new_tag')
-                if (new_tag) {
-                    if (new_tag.trim().length > 0) {
-                        frappe.call({
-                            method: "add_new_tag",
-                            doc: frm.doc,
-                            args: {
-                                new_tag: new_tag.trim()
-                            },
-                            callback: function (r) {
-                                if (r.message) {
-                                    // console.log(r.message, "===========r.message==========")
-                                    // console.log(dialog.get_value('tags'), "===========dialog.get_value('tags')=================")
-                                    let current_tags = dialog.get_value('tags') || []
+        // {
+        //     fieldtype: "Data",
+        //     fieldname: "new_tag",
+        //     read_only: 0
+        // },
+        // { fieldtype: "Column Break", fieldname: "column_break_1" },
+        // {
+        //     fieldtype: "Button",
+        //     fieldname: "create_tag",
+        //     label: __("Create Tag"),
+        //     click: function (e) {
+        //         let new_tag = dialog.get_value('new_tag')
+        //         if (new_tag) {
+        //             if (new_tag.trim().length > 0) {
+        //                 frappe.call({
+        //                     method: "add_new_tag",
+        //                     doc: frm.doc,
+        //                     args: {
+        //                         new_tag: new_tag.trim()
+        //                     },
+        //                     callback: function (r) {
+        //                         if (r.message) {
+        //                             // console.log(r.message, "===========r.message==========")
+        //                             // console.log(dialog.get_value('tags'), "===========dialog.get_value('tags')=================")
+        //                             let current_tags = dialog.get_value('tags') || []
                                     
-                                    current_tags.push({'tags': new_tag.trim()})
-                                    dialog.set_value('tags', current_tags)
-                                    // dialog.fields_dict.tags.refresh()
-                                    dialog.set_value('new_tag', '')
-                                }
-                            }
-                        })
+        //                             current_tags.push({'tags': new_tag.trim()})
+        //                             dialog.set_value('tags', current_tags)
+        //                             // dialog.fields_dict.tags.refresh()
+        //                             dialog.set_value('new_tag', '')
+        //                         }
+        //                     }
+        //                 })
 
-                    }
-                }
-            }
-        },
-        {
-            fieldtype: "Section Break",
-            fieldname: "section_break_1"
-        },
+        //             }
+        //         }
+        //     }
+        // },
+        // {
+        //     fieldtype: "Section Break",
+        //     fieldname: "section_break_1"
+        // },
         {
             fieldtype: "Table MultiSelect",
             fieldname: "tags",
@@ -600,7 +600,7 @@ function bindStatusOnRender(frm, child_table, fieldname) {
 
             $cell.css('position', 'relative');
 
-            if (!frm.is_new() && frm.doc.docstatus === 0 && (frappe.user.has_role("System Manager") || frappe.user.has_role("QI User"))) {
+            if (!frm.is_new() && frm.doc.docstatus === 0 && (frappe.user.has_role("System Manager") || frappe.user.has_role("Quality User Internal") || frappe.user.has_role("Quality User External"))) {
                 $cell.append($btn);
             }
 

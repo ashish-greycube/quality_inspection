@@ -21,6 +21,7 @@
   "title_iv",
   "end_label",
   "column_break_rpof",
+  "production_run_no",
   "mfg_production_run",
   "item_matches_ir_tag"
  ],
@@ -150,12 +151,19 @@
    "in_list_view": 1,
    "label": "Item# matches IR TAG",
    "read_only": 1
+  },
+  {
+   "columns": 3,
+   "fieldname": "production_run_no",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Production Run No. #"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-08-04 22:08:18.148258",
+ "modified": "2025-09-24 01:25:23.518162",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Inner and Outer Carton Details QI",
