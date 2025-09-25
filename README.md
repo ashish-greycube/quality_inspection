@@ -44,14 +44,23 @@ bench build
 <img width="1428" height="432" alt="image" src="https://github.com/user-attachments/assets/8b35f18a-9d08-43e4-955f-27dcc3763b43" />
 <br><br>
 
-4. Give Read access to QI User & QI Manager Role. e.g,
+4. Give Read access to Quality User Internal, Quality User External & QI Manager Role. e.g,
    
 <img width="1494" height="483" alt="image" src="https://github.com/user-attachments/assets/61d3968a-8079-4627-8eaf-87f3b38e57b8" />
 
 5. To view the TAS Quality control Form, a user must have one of the following roles: <br>
-**System Manager, QI Manager, or QI User.**
+**System Manager, QI Manager, Quality User Internal or Quality User External.**
 
-<img width="1690" height="1016" alt="image" src="https://github.com/user-attachments/assets/e48286bc-618a-4fc9-a334-7ea3e1823ad3" />
+<img width="1558" height="931" alt="image" src="https://github.com/user-attachments/assets/6f6f7325-150f-40c5-bd00-9c0a60e79319" />
+
+#### Permission Rules For Quality Form
+
+<img width="1348" height="618" alt="image" src="https://github.com/user-attachments/assets/9df3d4be-a8b4-473d-b595-dc57927fde86" />
+
+Note:<br>
+QI Manager: Allow to create New Quality Control & edit details tab <br>
+Quality User Internal: Allow to edit details tab & other tabs (Not Allow to create new document) <br>
+Quality User External: Allow to edit all tabs except details tab <br>
 
 
 
