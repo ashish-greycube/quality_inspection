@@ -769,7 +769,7 @@ def get_document_report_pdf(doc):
 		'encoding': "UTF-8",
 		'user-style-sheet': 'frappe/templates/styles/standard.css',
 		'header-html': header.name,
-		'footer-center': '[page]',
+		'header-right': '[page] of [topage]',
 		'footer-html': footer.name,
 		'footer-font-size': "9",
 		'custom-header': [

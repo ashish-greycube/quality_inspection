@@ -42,7 +42,9 @@ frappe.ui.form.on('TAS Quality Control', {
         setTimeout(() => {
             // $('button.grid-add-row').hide()
             $(`div.form-group button.grid-add-row`).hide()
+            $(`div.form-group button.grid-remove-rows`).hide()
             $(`div.modal-dialog button.grid-add-row`).show()
+            $(`div.modal-dialog button.grid-remove-rows`).show()
         }, 1000)
 
         setTimeout(() => {

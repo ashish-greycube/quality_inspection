@@ -392,55 +392,64 @@
    "depends_on": "eval:doc.no_of_po>1",
    "fieldname": "quality_control_item_2",
    "fieldtype": "Table",
-   "options": "Quality Control Item QI"
+   "options": "Quality Control Item QI",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>2",
    "fieldname": "quality_control_item_3",
    "fieldtype": "Table",
-   "options": "Quality Control Item QI"
+   "options": "Quality Control Item QI",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>3",
    "fieldname": "quality_control_item_4",
    "fieldtype": "Table",
-   "options": "Quality Control Item QI"
+   "options": "Quality Control Item QI",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>4",
    "fieldname": "quality_control_item_5",
    "fieldtype": "Table",
-   "options": "Quality Control Item QI"
+   "options": "Quality Control Item QI",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>5",
    "fieldname": "quality_control_item_6",
    "fieldtype": "Table",
-   "options": "Quality Control Item QI"
+   "options": "Quality Control Item QI",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>6",
    "fieldname": "quality_control_item_7",
    "fieldtype": "Table",
-   "options": "Quality Control Item QI"
+   "options": "Quality Control Item QI",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>7",
    "fieldname": "quality_control_item_8",
    "fieldtype": "Table",
-   "options": "Quality Control Item QI"
+   "options": "Quality Control Item QI",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>8",
    "fieldname": "quality_control_item_9",
    "fieldtype": "Table",
-   "options": "Quality Control Item QI"
+   "options": "Quality Control Item QI",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.no_of_po>9",
    "fieldname": "quality_control_item_10",
    "fieldtype": "Table",
-   "options": "Quality Control Item QI"
+   "options": "Quality Control Item QI",
+   "read_only": 1
   },
   {
    "bold": 1,
@@ -1760,6 +1769,7 @@
    "fieldtype": "Section Break"
   },
   {
+   "allow_on_submit": 1,
    "bold": 1,
    "fieldname": "default_corner_width",
    "fieldtype": "Data",
@@ -2146,15 +2156,14 @@
    "description": "Internal",
    "fieldname": "qi_document_no",
    "fieldtype": "Data",
-   "label": "<b>QI Document No</b>",
-   "permlevel": 1
+   "label": "<b>QI Document No</b>"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
  "make_attachments_public": 1,
- "modified": "2025-09-25 23:16:19.345441",
+ "modified": "2025-09-25 23:48:50.827894",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "TAS Quality Control",
@@ -2211,7 +2220,6 @@
   },
   {
    "cancel": 1,
-   "create": 1,
    "delete": 1,
    "email": 1,
    "export": 1,
