@@ -602,7 +602,7 @@ function bindStatusOnRender(frm, child_table, fieldname) {
 
             $cell.css('position', 'relative');
 
-            if (!frm.is_new() && frm.doc.docstatus === 0 && (frappe.user.has_role("System Manager") || frappe.user.has_role("Quality User Internal") || frappe.user.has_role("Quality User External"))) {
+            if (!frm.is_new() && frm.doc.docstatus === 0) {
                 $cell.append($btn);
             }
 
