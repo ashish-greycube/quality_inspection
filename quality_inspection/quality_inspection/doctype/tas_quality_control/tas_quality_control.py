@@ -27,12 +27,13 @@ class TASQualityControl(Document):
 		self.set_attachments_details()
 		self.set_color_count_for_color_match_and_embossing()
 		self.fill_missing_data_details()
-		self.check_all_data_mark_as_completed()	
+		# self.check_all_data_mark_as_completed()	
 		self.add_assign_to_user()
 
 	def on_submit(self):
 		# self.validate_over_wax_and_edge_paint_child_table()
 		self.validate_open_box_child_table()
+		self.check_all_data_mark_as_completed()	
 		
 	def get_pallet_information_html(self):
 
@@ -508,8 +509,14 @@ class TASQualityControl(Document):
 	# 	return row_exists
 
 	def fill_missing_data_details(self):
+		if self.workflow_state and self.workflow_state == "Completed":
+			missing_rows = []
 
-		if self.workflow_state and self.workflow_state == "Completed" and len(self.missing_data_details) < 1:
+			if len(self.missing_data_details) > 0:
+				missing_rows = self.missing_data_details
+				# print(missing_rows[0].as_dict(), "=====", type(missing_rows))
+				self.missing_data_details = []
+
 			print("Inside Workflow State Condition")
 			TABLE_LIST = [
 				{"table_name": "pallet_details", "tab_name": "Pallet Information", "parent_name": "Tas PO Details"},
@@ -585,9 +592,16 @@ class TASQualityControl(Document):
 											# print(parent_field_name, "==========")
 											missing_row.po_or_item_color = row.item_color
 											missing_row.child_or_parent_name = self.get(parent_field_name)
+										
+										if len(missing_rows) > 0:
+											for existing_row in missing_rows:
+												if existing_row.row_ref == missing_row.row_ref and existing_row.field_name_ref == missing_row.field_name_ref:
+													missing_row.mark_as_completed = existing_row.mark_as_completed
+													break
 
 	def check_all_data_mark_as_completed(self):
-		if self.workflow_state and self.workflow_state in ["Completed", "Pending Approval"] and len(self.missing_data_details) > 0:
+		# if self.workflow_state and self.workflow_state in ["Completed", "Pending Approval"] and len(self.missing_data_details) > 0:
+		if self.workflow_state and len(self.missing_data_details) > 0:
 			mark_as_completed = True
 
 			for row in self.missing_data_details:
