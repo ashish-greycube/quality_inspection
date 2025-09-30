@@ -55,12 +55,20 @@ bench build
 
 #### Permission Rules For Quality Form
 
-<img width="1348" height="618" alt="image" src="https://github.com/user-attachments/assets/9df3d4be-a8b4-473d-b595-dc57927fde86" />
+<img width="1290" height="496" alt="image" src="https://github.com/user-attachments/assets/eb927efa-ed36-4127-ac5b-a480fa132661" />
+
 
 Note:<br>
-QI Manager: Allow to create New Quality Control & edit details tab <br>
-Quality User Internal: Allow to edit details tab & other tabs (Not Allow to create new document) <br>
+QI Manager: Allow to create New Quality Control & edit form <br>
+Quality User Internal: Allow to edit details tab & other tabs  <br>
 Quality User External: Allow to edit all tabs except details tab <br>
+
+<img width="1292" height="551" alt="image" src="https://github.com/user-attachments/assets/eb12a828-b5e4-4661-82b9-1ef53cf408c0" />
+
+<img width="1273" height="541" alt="image" src="https://github.com/user-attachments/assets/23fa0483-05ba-4b72-bd65-b08beaa08a7e" />
+
+<img width="1300" height="556" alt="image" src="https://github.com/user-attachments/assets/1c076230-1968-42a6-af32-b147e83f3dfd" />
+
 
 
 
