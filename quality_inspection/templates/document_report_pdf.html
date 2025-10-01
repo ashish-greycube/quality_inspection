@@ -88,7 +88,12 @@
                 <td>
                     <div class="row" style="font-size: 20px">
                         <div class="col-xs-7 text-right">
-                            <b>Result: </b>
+                            {% if tab.tab_name == "Color Match & Embossing" %}
+                                <b>Color Match:</b>
+                            {% else %}
+                                <b>Result: </b>
+                            {% endif %}
+
                         </div>
                         <div class="col-xs-5">
                             {% set fail_ration = 100 - (doc[todo_ration_fieldname] + doc[pass_ration_fieldname] +
@@ -97,6 +102,11 @@
                             <span><b>Pass :</b> {{doc[pass_ration_fieldname]}} % </span><br>
                             <span><b>Undetermined :</b> {{doc[undetermined_ratio_fieldname]}} % </span><br>
                             <span><b>Fail :</b> {{ " %.2f " | format(fail_ration) }} % </span> <br>
+                            
+                            {% if tab.tab_name == "Color Match & Embossing" %}
+                                <span><b>Color :</b> {{ doc.color_count }} % </span> <br>
+                            {% endif %}
+
                         </div>
                     </div>
                 </td>
@@ -110,7 +120,7 @@
                 </td>
                 <td>
                     <h2>
-                        Equipement In Use:
+                        <b>Equipement In Use:</b>
                         {% if tab.tab_name == "Moisture Content" %}
                             {{ doc[equipement_fieldname] }}
                         {% else%}
@@ -141,14 +151,29 @@
                         <table class="table table-bordered">
                             <thead>
                                 {% for l in tab.table_field_list%}
-                                    <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}}>{{l.label}}</th>
+                                    {% if tab.tab_name == "Bevel, Over Wax & Edge Paint" %}
+                                        {% if (doc.flooring_class == "HARDWOOD FLOORING" and l.fieldname[0] == "edge_paint_select") or (doc.flooring_class == "RC/SPC/WPC/LVGD" and l.fieldname[0] == "over_wax_select") %}
+                                        {% else %}
+                                            <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}}>{{l.label}}</th>
+                                        {% endif %}
+
+                                    {% else%}
+                                        <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}}>{{l.label}}</th>
+                                    {% endif %}
                                 {% endfor %}
                             </thead>
                             <tbody>
                                 <tr>
                                     {% for f in tab.table_field_list%}
                                         {% for field in f.fieldname %}
-                                            <td class="text-center">{{item[field] or ''}}</td>
+                                            {% if tab.tab_name == "Bevel, Over Wax & Edge Paint" %}
+                                                {% if (doc.flooring_class == "HARDWOOD FLOORING" and field == "edge_paint_select") or (doc.flooring_class == "RC/SPC/WPC/LVGD" and field == "over_wax_select") %}
+                                                {% else %}
+                                                    <td class="text-center">{{item[field] or ''}}</td>
+                                                {% endif %}
+                                            {% else %}
+                                                <td class="text-center">{{item[field] or ''}}</td>
+                                            {% endif %}
                                         {% endfor %}
                                     {% endfor %}
 
@@ -174,7 +199,11 @@
                                     <tr>
                                         {% for f in tab.table_field_list%}
                                             {% for field in f.fieldname %}
-                                                <td class="text-center">{{item[field] or ''}}</td>
+                                                {% if field in ["corner_height", "current_width", "button_select"] and item.pallet_type == "Hardwood" %}
+                                                    <td class="text-center">N/A</td>
+                                                {% else %}
+                                                    <td class="text-center">{{item[field] or ''}}</td>
+                                                {% endif %}
                                             {% endfor %}
                                         {% endfor %}
                                     </tr>
@@ -206,20 +235,22 @@
                     {% set table_name = tab.table_fieldname + (i+1)|string %}
                     {% for item in doc[table_name]%}
                         {% for field in tab.attachment_fields %}
-                            {% if item[field] %}
+                            {% if item[field.url] %}
                                 <div class="col-xs-4 text-center" style="padding: 5px;">
-                                    <img src="{{ frappe.get_url() }}/{{item[field] or ''}}" alt="{{field}}" width="300px" height="auto" class="img-responsive">
+                                    <img src="{{ frappe.get_url() }}/{{item[field.url] or ''}}" alt="{{field.url}}" width="300px" height="auto" class="img-responsive">
+                                    <br> <span style="font-size: 0.8em;">{{field.label}}</span>
                                 </div>
                             {% endif %}
                         {% endfor %}
                     {% endfor %}
                 {% endfor %}
             {% else %}
-                {% for item in doc[table_name]%}
+                {% for item in doc[tab.table_fieldname]%}
                     {% for field in tab.attachment_fields %}
-                        {% if item[field] %}
+                        {% if item[field.url] %}
                             <div class="col-xs-4 text-center" style="padding: 5px;">
-                                <img src="{{ frappe.get_url() }}/{{item[field] or ''}}" alt="{{field}}" width="300px" height="auto" class="img-responsive">
+                                <img src="{{ frappe.get_url() }}/{{item[field.url] or ''}}" alt="{{field.url}}" width="300px" height="auto" class="img-responsive">
+                                <br> <span style="font-size: 0.8em;">{{field.label}}</span>
                             </div>
                         {% endif %}
                     {% endfor %}

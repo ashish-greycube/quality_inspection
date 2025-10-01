@@ -829,14 +829,14 @@ def doc_tab_wise_field_list():
 			"table_field_list": [
 				{"label": "TAS PO", "fieldname": ["tas_po"], "width": "12.5%"},
 				{"label": "Pallet Type", "fieldname": ["pallet_type"], "width": "12.5%"},
-				{"label": "Installation ID", "fieldname": ["installation_id"], "width": "12.5%"},
-				{"label": "Installation Status", "fieldname": ["installation_status"], "width": "12.5%"},
-				{"label": "Corner Reading (inch)", "fieldname": ["corner_height","current_width"], "width": "12.5%"},
-				{"label": "Corner Status", "fieldname": ["button_select"], "width": "12.5%"},
-				{"label": "IIPA", "fieldname": ["iipa"], "width": "12.5%"},
-				{"label": "Height Reading (cm)", "fieldname": ["height_reading"], "width": "12.5%"},
+				{"label": "Installation (ID/ Status)", "fieldname": ["installation_id", "installation_status"], "width": "25%"},
+				{"label": "Corner Reading (Height /Width /Status)", "fieldname": ["corner_height","current_width", "button_select"], "width": "37.5%"},
+				{"label": "IPPC", "fieldname": ["iipa"], "width": "12.5%"},
 			],
-			"attachment_fields": ["installation_photo", "width", "ippc_photo"]
+			"attachment_fields": [
+				{"label": "Installation Photo", "url": "installation_photo"}, 
+				{"label": "Corner Photo", "url": "width"},
+				{"label": "IPPC Photo", "url": "ippc_photo"}]
 		},
 		{ 	"tab_name": "Inner & Outer Carton", "result_field_prefix": "inner_",  "tas_po_field": "carton_po_", "table_fieldname" : "inner_and_outer_carton_details_",
 			"table_field_list": [
@@ -849,19 +849,24 @@ def doc_tab_wise_field_list():
 				{"label": "Inner/Outer Shrink wrap", "fieldname": ["shink_wrap_select"], "width": "8.33%"},
 				{"label": "Insert Sheet", "fieldname": ["insert_sheet_select"], "width": "8.33%"},
 				{"label": "Title IV", "fieldname": ["title_iv"], "width": "8.33%"},
-				{"label": "Production Run No.#", "fieldname": ["production_run_no"], "width": "8.33%"},
+				{"label": "Production Run #", "fieldname": ["production_run_no"], "width": "8.33%"},
 				{"label": "Mfg Production Run#", "fieldname": ["mfg_production_run"], "width": "8.33%"},
 				{"label": "Item# matches IR TAG", "fieldname": ["item_matches_ir_tag"], "width": "8.33%"},
 			],
-			"attachment_fields": ["end_label"]
+			"attachment_fields": [{"label": "End Label", "url": "end_label"}]
 		},
 		{ 	"tab_name": "Color Match & Embossing", "result_field_prefix": "color_",  "tas_po_field": "po_color_", "table_fieldname" : "color_match_and_embossing_details_",
 			"table_field_list": [
-				{"label": "Result", "fieldname": ["results_select"], "width": "33.33%"},
-				{"label": "Embossing", "fieldname": ["embossing_select"], "width": "33.33%"},
-				{"label": "Pattern Repeat", "fieldname": ["pattern_repeat"], "width": "33.33%"},
+				{"label": "Result", "fieldname": ["results_select"], "width": "25%"},
+				{"label": "Embossing", "fieldname": ["embossing_select"], "width": "25%"},
+				{"label": "Pattern Repeat", "fieldname": ["pattern_repeat"], "width": "25%"},
+				{"label": "Pattern Repeat Count", "fieldname": ["pattern_repeat_count"], "width": "25%"},
 			],
-			"attachment_fields": ["master_sample", "finished_board", "pattern_repeat_photo"]
+			"attachment_fields": [
+				{"label": "Master Sample", "url": "master_sample"},
+				{"label": "Finished Board", "url": "finished_board"},
+				{"label": "Pattern Repeat Photo", "url": "pattern_repeat_photo"}
+			]
 		},
 		{ 	"tab_name": "Bevel, Over Wax & Edge Paint", "result_field_prefix": "over_",  "tas_po_field": "po_over_", "table_fieldname" : "over_wax_and_edge_paint_",
 			"table_field_list": [
@@ -869,28 +874,41 @@ def doc_tab_wise_field_list():
 				{"label": "Over Wax", "fieldname": ["over_wax_select"], "width": "33.33%"},
 				{"label": "Edge Paint", "fieldname": ["edge_paint_select"], "width": "33.33%"},
 			],
-			"attachment_fields": ['finished_board'],
+			"attachment_fields": [{"label": "Finished Board", "url": "finished_board"}],
 		},
 		{ 	"tab_name": "Gloss Level", "result_field_prefix": "gloss_",  "tas_po_field": "po_gloss_", "table_fieldname" : "gloss_level_details_",
 			"table_field_list": [
 				{"label": "Master Sample", "fieldname": ["master_gl"], "width": "12%"},
 				{"label": "Matched", "fieldname": ["fb_gl_1", "results_select_1"], "width": "17.6%"},
-				{"label": "Highest Matched", "fieldname": ["fb_gl_2", "results_select_2"], "width": "17.6%"},
-				{"label": "Lowest Matched", "fieldname": ["fb_gl_3", "results_select_3"], "width": "17.6%"},
+				{"label": "Highest", "fieldname": ["fb_gl_2", "results_select_2"], "width": "17.6%"},
+				{"label": "Lowest", "fieldname": ["fb_gl_3", "results_select_3"], "width": "17.6%"},
 				{"label": "Average Plank 1", "fieldname": ["fb_gl_4", "results_select_4"], "width": "17.6%"},
 				{"label": "Average Plank 2", "fieldname": ["fb_gl_5", "results_select_5"], "width": "17.6%"},
 			],
-			"attachment_fields": ['master_sample', 'finished_board_1', 'finished_board_2', 'finished_board_3', 'finished_board_4', 'finished_board_5'],
+			"attachment_fields": [
+				{"label": "Master", "url": "master_sample"},
+				{"label": "Matched", "url": "finished_board_1"},
+				{"label": "Highest", "url": "finished_board_2"},
+				{"label": "Lowest", "url": "finished_board_3"},
+				{"label": "Average Plank 1", "url": "finished_board_4"},
+				{"label": "Average Plank 2", "url": "finished_board_5"},
+		],
 		},
 		{ 	"tab_name": "Moisture Content", "result_field_prefix": "moisture_",  "tas_po_field": "po_moisture_", "table_fieldname" : "moisture_content_details_",
 			"table_field_list": [
-				{"label": "Moisture Content", "fieldname": ["current_moisture"], "width": "12%"},
+				{"label": "Master", "fieldname": ["current_moisture"], "width": "12%"},
 				{"label": "Finished Board 1", "fieldname": ["current_1", "results_select_1"], "width": "17.6%"},
 				{"label": "Finished Board 2", "fieldname": ["current_2", "results_select_2"], "width": "17.6%"},
 				{"label": "Finished Board 3", "fieldname": ["current_3", "results_select_3"], "width": "17.6%"},
 				{"label": "Finished Board 4", "fieldname": ["current_4", "results_select_4"], "width": "17.6%"},
 			],
-			"attachment_fields": ['master_sample', 'finished_board_1', 'finished_board_2', 'finished_board_3', 'finished_board_4'],
+			"attachment_fields": [
+				{"label": "Master", "url": "master_sample"},
+				{"label": "Finished Board 1", "url": "finished_board_1"},
+				{"label": "Finished Board 2", "url": "finished_board_2"},
+				{"label": "Finished Board 3", "url": "finished_board_3"},
+				{"label": "Finished Board 4", "url": "finished_board_4"},
+			],
 		},
 		{ 	"tab_name": "Open Box Inspection", "result_field_prefix": "open_",  "tas_po_field": "po_open_", "table_fieldname" : "open_box_inspection_details_",
 			"table_field_list": [
@@ -899,9 +917,14 @@ def doc_tab_wise_field_list():
 				{"label": "Max Opening Between Boards", "fieldname": ["max_opening", "max_opening_result"], "width": "16.6%"},
 				{"label": "Pad Away From the Locking System", "fieldname": ["pad_away_select"], "width": "16.6%"},
 				{"label": "Master Depth for BP Press", "fieldname": ["master_bp_press_depth", "master_depth_result"], "width": "16.6%"},
-				{"label": "Depth for BP Press", "fieldname": ["bp_press_depth", "depth_result"], "width": "16.6%"},
+				{"label": "Finished Board Depth for BP Press", "fieldname": ["bp_press_depth", "depth_result"], "width": "16.6%"},
 			],
-			"attachment_fields": ['max_opening_photo','finished_board', 'master_depth_photo', 'depth_photo'],
+			"attachment_fields": [
+				{"label": "Max Opening Photo", "url": "max_opening_photo"},
+				{"label": "Finished Board", "url": "finished_board"},
+				{"label": "Master Depth Photo", "url": "master_depth_photo"},
+				{"label": "Depth Photo", "url": "depth_photo"},
+			],
 		}, 
 		{ 	"tab_name": "Width & Thickness", "result_field_prefix": "width_",  "tas_po_field": "po_width_", "table_fieldname" : "width_and_thickness_details_",
 			"table_field_list": [
@@ -911,7 +934,11 @@ def doc_tab_wise_field_list():
 				{"label": "Thickness with Padding", "fieldname": ["thickness_with_padding_1"], "width": "20%"},
 				{"label": "Manual Pull Test", "fieldname": ["manual_select"], "width": "20%"},
 			],
-			"attachment_fields": ['finished_board_2', 'finished_board_3', 'master_sample_matching_board'],
+			"attachment_fields": [
+				{"label": "Thickness without padding", "url": "finished_board_2"},
+				{"label": "Thickness with Padding", "url": "finished_board_3"},
+				{"label": "Master Pull Test", "url": "master_sample_matching_board"},
+			],
 		},
 	]
 	return field_list
