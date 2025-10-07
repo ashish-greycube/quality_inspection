@@ -643,7 +643,9 @@ class TASQualityControl(Document):
 	@frappe.whitelist()
 	def fill_remarks_table(self, remarks):
 		# print("========================fill_remarks_table======================", remarks)
-		
+		notes = ""
+		actor = frappe.session.user
+
 		if remarks:
 			data = remarks[0]
 			# remarks = remarks.as_dict()
@@ -672,12 +674,18 @@ class TASQualityControl(Document):
 					row.notes = d.get("notes")
 					row.field_notes = d.get("tab_field")
 
+					if row.field_notes:
+						notes = notes + "<br>" + (d.get("tab_field") or '') + " : " + row.notes
+					else:
+						notes = notes + "<br>" + row.notes
+
 			elif data.get("notes"):
 				row = self.append("quality_remarks", {})
 				row.action = self.workflow_state
 				row.actor = frappe.session.user
 				row.date_time = now()
 				row.notes = data.get("notes")
+				notes = data.get("notes")
 				
 				# field_details = []
 				# if data.get("field_notes"):
@@ -688,9 +696,13 @@ class TASQualityControl(Document):
 				
 				# 	row.field_notes = ", ".join((ele if ele!=None else '') for ele in field_details)
 
-			self.flags.ignore_validate = True
-			self.save()
 				# row.fields = data.get("field_notes") or None
+
+		self.last_workflow_actor = actor
+		self.last_workflow_comment = notes or "No Remarks"
+
+		self.flags.ignore_validate = True
+		self.save()
 
 
 

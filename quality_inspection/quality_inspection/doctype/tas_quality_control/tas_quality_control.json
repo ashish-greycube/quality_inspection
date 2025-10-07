@@ -286,7 +286,12 @@
   "missing_data_details",
   "tab_10_tab",
   "tags",
-  "quality_remarks"
+  "quality_remarks",
+  "section_break_dswc",
+  "last_workflow_comment",
+  "column_break_hzxc",
+  "last_workflow_actor",
+  "last_workflow_actor_fn"
  ],
  "fields": [
   {
@@ -2158,13 +2163,46 @@
    "fieldtype": "Data",
    "label": "<b>QI Document No</b>",
    "permlevel": 1
+  },
+  {
+   "fieldname": "section_break_dswc",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "last_workflow_comment",
+   "fieldtype": "Small Text",
+   "hidden": 1,
+   "label": "Last Workflow Comment",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "last_workflow_actor",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Last Workflow Actor",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_hzxc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fetch_from": "last_workflow_actor.full_name",
+   "fieldname": "last_workflow_actor_fn",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Last Workflow Actor FN"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
  "make_attachments_public": 1,
- "modified": "2025-09-29 02:12:51.669322",
+ "modified": "2025-10-07 06:01:26.724359",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "TAS Quality Control",
