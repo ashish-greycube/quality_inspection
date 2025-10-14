@@ -2,13 +2,16 @@
 // For license information, please see license.txt
 
 //////////////// Whenever a child table field is updated, the following will also be updated: ////////////////
-// JS: table_details, set_row_above_table_header
-// PY: doc_tab_wise_field_list (field_list), set_attachments_details
+// JS: table_details, set_row_above_table_header, update_child_table_field_property(if display depends on condition)
+// PY: doc_tab_wise_field_list (field_list), set_attachments_details, fill_missing_data_details (if display depends on condition)
+// html: document_report_pdf.html
 
 frappe.ui.form.on('TAS Quality Control', {
     onload(frm) {
         setStatusInTableField(frm)
-        frm.call("set_default_values_and_guidelines")
+        if(frm.doc.status < 2) {
+            frm.call("set_default_values_and_guidelines")
+        }
         // ("[data-fieldname='color_equipment']").scrollIntoView();
         frm.set_query('installation_id', 'pallet_details', () => {
             return {
@@ -26,7 +29,7 @@ frappe.ui.form.on('TAS Quality Control', {
     },
 
     refresh(frm) {
-        if (frm.doc.docstatus >= 0) {
+        if (frm.doc.docstatus < 2 && !frm.is_new()) {
             clickStatusColOfEachRow(frm)
             
             ////////////// Create PDF //////////////
@@ -56,7 +59,7 @@ frappe.ui.form.on('TAS Quality Control', {
         set_row_above_table_header(frm)
         set_pallet_details_each_row_property(frm)
 
-        if (!frm.is_new() && frm.doc.docstatus === 0 && (frappe.user.has_role("System Manager") || frappe.user.has_role("QI Manager") || frappe.user.has_role("Quality User Internal"))) {
+        if (!frm.is_new() && frm.doc.workflow_state === "Draft" && (frappe.user.has_role("System Manager") || frappe.user.has_role("QI Manager") || frappe.user.has_role("Quality User Internal"))) {
             frm.add_custom_button(__("TAS Po"), function () {
 
                 if (frm.doc.vendor == "" || frm.doc.vendor == undefined) {
@@ -300,13 +303,50 @@ frappe.ui.form.on('TAS Quality Control', {
         frm.save()
     },
 
+    before_workflow_action: async (frm) => {
+        if (frm.doc.workflow_state && frm.doc.workflow_state == "Completed"){
+            await check_missing_data_before_completion(frm)
+        }
+
+        if (frm.doc.workflow_state && ["Approved", "Rejected - Closed"].includes(frm.doc.workflow_state)) {
+            // console.log("========before_workflow_action==========")
+            await take_notes_on_workflow_action_change(frm, "Cancelled")
+        }
+    },
     after_workflow_action: (frm) => {
         // console.log("========after_workflow_action==========")
-        take_notes_on_workflow_action_change(frm)
-    }
+        if (frm.doc.docstatus < 2){
+            take_notes_on_workflow_action_change(frm, frm.doc.workflow_state)
+        }
+    },
 })
 
-const take_notes_on_workflow_action_change = function (frm) {
+const check_missing_data_before_completion = async function (frm) {
+    frappe.dom.unfreeze()
+    let promise = new Promise((resolve, reject) => {
+        frappe.confirm('Are you sure you want to proceed?',
+            () => {
+                // action to perform if Yes is selected
+                frappe.call({
+                    method: "check_all_data_mark_as_completed",
+                    doc: frm.doc,
+                })
+                    .then(() => {
+                        refresh_field("missing_data_details");
+                        // console.log("===================")
+                        resolve()
+                    })
+            }, () => {
+                // action to perform if No is selected
+                frm.reload_doc();
+                reject()
+            })
+    })
+
+    await promise.then(() => {});
+}
+
+const take_notes_on_workflow_action_change = async function (frm, action) {
     let dialog_field = []
     
     dialog_field.push(
@@ -403,7 +443,7 @@ const take_notes_on_workflow_action_change = function (frm) {
     }
     
 
-    // let promise = new Promise((resolve, reject) => {
+    let promise = new Promise((resolve, reject) => {
     frappe.dom.unfreeze()
     dialog = new frappe.ui.Dialog({
         title: __("Notes"),
@@ -416,12 +456,15 @@ const take_notes_on_workflow_action_change = function (frm) {
                 frappe.call({
                     method: "fill_remarks_table",
                     doc: frm.doc,
-                    args: remarks,
+                    args: {
+                        "remarks" : remarks,
+                        "action": action
+                    },
                 })
                     .then(() => {
                         refresh_field("quality_remarks");
                         // console.log("===================")
-                        // resolve()
+                        resolve()
                     })
             }
             dialog.hide()
@@ -430,18 +473,19 @@ const take_notes_on_workflow_action_change = function (frm) {
         secondary_action_label: __('Skip'),
         secondary_action: () => {
             dialog.hide()
-            // resolve()
+            resolve()
         },
     })
 
     dialog.show()
-    // })
-    // await promise.then(() => {});
+    })
+    await promise.then(() => {});
 }
 
 //  set css in table columns based on values/data
 const setStatusInTableField = function (frm) {
-    for (const table of table_details) {
+    if (frm.doc.docstatus < 1) {
+        for (const table of table_details) {
         if (table.table_field_name == 'pallet_details') {
             // bindStatusOnRender(frm, table.table_field_name, 'button_select')
             for (const button of table.button_list) {
@@ -458,6 +502,7 @@ const setStatusInTableField = function (frm) {
                 }
             }
         }
+    }
     }
 }
 
@@ -603,7 +648,10 @@ function bindStatusOnRender(frm, child_table, fieldname) {
             $cell.css('position', 'relative');
 
             if (!frm.is_new() && frm.doc.docstatus === 0) {
-                $cell.append($btn);
+                if ((frappe.user.has_role("Quality User External") || frappe.user.has_role("Quality User Internal")) && ["Pending Approval", "On Hold"].includes(frm.doc.workflow_state)){}
+                else{
+                    $cell.append($btn);
+                }
             }
 
             $btn.on('click', function (e) {
@@ -771,8 +819,76 @@ let update_child_table_field_property = function (frm) {
             frm.fields_dict[over_table].grid.reset_grid();
         }
     }
-}
 
+    let open_box_tables = create_child_table_list(frm, 'open_box_inspection_details_')
+    if (open_box_tables.length > 0) {
+        for (const open_table of open_box_tables) {
+            if (frm.doc.flooring_class == 'HARDWOOD FLOORING') {
+
+                // hide: Pad away
+                frm.fields_dict[open_table].grid.update_docfield_property("finished_board", "hidden", 1)
+                frm.fields_dict[open_table].grid.update_docfield_property("finished_board", "in_list_view", 0)
+                frm.fields_dict[open_table].grid.update_docfield_property("pad_away_select", "hidden", 1)
+                frm.fields_dict[open_table].grid.update_docfield_property("pad_away_select", "in_list_view", 0)
+            }
+            else {
+                // show: Pad away
+                frm.fields_dict[open_table].grid.update_docfield_property("finished_board", "hidden", 0)
+                frm.fields_dict[open_table].grid.update_docfield_property("finished_board", "in_list_view", 1)
+                frm.fields_dict[open_table].grid.update_docfield_property("pad_away_select", "hidden", 0)
+                frm.fields_dict[open_table].grid.update_docfield_property("pad_away_select", "in_list_view", 1)
+            }
+            frm.fields_dict[open_table].grid.reset_grid();
+        }
+    }
+
+    let width_thickness_tables = create_child_table_list(frm, 'width_and_thickness_details_')
+    if (width_thickness_tables.length > 0) {
+        for (const width_table of width_thickness_tables) {
+            if (frm.doc.flooring_class == 'HARDWOOD FLOORING') {
+
+                // Show : Thickness
+                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_1", "hidden", 0)
+                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_1", "in_list_view", 1)
+                frm.fields_dict[width_table].grid.update_docfield_property("thickness", "hidden", 0)
+                frm.fields_dict[width_table].grid.update_docfield_property("thickness", "in_list_view", 1)
+
+                // Hide : Thickness without padding
+                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_2", "hidden", 1)
+                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_2", "in_list_view", 0)
+                frm.fields_dict[width_table].grid.update_docfield_property("thickness_without_padding_1", "hidden", 1)
+                frm.fields_dict[width_table].grid.update_docfield_property("thickness_without_padding_1", "in_list_view", 0)
+
+                // Hide : Thickness with padding
+                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_3", "hidden", 1)
+                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_3", "in_list_view", 0)
+                frm.fields_dict[width_table].grid.update_docfield_property("thickness_with_padding_1", "hidden", 1)
+                frm.fields_dict[width_table].grid.update_docfield_property("thickness_with_padding_1", "in_list_view", 0)
+            }
+            else {
+                // Hide : Thickness
+                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_1", "hidden", 1)
+                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_1", "in_list_view", 0)
+                frm.fields_dict[width_table].grid.update_docfield_property("thickness", "hidden", 1)
+                frm.fields_dict[width_table].grid.update_docfield_property("thickness", "in_list_view", 0)
+
+                // Show : Thickness without padding
+                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_2", "hidden", 0)
+                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_2", "in_list_view", 1)
+                frm.fields_dict[width_table].grid.update_docfield_property("thickness_without_padding_1", "hidden", 0)
+                frm.fields_dict[width_table].grid.update_docfield_property("thickness_without_padding_1", "in_list_view", 1)
+
+                // Show : Thickness with padding
+                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_3", "hidden", 0)
+                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_3", "in_list_view", 1)
+                frm.fields_dict[width_table].grid.update_docfield_property("thickness_with_padding_1", "hidden", 0)
+                frm.fields_dict[width_table].grid.update_docfield_property("thickness_with_padding_1", "in_list_view", 1)
+            }
+            frm.fields_dict[width_table].grid.reset_grid();
+        }
+
+    }
+}
 
 let set_row_above_table_header = function (frm) {
     if (frm.doc.pallet_details.length  > 0){
@@ -1004,7 +1120,43 @@ let set_row_above_table_header = function (frm) {
     if (open_box_tables.length > 0) {
         for (const open_box_table of open_box_tables) {
             if (frm.fields_dict[open_box_table].grid.wrapper.find('.grid-heading-row').find('#open_box_table').length == 0) {
-                frm.fields_dict[open_box_table].grid.wrapper.find('div.grid-heading-row').prepend(`
+                if (frm.doc.flooring_class == 'HARDWOOD FLOORING') {
+                    frm.fields_dict[open_box_table].grid.wrapper.find('div.grid-heading-row').prepend(`
+                    <div id="open_box_table" style="background-color: #f3f3f3;">
+                        <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
+                            <div class="" style="width:71px"></div>
+                            <div class="col grid-static-col col-xs-4 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-4 text-center" style="border-left:1px solid #3b3838;"> Bowing
+                            </div>
+                            <div class="col grid-static-col col-xs-4 text-center" style="border-left:1px solid #3b3838;" > Ledging Overwood 
+                            </div>
+                            <div class="col grid-static-col col-xs-4 " style="border-left:1px solid #3b3838;">
+                            </div>
+                            <div class="col grid-static-col col-xs-4 text-right" style="padding-right: 5px !important;">Max Opening Between
+                            </div>
+                            <div class="col grid-static-col col-xs-4 " style="padding-left: 0px !important" >Boards
+                            </div>
+                            <div class="col grid-static-col col-xs-4 " style="border-left:1px solid #3b3838;">
+                            </div>
+                            <div class="col grid-static-col col-xs-4 " style="">Master Depth for BP Press
+                            </div>
+                            <div class="col grid-static-col col-xs-4 " style="" >
+                            </div>
+                            <div class="col grid-static-col col-xs-4 " style="border-left:1px solid #3b3838;">
+                            </div>
+                            <div class="col grid-static-col col-xs-4 " style="">Depth for BP Press
+                            </div>
+                            <div class="col grid-static-col col-xs-4 " style="border-right:1px solid #3b3838;" >
+                            </div>
+                            <div class="" style="border-radius: 0px 10px 0px 0px; width:30px">
+                            </div>
+                        </div>
+                    </div>
+                    `)
+                }
+                else{
+                    frm.fields_dict[open_box_table].grid.wrapper.find('div.grid-heading-row').prepend(`
                     <div id="open_box_table" style="background-color: #f3f3f3;">
                         <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
                             <div class="" style="width:71px"></div>
@@ -1041,6 +1193,7 @@ let set_row_above_table_header = function (frm) {
                         </div>
                     </div>
                     `)
+                }
             }
             frm.fields_dict[open_box_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
         }
@@ -1050,7 +1203,33 @@ let set_row_above_table_header = function (frm) {
     if (width_tables.length > 0) {
         for (const width_table of width_tables) {
             if (frm.fields_dict[width_table].grid.wrapper.find('.grid-heading-row').find('#width_table').length == 0) {
-                frm.fields_dict[width_table].grid.wrapper.find('div.grid-heading-row').prepend(`
+                if (frm.doc.flooring_class == 'HARDWOOD FLOORING') {
+                    frm.fields_dict[width_table].grid.wrapper.find('div.grid-heading-row').prepend(`
+                    <div id="width_table" style="background-color: #f3f3f3;">
+                        <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
+                            <div class="" style="width:71px"></div>
+                            <div class="col grid-static-col col-xs-3 " style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 text-right" style="border-left:1px solid #3b3838;">Width
+                            </div>
+                            <div class="col grid-static-col col-xs-3" style="">
+                            </div>
+                            <div class="col grid-static-col col-xs-3 text-right" style="border-left:1px solid #3b3838; padding-right: 5px !important;">Thickness 
+                            </div>
+                            <div class="col grid-static-col col-xs-3 text-left" style="padding-left: 0px !important;">
+                            </div>
+                            <div class="col grid-static-col col-xs-3" style="border-left:1px solid #3b3838;"> 
+                            </div>
+                            <div class="col grid-static-col col-xs-4" style="border-right:1px solid #3b3838;"> Manual Pull Test
+                            </div>
+                            <div class="" style="border-radius: 0px 10px 0px 0px; width:30px">
+                            </div>
+                        </div>
+                    </div>
+                    `)
+                }
+                else {
+                    frm.fields_dict[width_table].grid.wrapper.find('div.grid-heading-row').prepend(`
                     <div id="width_table" style="background-color: #f3f3f3;">
                         <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
                             <div class="" style="width:71px"></div>
@@ -1077,6 +1256,8 @@ let set_row_above_table_header = function (frm) {
                         </div>
                     </div>
                     `)
+                }
+                
             }
             frm.fields_dict[width_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
         }
@@ -1122,6 +1303,27 @@ frappe.ui.form.on("Open Box Inspection Details QI", {
                     });
                 }
             }
+        }
+    }
+})
+
+frappe.ui.form.on("Color Match and Embossing Details QI", {
+    pattern_repeat_count(frm, cdt, cdn) {
+        let row = locals[cdt][cdn]
+
+        if (row.pattern_repeat_count) {
+            frappe.confirm('Are you sure, the data entered is as per Pattern Repeat Formula mentioned in guideline?',
+                () => {
+                    // action to perform if Yes is selected
+                },
+                () => {
+                    // action to perform if No is selected
+                    frappe.show_alert({
+                        message: __('Please recheck the data entered.'),
+                        indicator: 'red'
+                    }, 5);
+                }
+            )
         }
     }
 })

@@ -2,15 +2,6 @@
  {
   "docstatus": 0,
   "doctype": "Workflow State",
-  "icon": "remove",
-  "modified": "2022-08-18 15:34:32.829715",
-  "name": "Rejected",
-  "style": "Danger",
-  "workflow_state_name": "Rejected"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
   "icon": "",
   "modified": "2025-07-30 21:43:02.627785",
   "name": "Completed",
@@ -61,5 +52,23 @@
   "name": "Draft",
   "style": "",
   "workflow_state_name": "Draft"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-10-13 20:57:16.474800",
+  "name": "Rejected - Awaiting Fixes",
+  "style": "",
+  "workflow_state_name": "Rejected - Awaiting Fixes"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-10-13 20:57:30.534124",
+  "name": "Rejected - Closed",
+  "style": "",
+  "workflow_state_name": "Rejected - Closed"
  }
 ]

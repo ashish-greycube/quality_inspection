@@ -71,152 +71,182 @@
 
         {% for tab in tab_details%}
 
-        {% if tab.tab_name != "Pallet Information" %}
-            <div style="page-break-before:always">&nbsp;</div>
-        {% endif %}
+            {% if tab.tab_name == "Moisture Content" and doc.flooring_class != "HARDWOOD FLOORING" %}
+            {% else %}
 
-        {% set todo_ration_fieldname = tab.result_field_prefix + "todo_ratio" %}
-        {% set pass_ration_fieldname = tab.result_field_prefix + "pass_ration" %}
-        {% set undetermined_ratio_fieldname = tab.result_field_prefix + "undetermined_ratio" %}
-        {% set equipement_fieldname = tab.result_field_prefix + "equipment" %}
+                {% if tab.tab_name != "Pallet Information" %}
+                    <div style="page-break-before:always">&nbsp;</div>
+                {% endif %}
 
-        <table class="table table-bordered" style="table-layout: fixed;">
-            <tr>
-                <td class="text-left" style="vertical-align: middle; font-size: 20px">
-                    <b>{{ tab.tab_name}}</b>
-                </td>
-                <td>
-                    <div class="row" style="font-size: 20px">
-                        <div class="col-xs-7 text-right">
-                            {% if tab.tab_name == "Color Match & Embossing" %}
-                                <b>Color Match:</b>
-                            {% else %}
-                                <b>Result: </b>
-                            {% endif %}
+                {% set todo_ration_fieldname = tab.result_field_prefix + "todo_ratio" %}
+                {% set pass_ration_fieldname = tab.result_field_prefix + "pass_ration" %}
+                {% set undetermined_ratio_fieldname = tab.result_field_prefix + "undetermined_ratio" %}
+                {% set equipement_fieldname = tab.result_field_prefix + "equipment" %}
 
-                        </div>
-                        <div class="col-xs-5">
-                            {% set fail_ration = 100 - (doc[todo_ration_fieldname] + doc[pass_ration_fieldname] +
-                            doc[undetermined_ratio_fieldname]) %}
-                            <span><b>ToDo :</b> {{doc[todo_ration_fieldname]}} % </span> <br>
-                            <span><b>Pass :</b> {{doc[pass_ration_fieldname]}} % </span><br>
-                            <span><b>Undetermined :</b> {{doc[undetermined_ratio_fieldname]}} % </span><br>
-                            <span><b>Fail :</b> {{ " %.2f " | format(fail_ration) }} % </span> <br>
-                            
-                            {% if tab.tab_name == "Color Match & Embossing" %}
-                                <span><b>Color :</b> {{ doc.color_count }} % </span> <br>
-                            {% endif %}
-
-                        </div>
-                    </div>
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <h2><a href="#{{tab.tas_po_field}}">Attachments</a></h2>
-                    <!-- <h2><a href="#attachments">Attachments</a></h2> -->
-                    <!-- <h2><a href="" name="attachments">Attachments</a></h2> -->
-                </td>
-                <td>
-                    <h2>
-                        <b>Equipement In Use:</b>
-                        {% if tab.tab_name == "Moisture Content" %}
-                            {{ doc[equipement_fieldname] }}
-                        {% else%}
-                            {% for equip in doc[equipement_fieldname] %}
-                            {{equip.equipment}}{% if loop.index != doc[equipement_fieldname]|length %},{%endif%}
-                            {% endfor %}
-                        {% endif %}
-                    </h2>
-                </td>
-            </tr>
-
-            {% if tab.tab_name != "Pallet Information" %}
-                {% for i in range(doc.no_of_po) %}
-            
-                {% set tas_po = tab.tas_po_field + (i+1)|string %}
-                {% set table_name = tab.table_fieldname + (i+1)|string %}
-
-                <tr style="background-color: #D1D8BE;">
-                    <td colspan="2">
-                        {{doc[tas_po]}}
-                    </td>
-                </tr>
-
-                {% for item in doc[table_name]%}
-                <tr>
-                    <td colspan="2">
-                        <p>{{ item.item_color }}</p>
-                        <table class="table table-bordered">
-                            <thead>
-                                {% for l in tab.table_field_list%}
-                                    {% if tab.tab_name == "Bevel, Over Wax & Edge Paint" %}
-                                        {% if (doc.flooring_class == "HARDWOOD FLOORING" and l.fieldname[0] == "edge_paint_select") or (doc.flooring_class == "RC/SPC/WPC/LVGD" and l.fieldname[0] == "over_wax_select") %}
-                                        {% else %}
-                                            <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}}>{{l.label}}</th>
-                                        {% endif %}
-
-                                    {% else%}
-                                        <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}}>{{l.label}}</th>
+                <table class="table table-bordered" style="table-layout: fixed;">
+                    <tr>
+                        <td class="text-left" style="vertical-align: middle; font-size: 20px">
+                            <b>{{ tab.tab_name}}</b>
+                        </td>
+                        <td>
+                            <div class="row" style="font-size: 20px">
+                                <div class="col-xs-7 text-right">
+                                    {% if tab.tab_name == "Color Match & Embossing" %}
+                                        <b>Color Match:</b>
+                                    {% else %}
+                                        <b>Result: </b>
                                     {% endif %}
-                                {% endfor %}
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    {% for f in tab.table_field_list%}
-                                        {% for field in f.fieldname %}
+
+                                </div>
+                                <div class="col-xs-5">
+                                    {% set fail_ration = 100 - (doc[todo_ration_fieldname] + doc[pass_ration_fieldname] +
+                                    doc[undetermined_ratio_fieldname]) %}
+                                    <span><b>ToDo :</b> {{doc[todo_ration_fieldname]}} % </span> <br>
+                                    <span><b>Pass :</b> {{doc[pass_ration_fieldname]}} % </span><br>
+                                    <span><b>Undetermined :</b> {{doc[undetermined_ratio_fieldname]}} % </span><br>
+                                    <span><b>Fail :</b> {{ " %.2f " | format(fail_ration) }} % </span> <br>
+                                    
+                                    {% if tab.tab_name == "Color Match & Embossing" %}
+                                        <span><b>Color :</b> {{ doc.color_count }} % </span> <br>
+                                    {% endif %}
+
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h2><a href="#{{tab.tas_po_field}}">Attachments</a></h2>
+                            <!-- <h2><a href="#attachments">Attachments</a></h2> -->
+                            <!-- <h2><a href="" name="attachments">Attachments</a></h2> -->
+                        </td>
+                        <td>
+                            <h2>
+                                <b>Equipement In Use:</b>
+                                {% if tab.tab_name == "Moisture Content" %}
+                                    {{ doc[equipement_fieldname] }}
+                                {% else%}
+                                    {% for equip in doc[equipement_fieldname] %}
+                                    {{equip.equipment}}{% if loop.index != doc[equipement_fieldname]|length %},{%endif%}
+                                    {% endfor %}
+                                {% endif %}
+                            </h2>
+                        </td>
+                    </tr>
+
+                    {% if tab.tab_name != "Pallet Information" %}
+                        {% for i in range(doc.no_of_po) %}
+                    
+                        {% set tas_po = tab.tas_po_field + (i+1)|string %}
+                        {% set table_name = tab.table_fieldname + (i+1)|string %}
+
+                        <tr style="background-color: #D1D8BE;">
+                            <td colspan="2">
+                                {{doc[tas_po]}}
+                            </td>
+                        </tr>
+
+                        {% for item in doc[table_name]%}
+                        <tr>
+                            <td colspan="2">
+                                <p>{{ item.item_color }}</p>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        {% for l in tab.table_field_list%}
                                             {% if tab.tab_name == "Bevel, Over Wax & Edge Paint" %}
-                                                {% if (doc.flooring_class == "HARDWOOD FLOORING" and field == "edge_paint_select") or (doc.flooring_class == "RC/SPC/WPC/LVGD" and field == "over_wax_select") %}
+                                                {% if (doc.flooring_class == "HARDWOOD FLOORING" and l.fieldname[0] == "edge_paint_select") or (doc.flooring_class == "RC/SPC/WPC/LVGD" and l.fieldname[0] == "over_wax_select") %}
                                                 {% else %}
-                                                    <td class="text-center">{{item[field] or ''}}</td>
+                                                    <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}}>{{l.label}}</th>
                                                 {% endif %}
-                                            {% else %}
-                                                <td class="text-center">{{item[field] or ''}}</td>
+
+                                            {% elif tab.tab_name == "Open Box Inspection" %}
+                                                {% if doc.flooring_class == "HARDWOOD FLOORING" and l.label == "Pad Away From the Locking System"%}
+                                                {% else %}
+                                                    <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}}>{{l.label}}</th>
+                                                {% endif %}
+
+                                            {% elif tab.tab_name == "Width & Thickness" %}
+                                                {% if doc.flooring_class == "HARDWOOD FLOORING" and l.label in ["Thickness without padding", "Thickness with Padding"]%}
+                                                {% elif doc.flooring_class != "HARDWOOD FLOORING" and l.label == "Thickness"  %}
+                                                {% else %}
+                                                    <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}}>{{l.label}}</th>
+                                                {% endif %}
+
+                                            {% else%}
+                                                <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}}>{{l.label}}</th>
                                             {% endif %}
                                         {% endfor %}
-                                    {% endfor %}
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            {% for f in tab.table_field_list%}
+                                                {% for field in f.fieldname %}
+                                                    {% if tab.tab_name == "Bevel, Over Wax & Edge Paint" %}
+                                                        {% if (doc.flooring_class == "HARDWOOD FLOORING" and field == "edge_paint_select") or (doc.flooring_class == "RC/SPC/WPC/LVGD" and field == "over_wax_select") %}
+                                                        {% else %}
+                                                            <td class="text-center">{{item[field] or ''}}</td>
+                                                        {% endif %}
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-                {% endfor %}
-                {% endfor %}
-            
-            {% else %}
-                <tr>
-                    <td colspan="2">
-                        {% for item in doc[tab.table_fieldname]%}
-                            <table class="table table-bordered">
-                                <thead>
-                                    {% for l in tab.table_field_list%}
-                                        <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}}>{{l.label}}</th>
-                                    {% endfor %}
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        {% for f in tab.table_field_list%}
-                                            {% for field in f.fieldname %}
-                                                {% if field in ["corner_height", "current_width", "button_select"] and item.pallet_type == "Hardwood" %}
-                                                    <td class="text-center">N/A</td>
-                                                {% else %}
-                                                    <td class="text-center">{{item[field] or ''}}</td>
-                                                {% endif %}
+                                                    {% elif tab.tab_name == "Open Box Inspection" %}
+                                                        {% if doc.flooring_class == "HARDWOOD FLOORING" and field == "pad_away_select"%}
+                                                        {% else %}
+                                                            <td class="text-center">{{item[field] or ''}}</td>
+                                                        {% endif %}
+
+                                                    {% elif tab.tab_name == "Width & Thickness" %}
+                                                        {% if doc.flooring_class == "HARDWOOD FLOORING" and field in ["thickness_without_padding_1", "thickness_with_padding_1"]%}
+                                                        {% elif doc.flooring_class != "HARDWOOD FLOORING" and field == "thickness"  %}
+                                                        {% else %}
+                                                            <td class="text-center">{{item[field] or ''}}</td>
+                                                        {% endif %}
+
+                                                    {% else %}
+                                                        <td class="text-center">{{item[field] or ''}}</td>
+                                                    {% endif %}
+                                                {% endfor %}
                                             {% endfor %}
-                                        {% endfor %}
-                                    </tr>
-                                </tbody>
-                            </table>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
                         {% endfor %}
-                    </td>
-                </tr>
+                        {% endfor %}
+                    
+                    {% else %}
+                        <tr>
+                            <td colspan="2">
+                                {% for item in doc[tab.table_fieldname]%}
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            {% for l in tab.table_field_list%}
+                                                <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}}>{{l.label}}</th>
+                                            {% endfor %}
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                {% for f in tab.table_field_list%}
+                                                    {% for field in f.fieldname %}
+                                                        {% if field in ["corner_height", "current_width", "button_select"] and item.pallet_type == "Hardwood" %}
+                                                            <td class="text-center">N/A</td>
+                                                        {% else %}
+                                                            <td class="text-center">{{item[field] or ''}}</td>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endfor %}
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    {% endif %}
+
+                </table>
+
             {% endif %}
-
-        </table>
-
-        
         
         {% endfor %}
 
@@ -228,35 +258,45 @@
         <h2>Attachements:</h2>
 
         {% for tab in tab_details %}
-        <div id="{{tab.tas_po_field}}" class="col-xs-12">
-        <h3>{{tab.tab_name}}</h3><br>
-            {% if tab.tab_name != "Pallet Information" %}
-                {% for i in range(doc.no_of_po) %}
-                    {% set table_name = tab.table_fieldname + (i+1)|string %}
-                    {% for item in doc[table_name]%}
-                        {% for field in tab.attachment_fields %}
-                            {% if item[field.url] %}
-                                <div class="col-xs-4 text-center" style="padding: 5px;">
-                                    <img src="{{ frappe.get_url() }}/{{item[field.url] or ''}}" alt="{{field.url}}" width="300px" height="auto" class="img-responsive">
-                                    <br> <span style="font-size: 0.8em;">{{field.label}}</span>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    {% endfor %}
-                {% endfor %}
+
+            {% if tab.tab_name == "Moisture Content" and doc.flooring_class != "HARDWOOD FLOORING" %}
             {% else %}
-                {% for item in doc[tab.table_fieldname]%}
-                    {% for field in tab.attachment_fields %}
-                        {% if item[field.url] %}
-                            <div class="col-xs-4 text-center" style="padding: 5px;">
-                                <img src="{{ frappe.get_url() }}/{{item[field.url] or ''}}" alt="{{field.url}}" width="300px" height="auto" class="img-responsive">
-                                <br> <span style="font-size: 0.8em;">{{field.label}}</span>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                {% endfor %}
-            {% endif %} 
-        </div> 
+                <div id="{{tab.tas_po_field}}" class="col-xs-12">
+                <p style="font-size: 18px;"><b>{{tab.tab_name}}</b></p><br>
+                    {% if tab.tab_name != "Pallet Information" %}                 
+                        {% for i in range(doc.no_of_po) %}
+                            {% set tas_po = tab.tas_po_field + (i+1)|string %}
+                            
+                            <p style="font-size: 16px;" class="col-xs-12"><b>{{doc[tas_po]}}</b></p><br>
+
+                            {% set table_name = tab.table_fieldname + (i+1)|string %}
+                            {% for item in doc[table_name]%}
+                                <p style="font-size: 14px;" class="col-xs-12">{{ item.item_color }}</p><br>
+                                {% for field in tab.attachment_fields %}
+                                    {% if item[field.url] %}
+                                        <div class="col-xs-4 text-center" style="padding: 5px;">
+                                            <img src="{{ frappe.get_url() }}/{{item[field.url] or ''}}" alt="{{field.url}}" width="300px" height="auto" class="img-responsive">
+                                            <br> <span style="font-size: 0.8em;">{{field.label}}</span>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        {% endfor %}
+                    {% else %}
+                        {% for item in doc[tab.table_fieldname]%}
+                            <p style="font-size: 16px;" class="col-xs-12"><b>{{item.tas_po}}</b></p><br>
+                            {% for field in tab.attachment_fields %}
+                                {% if item[field.url] %}
+                                    <div class="col-xs-4 text-center" style="padding: 5px;">
+                                        <img src="{{ frappe.get_url() }}/{{item[field.url] or ''}}" alt="{{field.url}}" width="300px" height="auto" class="img-responsive">
+                                        <br> <span style="font-size: 0.8em;">{{field.label}}</span>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %} 
+                </div>
+            {% endif %}
         {% endfor %}
         </div>
             

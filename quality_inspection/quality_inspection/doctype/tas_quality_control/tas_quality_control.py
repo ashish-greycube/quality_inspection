@@ -33,7 +33,7 @@ class TASQualityControl(Document):
 	def on_submit(self):
 		# self.validate_over_wax_and_edge_paint_child_table()
 		self.validate_open_box_child_table()
-		self.check_all_data_mark_as_completed()	
+		# self.check_all_data_mark_as_completed()	
 		
 	def get_pallet_information_html(self):
 
@@ -132,7 +132,13 @@ class TASQualityControl(Document):
 
 						for row in self.get(child_table_name):
 							for attach in attach_field_list:
-								if not row.get(attach):
+								if child_table_name == "open_box_inspection_details_" + cstr(i+1) and self.flooring_class == "HARDWOOD FLOORING" and attach == "finished_board":
+									continue
+								elif child_table_name == "width_and_thickness_details_" + cstr(i+1) and self.flooring_class == "HARDWOOD FLOORING" and (attach == "finished_board_2" or attach == "finished_board_3"):
+									continue
+								elif child_table_name == "width_and_thickness_details_" + cstr(i+1) and self.flooring_class != "HARDWOOD FLOORING" and attach == "finished_board_1":
+									continue
+								elif not row.get(attach):
 									pendings = pendings + 1
 								total_attachments = total_attachments + 1
 
@@ -142,6 +148,8 @@ class TASQualityControl(Document):
 								elif child_table_name == "over_wax_and_edge_paint_" + cstr(i+1) and self.flooring_class == "RC/SPC/WPC/LVGD" and select == "over_wax_select":
 									continue
 								elif child_table_name == "over_wax_and_edge_paint_" + cstr(i+1) and self.flooring_class == "HARDWOOD FLOORING" and select == "edge_paint_select":
+									continue
+								elif child_table_name == "open_box_inspection_details_" + cstr(i+1) and self.flooring_class == "HARDWOOD FLOORING" and attach == "pad_away_select":
 									continue
 								else:
 									total_select_fields = total_select_fields + 1
@@ -218,7 +226,7 @@ class TASQualityControl(Document):
 		self.open_todo_ratio = flt((open[4]), 2)
 
 		width = self.calculate_attachments_details("width_and_thickness_details_", 
-											 ['finished_board_2', 'finished_board_3', 'master_sample_matching_board'],
+											 ['finished_board_1', 'finished_board_2', 'finished_board_3', 'master_sample_matching_board'],
 											 ['manual_select'])
 		self.width_total_attachment = width[0]
 		self.width_pending_attachment = width[1]
@@ -561,11 +569,20 @@ class TASQualityControl(Document):
 
 										elif table.get("table_name") == "over_wax_and_edge_paint_" and field.fieldname == "edge_paint_select" and self.flooring_class == "HARDWOOD FLOORING":
 											missing_row_data = False
+
+										elif table.get("table_name") == "open_box_inspection_details_" and field.fieldname in ["finished_board", "pad_away_select"] and self.flooring_class == "HARDWOOD FLOORING":
+											missing_row_data = False
 										
+										elif table.get("table_name") == "width_and_thickness_details_" and field.fieldname in ["finished_board_2", "thickness_without_padding_1", "finished_board_3", "thickness_with_padding_1"] and self.flooring_class == "HARDWOOD FLOORING":
+											missing_row_data = False
+
 										elif table.get("table_name") == "pallet_details" and field.fieldname in ["corner_height","current_width", "width", "button_select"] and row.pallet_type != "Plywood":
 											missing_row_data = False
 										
 										elif table.get("table_name") == "pallet_details" and field.fieldname in ["iipa", "ippc_photo"] and row.pallet_type != "Hardwood":
+											missing_row_data = False
+
+										elif table.get("table_name") == "moisture_content_details_" and self.flooring_class != "HARDWOOD FLOORING":
 											missing_row_data = False
 
 										elif field.fieldtype == "Data":
@@ -599,6 +616,7 @@ class TASQualityControl(Document):
 													missing_row.mark_as_completed = existing_row.mark_as_completed
 													break
 
+	@frappe.whitelist()														
 	def check_all_data_mark_as_completed(self):
 		# if self.workflow_state and self.workflow_state in ["Completed", "Pending Approval"] and len(self.missing_data_details) > 0:
 		if self.workflow_state and len(self.missing_data_details) > 0:
@@ -611,9 +629,11 @@ class TASQualityControl(Document):
 			
 			if mark_as_completed == False:
 				frappe.throw(_("Please mark all rows as 'Complete' in the Missing tab before proceeding."))
+		
+		return True
 
 	def add_assign_to_user(self):
-		if self.user:
+		if self.user and not self.is_new():
 			assignees = get_assignees({"doctype": self.doctype, "name": self.name})
 
 			assign_to_found = False
@@ -641,7 +661,7 @@ class TASQualityControl(Document):
 		return new_tag
 
 	@frappe.whitelist()
-	def fill_remarks_table(self, remarks):
+	def fill_remarks_table(self, remarks, action):
 		# print("========================fill_remarks_table======================", remarks)
 		notes = ""
 		actor = frappe.session.user
@@ -668,7 +688,7 @@ class TASQualityControl(Document):
 			if data.get("field_wise_notes") and len(data.get("field_wise_notes")) > 0:
 				for d in data.get("field_wise_notes"):
 					row = self.append("quality_remarks", {})
-					row.action = self.workflow_state
+					row.action = action
 					row.actor = frappe.session.user
 					row.date_time = now()
 					row.notes = d.get("notes")
@@ -681,7 +701,7 @@ class TASQualityControl(Document):
 
 			elif data.get("notes"):
 				row = self.append("quality_remarks", {})
-				row.action = self.workflow_state
+				row.action = action
 				row.actor = frappe.session.user
 				row.date_time = now()
 				row.notes = data.get("notes")
@@ -942,11 +962,13 @@ def doc_tab_wise_field_list():
 			"table_field_list": [
 				{"label": "Length (mm)", "fieldname": ["length"], "width": "20%"},
 				{"label": "Width (mm)", "fieldname": ["width_1"], "width": "20%"},
+				{"label": "Thickness", "fieldname": ["thickness"], "width": "20%"},
 				{"label": "Thickness without padding", "fieldname": ["thickness_without_padding_1"], "width": "20%"},
 				{"label": "Thickness with Padding", "fieldname": ["thickness_with_padding_1"], "width": "20%"},
 				{"label": "Manual Pull Test", "fieldname": ["manual_select"], "width": "20%"},
 			],
 			"attachment_fields": [
+				{"label": "Thickness", "url": "finished_board_1"},
 				{"label": "Thickness without padding", "url": "finished_board_2"},
 				{"label": "Thickness with Padding", "url": "finished_board_3"},
 				{"label": "Master Pull Test", "url": "master_sample_matching_board"},

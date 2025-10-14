@@ -9,13 +9,6 @@
  {
   "docstatus": 0,
   "doctype": "Workflow Action Master",
-  "modified": "2022-08-18 15:34:32.852997",
-  "name": "Reject",
-  "workflow_action_name": "Reject"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow Action Master",
   "modified": "2025-07-30 21:44:09.198703",
   "name": "Mark Complete",
   "workflow_action_name": "Mark Complete"
@@ -40,5 +33,19 @@
   "modified": "2025-08-14 00:52:32.496914",
   "name": "On Hold",
   "workflow_action_name": "On Hold"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-10-13 20:57:44.553271",
+  "name": "Submit Fixes",
+  "workflow_action_name": "Submit Fixes"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow Action Master",
+  "modified": "2025-10-13 20:57:53.490735",
+  "name": "Close Rejection",
+  "workflow_action_name": "Close Rejection"
  }
 ]

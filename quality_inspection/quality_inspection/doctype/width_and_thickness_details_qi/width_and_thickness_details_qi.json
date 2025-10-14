@@ -12,6 +12,10 @@
   "length",
   "column_break_niyy",
   "width_1",
+  "section_break_kcci",
+  "finished_board_1",
+  "column_break_liwb",
+  "thickness",
   "section_break_cvvi",
   "finished_board_2",
   "column_break_rtmk",
@@ -107,14 +111,14 @@
   {
    "columns": 3,
    "fieldname": "width_1",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Width (mm)"
   },
   {
    "columns": 3,
    "fieldname": "thickness_without_padding_1",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "TWO-Padding",
    "precision": "2"
@@ -122,22 +126,46 @@
   {
    "columns": 3,
    "fieldname": "thickness_with_padding_1",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "TWI-Padding"
   },
   {
    "columns": 3,
    "fieldname": "length",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Length (mm)"
+  },
+  {
+   "fieldname": "section_break_kcci",
+   "fieldtype": "Section Break",
+   "label": "Thickness"
+  },
+  {
+   "columns": 3,
+   "fieldname": "finished_board_1",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Thickness-Finished Board"
+  },
+  {
+   "fieldname": "column_break_liwb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "columns": 3,
+   "fieldname": "thickness",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Thickness",
+   "precision": "2"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-09-02 03:50:37.662884",
+ "modified": "2025-10-10 03:59:14.116019",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Width And Thickness Details QI",
