@@ -258,20 +258,21 @@
         <h2>Attachements:</h2>
 
         {% for tab in tab_details %}
+             <hr class="col-xs-12" style="border-top: 1px solid #000;">
 
             {% if tab.tab_name == "Moisture Content" and doc.flooring_class != "HARDWOOD FLOORING" %}
             {% else %}
                 <div id="{{tab.tas_po_field}}" class="col-xs-12">
-                <p style="font-size: 18px;"><b>{{tab.tab_name}}</b></p><br>
+                <p style="font-size: 18px;"><b>Tab : {{tab.tab_name}}</b></p><br>
                     {% if tab.tab_name != "Pallet Information" %}                 
                         {% for i in range(doc.no_of_po) %}
                             {% set tas_po = tab.tas_po_field + (i+1)|string %}
                             
-                            <p style="font-size: 16px;" class="col-xs-12"><b>{{doc[tas_po]}}</b></p><br>
+                            <p style="font-size: 16px;" class="col-xs-12"><b> TAS PO : {{doc[tas_po]}}</b></p><br>
 
                             {% set table_name = tab.table_fieldname + (i+1)|string %}
                             {% for item in doc[table_name]%}
-                                <p style="font-size: 14px;" class="col-xs-12">{{ item.item_color }}</p><br>
+                                <p style="font-size: 14px;" class="col-xs-12">Item-Color : {{ item.item_color }}</p><br>
                                 {% for field in tab.attachment_fields %}
                                     {% if item[field.url] %}
                                         <div class="col-xs-4 text-center" style="padding: 5px;">
@@ -284,7 +285,7 @@
                         {% endfor %}
                     {% else %}
                         {% for item in doc[tab.table_fieldname]%}
-                            <p style="font-size: 16px;" class="col-xs-12"><b>{{item.tas_po}}</b></p><br>
+                            <p style="font-size: 16px;" class="col-xs-12"><b> TAS PO : {{item.tas_po}}</b></p><br>
                             {% for field in tab.attachment_fields %}
                                 {% if item[field.url] %}
                                     <div class="col-xs-4 text-center" style="padding: 5px;">
@@ -297,6 +298,7 @@
                     {% endif %} 
                 </div>
             {% endif %}
+
         {% endfor %}
         </div>
             

@@ -304,6 +304,11 @@ frappe.ui.form.on('TAS Quality Control', {
     },
 
     before_workflow_action: async (frm) => {
+        if (frm.doc.workflow_state){    
+            await frappe.db.set_value(frm.doc.doctype, frm.doc.name, 'previous_workflow_state', frm.doc.workflow_state)
+            await frappe.db.set_value(frm.doc.doctype, frm.doc.name, 'previous_workflow_actor', frm.doc.last_workflow_actor || '')
+        }
+
         if (frm.doc.workflow_state && frm.doc.workflow_state == "Completed"){
             await check_missing_data_before_completion(frm)
         }
