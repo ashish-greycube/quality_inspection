@@ -3,7 +3,7 @@
     {{ include_style('print.bundle.css') }}
 </head>
 
-<body>
+<body style="font-family: verdana !important;">
     {% if doc|length > 0 %}
 
     <div style="font-size: 20px !important;" class="text-center">
@@ -38,8 +38,8 @@
                     <h2><b>Quality Inspector: </b> {{doc.user or ''}} </h2>
                 </td>
                 <td class="row">
-                    <h2 class="col-xs-3" style="padding-left: 0px;"><b>Document No - </b></h2>
-                    <h2 class="col-xs-9" style="padding-left: 0px;">
+                    <h2 class="col-xs-4" style="padding-left: 0px;"><b>Document No - </b></h2>
+                    <h2 class="col-xs-8 text-left" style="padding-left: 0px;">
                         <b>Parsimony:</b> {{doc.name}} <br>
                         <b>T&A QI Doc No.:</b> {{doc.qi_document_no or ''}}
                     </h2>
