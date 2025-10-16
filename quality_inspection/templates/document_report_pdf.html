@@ -7,7 +7,6 @@
     {% if doc|length > 0 %}
 
     <div style="font-size: 20px !important;" class="text-center">
-        <h1><b>Quality Inspection</b></h1>
         {% set tab_details = doc_tab_wise_field_list()%}
         
         <!----------------------- page 1 --------------------------->
@@ -15,7 +14,7 @@
         <table class="table table-bordered" style="table-layout: fixed;">
             <tr>
                 <td class="text-center" colspan="2">
-                    <h1><b>{{doc.name}}</b></h1>
+                    <h1><b>QUALITY INSPECTION REPORT</b></h1>
                 </td>
             </tr>
             <tr>
@@ -23,12 +22,12 @@
                     <h2><b>Date of Inspection: </b>{{doc.date_of_inspection}}</h2>
                 </td>
                 <td>
-                    <h2><b>Vendor: </b>{{doc.vendor}}</h2>
+                    <h2><b>Vendor: </b>{{doc.vendor_name or ''}}</h2>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <h2><b>No Of PO: </b> {{doc.no_of_po}} </h2>
+                    <h2><b>No. of POs being inspected: </b> {{doc.no_of_po}} </h2>
                 </td>
                 <td>
                     <h2><b>Company: </b> {{doc.company}}</h2>
@@ -36,32 +35,40 @@
             </tr>
             <tr>
                 <td>
-                    <h2><b>QI User: </b> {{doc.user or ''}} </h2>
+                    <h2><b>Quality Inspector: </b> {{doc.user or ''}} </h2>
                 </td>
-                <td>
-                    <h2><b>QI Document No: </b> {{doc.qi_document_no or ''}}</h2>
+                <td class="row">
+                    <h2 class="col-xs-3" style="padding-left: 0px;"><b>Document No - </b></h2>
+                    <h2 class="col-xs-9" style="padding-left: 0px;">
+                        <b>Parsimony:</b> {{doc.name}} <br>
+                        <b>T&A QI Doc No.:</b> {{doc.qi_document_no or ''}}
+                    </h2>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <h2 class="col-xs-6" style="padding-left: 0%;">
+                    <h2>
                         <b> PO Reference:</b>
                     </h2>
-                    <table class="col-xs-6 table-bordered">
-                        {% for item in doc.pallet_details %}
-                            <tr>
-                                <td style="padding: 2% !important;" class="text-center">{{ item.tas_po }}</td>
-                            </tr>
-                        {% endfor %}
-                    </table>
+                        <p style="font-size: 18px;">                   
+                        {% set tas_po_list = [] %}
+                        {% if doc.pallet_details | length > 0 %}
+                            {% for item in doc.pallet_details %}
+                                {% if item.tas_po not in tas_po_list %}
+                                    {% set _ = tas_po_list.append(item.tas_po) %}
+                                {% endif %}
+                            {% endfor %}
+                            {{ tas_po_list |join(', ') }}
+                        {% endif %}
+                        </p>
+
+                    
+                    <h2><b>Flooring Class: </b>{{doc.flooring_class}}</h2>
                 </td>
                 <td>
-                    <h2><b>Flooring Class: </b>{{doc.flooring_class}}</h2>
-                    <p>This determines participation of quality parameters</p>
-                    
-                    <h3><b>Relative humidity :</b> </h3> {{doc.relative_humidity or ''}}
-                    <h3><b>Temperature :</b> </h3> {{doc.temperature or ''}}
-                    <h3><b>Time Of Inspection :</b> </h3> {{doc.time_of_inspection or ''}}
+                    <h2><b>Relative humidity :</b> </h2> {{doc.relative_humidity or ''}}
+                    <h2><b>Temperature :</b> </h2> {{doc.temperature or ''}}
+                    <h2><b>Time Of Inspection :</b> </h2> {{doc.time_of_inspection or ''}}
                 </td>
                 
             </tr>
@@ -81,57 +88,50 @@
                 {% set todo_ration_fieldname = tab.result_field_prefix + "todo_ratio" %}
                 {% set pass_ration_fieldname = tab.result_field_prefix + "pass_ration" %}
                 {% set undetermined_ratio_fieldname = tab.result_field_prefix + "undetermined_ratio" %}
+                {% set not_applicable_ratio_fieldname = tab.result_field_prefix + "na_ratio" %}
                 {% set equipement_fieldname = tab.result_field_prefix + "equipment" %}
 
                 <table class="table table-bordered" style="table-layout: fixed;">
-                    <tr>
-                        <td class="text-left" style="vertical-align: middle; font-size: 20px">
-                            <b>{{ tab.tab_name}}</b>
-                        </td>
-                        <td>
-                            <div class="row" style="font-size: 20px">
-                                <div class="col-xs-7 text-right">
-                                    {% if tab.tab_name == "Color Match & Embossing" %}
-                                        <b>Color Match:</b>
-                                    {% else %}
-                                        <b>Result: </b>
-                                    {% endif %}
+                    <tr style="font-size: 20px">
+                        <td class="text-left" >
+                            {% set total_attach = tab.result_field_prefix + "total_attachment" %}
+                            {% set pending_attach = tab.result_field_prefix + "pending_attachment" %}
 
-                                </div>
-                                <div class="col-xs-5">
-                                    {% set fail_ration = 100 - (doc[todo_ration_fieldname] + doc[pass_ration_fieldname] +
-                                    doc[undetermined_ratio_fieldname]) %}
-                                    <span><b>ToDo :</b> {{doc[todo_ration_fieldname]}} % </span> <br>
-                                    <span><b>Pass :</b> {{doc[pass_ration_fieldname]}} % </span><br>
-                                    <span><b>Undetermined :</b> {{doc[undetermined_ratio_fieldname]}} % </span><br>
-                                    <span><b>Fail :</b> {{ " %.2f " | format(fail_ration) }} % </span> <br>
-                                    
-                                    {% if tab.tab_name == "Color Match & Embossing" %}
-                                        <span><b>Color :</b> {{ doc.color_count }} % </span> <br>
-                                    {% endif %}
-
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <h2><a href="#{{tab.tas_po_field}}">Attachments</a></h2>
-                            <!-- <h2><a href="#attachments">Attachments</a></h2> -->
-                            <!-- <h2><a href="" name="attachments">Attachments</a></h2> -->
-                        </td>
-                        <td>
+                            <b style="font-size: 22px">{{ tab.tab_name}}</b> <br>
+                            <h2>
+                                <b><a href="#{{tab.tas_po_field}}">Total Attachments : </a></b> {{doc[total_attach]}} <br>
+                                <b>Attached : </b> {{doc[total_attach] - doc[pending_attach]}} <br>
+                                <b>Pending Attachments : </b> {{doc[pending_attach]}}
+                            </h2>
+                            
                             <h2>
                                 <b>Equipement In Use:</b>
                                 {% if tab.tab_name == "Moisture Content" %}
                                     {{ doc[equipement_fieldname] }}
                                 {% else%}
                                     {% for equip in doc[equipement_fieldname] %}
-                                    {{equip.equipment}}{% if loop.index != doc[equipement_fieldname]|length %},{%endif%}
+                                        {{equip.equipment}}{% if loop.index != doc[equipement_fieldname]|length %},{%endif%}
                                     {% endfor %}
                                 {% endif %}
                             </h2>
+                        </td>
+
+                        <td style="padding-top: 10px !important;">
+                            {% set fail_ration = 100 - (doc[todo_ration_fieldname] + doc[pass_ration_fieldname] +
+                                doc[undetermined_ratio_fieldname] + doc[not_applicable_ratio_fieldname]) %}
+                            {% if fail_ration < 0 %}
+                                {% set fail_ration = 0 %}
+                            {% endif %}
+
+                                <b>ToDo :</b> {{doc[todo_ration_fieldname]}} % <br>
+                                <b>Pass :</b> {{doc[pass_ration_fieldname]}} % <br>
+                                <b>Undetermined :</b> {{doc[undetermined_ratio_fieldname]}} % <br>
+                                <b>Not Applicable :</b> {{doc[not_applicable_ratio_fieldname]}} % <br>
+                                <b>Fail :</b> {{ " %.2f " | format(fail_ration) }} %  <br>
+
+                                {% if tab.tab_name == "Color Match & Embossing" %}
+                                    <span><b>Color :</b> {{ doc.color_count }}  </span> <br>
+                                {% endif %}
                         </td>
                     </tr>
 
@@ -141,16 +141,16 @@
                         {% set tas_po = tab.tas_po_field + (i+1)|string %}
                         {% set table_name = tab.table_fieldname + (i+1)|string %}
 
-                        <tr style="background-color: #D1D8BE;">
+                        <tr style="background-color: #D1D8BE; font-size: 20px;">
                             <td colspan="2">
-                                {{doc[tas_po]}}
+                               PO - {{doc[tas_po]}}
                             </td>
                         </tr>
 
                         {% for item in doc[table_name]%}
                         <tr>
-                            <td colspan="2">
-                                <p>{{ item.item_color }}</p>
+                            <td colspan="2" style="padding-top: 15px !important;">
+                                <p style="font-size: 18px;"> <b> {{ item.item_color }} </b></p>
                                 <table class="table table-bordered">
                                     <thead>
                                         {% for l in tab.table_field_list%}
@@ -174,7 +174,7 @@
                                                 {% endif %}
 
                                             {% else%}
-                                                <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}}>{{l.label}}</th>
+                                                <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}} style="font-size: 20px">{{l.label}}</th>
                                             {% endif %}
                                         {% endfor %}
                                     </thead>
@@ -222,7 +222,7 @@
                                     <table class="table table-bordered">
                                         <thead>
                                             {% for l in tab.table_field_list%}
-                                                <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}}>{{l.label}}</th>
+                                                <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}} style="font-size: 20px">{{l.label}}</th>
                                             {% endfor %}
                                         </thead>
                                         <tbody>
@@ -253,47 +253,52 @@
         <!------------- Attachements  ------------->
 
         <div style="page-break-before:always">&nbsp;</div>
+            <div style="font-size:2em; padding-top: 50%">Attachments Section</div>
+        <div style="page-break-before:always">&nbsp;</div>
 
         <div class="text-left">
-        <h2>Attachements:</h2>
 
         {% for tab in tab_details %}
-             <hr class="col-xs-12" style="border-top: 1px solid #000;">
 
             {% if tab.tab_name == "Moisture Content" and doc.flooring_class != "HARDWOOD FLOORING" %}
             {% else %}
                 <div id="{{tab.tas_po_field}}" class="col-xs-12">
-                <p style="font-size: 18px;"><b>Tab : {{tab.tab_name}}</b></p><br>
+                <p style="font-size: 18px; text-align:center; background-color:#F5D2D2; padding: 5px 0px"><b>Tab : {{tab.tab_name}}</b></p>
                     {% if tab.tab_name != "Pallet Information" %}                 
                         {% for i in range(doc.no_of_po) %}
                             {% set tas_po = tab.tas_po_field + (i+1)|string %}
                             
-                            <p style="font-size: 16px;" class="col-xs-12"><b> TAS PO : {{doc[tas_po]}}</b></p><br>
+                            <p style="font-size: 16px; text-align:center; padding-top: 20px" class="col-xs-12"><b> TAS PO : {{doc[tas_po]}}</b></p><br>
 
                             {% set table_name = tab.table_fieldname + (i+1)|string %}
                             {% for item in doc[table_name]%}
-                                <p style="font-size: 14px;" class="col-xs-12">Item-Color : {{ item.item_color }}</p><br>
-                                {% for field in tab.attachment_fields %}
-                                    {% if item[field.url] %}
-                                        <div class="col-xs-4 text-center" style="padding: 5px;">
-                                            <img src="{{ frappe.get_url() }}/{{item[field.url] or ''}}" alt="{{field.url}}" width="300px" height="auto" class="img-responsive">
-                                            <br> <span style="font-size: 0.8em;">{{field.label}}</span>
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
+                                <div style="page-break-inside: avoid;">
+                                    <p style="font-size: 14px; text-align:center;" class="col-xs-12">Item-Color : {{ item.item_color }}</p><br>
+                                    {% for field in tab.attachment_fields %}
+                                        {% if item[field.url] %}
+                                            <div class="col-xs-4 text-center" style="padding: 5px;">
+                                                <span style="font-size: 0.8em;">{{field.label}}</span><br> 
+                                                <img src="{{ frappe.get_url() }}/{{item[field.url] or ''}}" alt="{{field.url}}" width="300px" class="img-responsive" style="height: 300px !important;">
+                                                
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
                             {% endfor %}
                         {% endfor %}
                     {% else %}
                         {% for item in doc[tab.table_fieldname]%}
-                            <p style="font-size: 16px;" class="col-xs-12"><b> TAS PO : {{item.tas_po}}</b></p><br>
-                            {% for field in tab.attachment_fields %}
-                                {% if item[field.url] %}
-                                    <div class="col-xs-4 text-center" style="padding: 5px;">
-                                        <img src="{{ frappe.get_url() }}/{{item[field.url] or ''}}" alt="{{field.url}}" width="300px" height="auto" class="img-responsive">
-                                        <br> <span style="font-size: 0.8em;">{{field.label}}</span>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
+                            <div style="page-break-inside: avoid;">
+                                <p style="font-size: 16px; text-align:center; padding-top: 20px !important;" class="col-xs-12"><b> TAS PO : {{item.tas_po}}</b></p>
+                                {% for field in tab.attachment_fields %}
+                                    {% if item[field.url] %}
+                                        <div class="col-xs-4 text-center" style="padding: 5px;">
+                                            <span style="font-size: 0.8em;">{{field.label}}</span> <br>
+                                            <img src="{{ frappe.get_url() }}/{{item[field.url] or ''}}" alt="{{field.url}}" width="300px" class="img-responsive" style="height: 300px !important;">
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                         {% endfor %}
                     {% endif %} 
                 </div>

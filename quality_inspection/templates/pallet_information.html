@@ -11,8 +11,13 @@
                 <span> ToDo : {{todo_ration}} % </span> <br>  
                 <span> Pass : {{pass_ration}} % </span><br>
                 <span> Undetermined : {{undetermined_ratio}} % </span><br>
-                {% set fail_ration = 100 - (todo_ration + pass_ration + undetermined_ratio) %}
-                <span>Fail : {{ " %.2f " | format(fail_ration) }} % </span> <br></div>
+                {% set fail_ration = 100 - (todo_ration + pass_ration + undetermined_ratio + not_applicable_ratio) %}
+                {% if fail_ration < 0 %}
+                    {% set fail_ration = 0 %}
+                {% endif %}
+                <span>Fail : {{ " %.2f " | format(fail_ration) }} % </span> <br>
+                <span>Not Applicable : {{not_applicable_ratio}}</span>
+            </div>
         </div>
         {% if color %}
         <hr style="width: 90%; margin-top: 5px; margin-bottom: 5px">

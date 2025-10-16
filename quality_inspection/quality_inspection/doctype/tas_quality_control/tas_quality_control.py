@@ -16,6 +16,7 @@ from six import string_types
 PASS_STATUS = ["Pass"]
 UNDETERMINED = ["Undetermined"]
 TODO_STATUS = ["To Do"]
+NOT_APPLICABLE_STATUS = ["Not Applicable"]
 FAIL_STATUS = ['Fail - Minor', 'Fail - Major', 'Fail - Critical']
 class TASQualityControl(Document):
 
@@ -41,28 +42,28 @@ class TASQualityControl(Document):
 
 		pallet_html = frappe.render_template(template_path,  
 									   dict(total_attach=self.pallet_total_attachment, pending=self.pallet_pending_attachment, 
-				 							pass_ration=self.pallet_pass_ration,color=None, undetermined_ratio=self.pallet_undetermined_ratio, todo_ration=self.pallet_todo_ratio))  
+				 							pass_ration=self.pallet_pass_ration,color=None, undetermined_ratio=self.pallet_undetermined_ratio, todo_ration=self.pallet_todo_ratio, not_applicable_ratio=self.pallet_na_ratio))  
 		inner_outer_html = frappe.render_template(template_path,  
 										dict(total_attach=self.inner_total_attachment, pending=self.inner_pending_attachment, 
-			   								pass_ration=self.inner_pass_ration,color=None, undetermined_ratio=self.inner_undetermined_ratio, todo_ration=self.inner_todo_ratio))
+			   								pass_ration=self.inner_pass_ration,color=None, undetermined_ratio=self.inner_undetermined_ratio, todo_ration=self.inner_todo_ratio, not_applicable_ratio=self.inner_na_ratio))
 		color_match_html = frappe.render_template(template_path,
 										dict(total_attach=self.color_total_attachment, pending=self.color_pending_attachment, 
-			   								pass_ration=self.color_pass_ration,color=self.color_count, undetermined_ratio=self.color_undetermined_ratio, todo_ration=self.color_todo_ratio))
+			   								pass_ration=self.color_pass_ration,color=self.color_count, undetermined_ratio=self.color_undetermined_ratio, todo_ration=self.color_todo_ratio, not_applicable_ratio=self.color_na_ratio))
 		over_wax_html = frappe.render_template(template_path,  
 										dict(total_attach=self.over_total_attachment, pending=self.over_pending_attachment, 
-			   								pass_ration=self.over_pass_ration,color=None, undetermined_ratio=self.over_undetermined_ratio, todo_ration=self.over_todo_ratio))
+			   								pass_ration=self.over_pass_ration,color=None, undetermined_ratio=self.over_undetermined_ratio, todo_ration=self.over_todo_ratio, not_applicable_ratio=self.over_na_ratio))
 		gloss_level_html = frappe.render_template(template_path,  
 										dict(total_attach=self.gloss_total_attachment, pending=self.gloss_pending_attachment, 
-			   								pass_ration=self.gloss_pass_ration,color=None, undetermined_ratio=self.gloss_undetermined_ratio, todo_ration=self.gloss_todo_ratio))
+			   								pass_ration=self.gloss_pass_ration,color=None, undetermined_ratio=self.gloss_undetermined_ratio, todo_ration=self.gloss_todo_ratio, not_applicable_ratio=self.gloss_na_ratio))
 		moisture_html = frappe.render_template(template_path,  
 										dict(total_attach=self.moisture_total_attachment, pending=self.moisture_pending_attachment, 
-			   								pass_ration=self.moisture_pass_ration,color=None, undetermined_ratio=self.moisture_undetermined_ratio, todo_ration=self.moisture_todo_ratio))
+			   								pass_ration=self.moisture_pass_ration,color=None, undetermined_ratio=self.moisture_undetermined_ratio, todo_ration=self.moisture_todo_ratio, not_applicable_ratio=self.moisture_na_ratio))
 		open_box_html = frappe.render_template(template_path,  
 										dict(total_attach=self.open_total_attachment, pending=self.open_pending_attachment, 
-			   								pass_ration=self.open_pass_ration,color=None, undetermined_ratio=self.open_undetermined_ratio, todo_ration=self.open_todo_ratio))
+			   								pass_ration=self.open_pass_ration,color=None, undetermined_ratio=self.open_undetermined_ratio, todo_ration=self.open_todo_ratio, not_applicable_ratio=self.open_na_ratio))
 		width_thickness_html = frappe.render_template(template_path,  
 										dict(total_attach=self.width_total_attachment, pending=self.width_pending_attachment, 
-			   								pass_ration=self.width_pass_ration,color=None, undetermined_ratio=self.open_undetermined_ratio, todo_ration=self.width_todo_ratio))
+			   								pass_ration=self.width_pass_ration,color=None, undetermined_ratio=self.open_undetermined_ratio, todo_ration=self.width_todo_ratio, not_applicable_ratio=self.width_na_ratio))
 
 		self.set_onload("pallet_html", pallet_html)
 		self.set_onload("inner_outer_html", inner_outer_html)
@@ -83,6 +84,8 @@ class TASQualityControl(Document):
 		undetermined_ratio = 0
 		total_todo = 0
 		todo_ration = 0
+		total_not_applicable = 0
+		not_applicable_ratio = 0
 
 		if self.get("no_of_po") and self.get("no_of_po") > 0:
 			if child_table == "pallet_details":
@@ -114,12 +117,15 @@ class TASQualityControl(Document):
 								total_undetermined = total_undetermined + 1
 							elif row.get(select) in TODO_STATUS:
 								total_todo = total_todo + 1
+							elif row.get(select) in NOT_APPLICABLE_STATUS:
+								total_not_applicable = total_not_applicable + 1
 							else:
 								pass
 
 				pass_ration = ((total_pass * 100)/ total_select_fields)
 				undetermined_ratio = ((total_undetermined * 100) / total_select_fields)
 				todo_ration = ((total_todo * 100) / total_select_fields)
+				not_applicable_ratio = ((total_not_applicable * 100) / total_select_fields)
 
 			else:
 				table_length = 0
@@ -159,6 +165,8 @@ class TASQualityControl(Document):
 										total_undetermined = total_undetermined + 1
 									elif row.get(select) in TODO_STATUS:
 										total_todo = total_todo + 1
+									elif row.get(select) in NOT_APPLICABLE_STATUS:
+										total_not_applicable = total_not_applicable + 1
 									else:
 										pass
 
@@ -167,8 +175,9 @@ class TASQualityControl(Document):
 					pass_ration = ((total_pass * 100)/ total_select_fields)
 					undetermined_ratio = ((total_undetermined * 100) / total_select_fields)
 					todo_ration = ((total_todo * 100) / total_select_fields)
+					not_applicable_ratio = ((total_not_applicable * 100) / total_select_fields)
 		
-		return total_attachments, pendings, pass_ration, undetermined_ratio, todo_ration
+		return total_attachments, pendings, pass_ration, undetermined_ratio, todo_ration, not_applicable_ratio
 	
 	def set_attachments_details(self):
 		pallet = self.calculate_attachments_details("pallet_details", ['installation_photo','width', 'ippc_photo'], ['button_select', 'installation_status', 'iipa'])
@@ -177,6 +186,7 @@ class TASQualityControl(Document):
 		self.pallet_pass_ration = flt((pallet[2]), 2)
 		self.pallet_undetermined_ratio = flt((pallet[3]), 2)
 		self.pallet_todo_ratio = flt((pallet[4]), 2)
+		self.pallet_na_ratio = flt((pallet[5]), 2)
 
 		inner = self.calculate_attachments_details("inner_and_outer_carton_details_", ['end_label'],
 											 ['hologram_select', 'carb_select', 'floor_select', 'shink_wrap_select', 'insert_sheet_select', 'title_iv', 'mfg_production_run', 'item_matches_ir_tag'])
@@ -185,6 +195,7 @@ class TASQualityControl(Document):
 		self.inner_pass_ration = flt((inner[2]), 2)
 		self.inner_undetermined_ratio = flt((inner[3]), 2)
 		self.inner_todo_ratio = flt((inner[4]), 2)
+		self.inner_na_ratio = flt((inner[5]), 2)
 
 		color = self.calculate_attachments_details("color_match_and_embossing_details_", ['master_sample', 'finished_board', 'pattern_repeat_photo'], ['results_select', 'embossing_select', 'pattern_repeat'])
 		self.color_total_attachment = color[0]
@@ -192,6 +203,7 @@ class TASQualityControl(Document):
 		self.color_pass_ration = flt((color[2]), 2)
 		self.color_undetermined_ratio = flt((color[3]), 2)
 		self.color_todo_ratio = flt((color[4]), 2)
+		self.color_na_ratio = flt((color[5]), 2)
 
 		over = self.calculate_attachments_details("over_wax_and_edge_paint_", ['finished_board'], ['over_wax_select', 'edge_paint_select'])
 		self.over_total_attachment = over[0]
@@ -199,6 +211,7 @@ class TASQualityControl(Document):
 		self.over_pass_ration = flt((over[2]), 2)
 		self.over_undetermined_ratio = flt((over[3]), 2)
 		self.over_todo_ratio = flt((over[4]), 2)
+		self.over_na_ratio = flt((over[5]), 2)
 
 		gloss = self.calculate_attachments_details("gloss_level_details_", ['master_sample', 'finished_board_1', 'finished_board_2', 'finished_board_3', 'finished_board_4', 'finished_board_5'], 
 											 ['results_select_1', 'results_select_2', 'results_select_3', 'results_select_4', 'results_select_5'])
@@ -207,6 +220,7 @@ class TASQualityControl(Document):
 		self.gloss_pass_ration = flt((gloss[2]), 2)
 		self.gloss_undetermined_ratio = flt(gloss[3], 2)
 		self.gloss_todo_ratio = flt((gloss[4]), 2)
+		self.gloss_na_ratio = flt((gloss[5]), 2)
 
 		moisture = self.calculate_attachments_details("moisture_content_details_", 
 												['master_sample', 'finished_board_1', 'finished_board_2', 'finished_board_3', 'finished_board_4'],
@@ -216,6 +230,7 @@ class TASQualityControl(Document):
 		self.moisture_pass_ration = flt((moisture[2]), 2)
 		self.moisture_undetermined_ratio = flt((moisture[3]), 2)
 		self.moisture_todo_ratio = flt((moisture[4]), 2)
+		self.moisture_na_ratio = flt((moisture[5]), 2)
 
 		open = self.calculate_attachments_details("open_box_inspection_details_", ['max_opening_photo','finished_board', 'master_depth_photo', 'depth_photo'],
 											['bowing_select', 'ledging_overwood_select', 'max_opening_result','pad_away_select', 'master_depth_result','depth_result'])
@@ -224,6 +239,7 @@ class TASQualityControl(Document):
 		self.open_pass_ration = flt((open[2]), 2)
 		self.open_undetermined_ratio = flt(open[3], 2)
 		self.open_todo_ratio = flt((open[4]), 2)
+		self.open_na_ratio = flt((open[5]), 2)
 
 		width = self.calculate_attachments_details("width_and_thickness_details_", 
 											 ['finished_board_1', 'finished_board_2', 'finished_board_3', 'master_sample_matching_board'],
@@ -233,6 +249,7 @@ class TASQualityControl(Document):
 		self.width_pass_ration =flt(( width[2]), 2)
 		self.width_undetermined_ratio = flt((width[3]), 2)
 		self.width_todo_ratio = flt((width[4]), 2)
+		self.width_na_ratio = flt((width[5]), 2)
 
 	def set_color_count_for_color_match_and_embossing(self):
 		total_color = 0
