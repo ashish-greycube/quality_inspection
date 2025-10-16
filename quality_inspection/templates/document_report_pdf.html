@@ -190,20 +190,20 @@
                                             {% if tab.tab_name == "Bevel, Over Wax & Edge Paint" %}
                                                 {% if (doc.flooring_class == "HARDWOOD FLOORING" and l.fieldname[0] == "edge_paint_select") or (doc.flooring_class == "RC/SPC/WPC/LVGD" and l.fieldname[0] == "over_wax_select") %}
                                                 {% else %}
-                                                    <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}} style="vertical-align: middle;">{{l.label}}</th>
+                                                    <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}} style="font-size: 20px; vertical-align: middle;">{{l.label}}</th>
                                                 {% endif %}
 
                                             {% elif tab.tab_name == "Open Box Inspection" %}
                                                 {% if doc.flooring_class == "HARDWOOD FLOORING" and l.label == "Pad Away From the Locking System"%}
                                                 {% else %}
-                                                    <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}} style="vertical-align: middle;">{{l.label}}</th>
+                                                    <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}} style="font-size: 20px; vertical-align: middle;">{{l.label}}</th>
                                                 {% endif %}
 
                                             {% elif tab.tab_name == "Width & Thickness" %}
                                                 {% if doc.flooring_class == "HARDWOOD FLOORING" and l.label in ["Thickness without padding", "Thickness with Padding"]%}
                                                 {% elif doc.flooring_class != "HARDWOOD FLOORING" and l.label == "Thickness"  %}
                                                 {% else %}
-                                                    <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}} style="vertical-align: middle;">{{l.label}}</th>
+                                                    <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}} style="font-size: 20px; vertical-align: middle;">{{l.label}}</th>
                                                 {% endif %}
 
                                             {% else%}
