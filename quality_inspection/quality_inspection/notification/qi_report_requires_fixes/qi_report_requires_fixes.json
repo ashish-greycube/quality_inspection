@@ -1,0 +1,30 @@
+{
+ "attach_print": 0,
+ "channel": "Email",
+ "condition": "doc.workflow_state==\"Rejected - Awaiting Fixes\"",
+ "creation": "2025-12-02 20:04:06.332885",
+ "days_in_advance": 0,
+ "docstatus": 0,
+ "doctype": "Notification",
+ "document_type": "TAS Quality Control",
+ "enabled": 1,
+ "event": "Value Change",
+ "idx": 0,
+ "is_standard": 1,
+ "message": "Dear Quality Inspector,<br>\nYour QI report {{doc.name}} has been reviewed by {{doc.last_workflow_actor_fn}} and rejected due to required fixes.<br>\nComments: {{ doc.last_workflow_comment or 'Require Fixes'}} <br>\nPlease make the necessary corrections and resubmit the report for approval. <br>\n<br><br>\nThank you,<br>\nWorkflow Notification System",
+ "message_type": "Markdown",
+ "modified": "2025-12-02 22:45:57.216668",
+ "modified_by": "Administrator",
+ "module": "Quality Inspection",
+ "name": "QI Report Requires Fixes",
+ "owner": "Administrator",
+ "recipients": [
+  {
+   "receiver_by_document_field": "user"
+  }
+ ],
+ "send_system_notification": 0,
+ "send_to_all_assignees": 0,
+ "subject": "QI Report Requires Fixes",
+ "value_changed": "last_workflow_comment"
+}

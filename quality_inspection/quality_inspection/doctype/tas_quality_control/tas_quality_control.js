@@ -9,7 +9,7 @@
 frappe.ui.form.on('TAS Quality Control', {
     onload(frm) {
         setStatusInTableField(frm)
-        if(frm.doc.status < 2) {
+        if(frm.doc.docstatus < 2) {
             frm.call("set_default_values_and_guidelines")
         }
         // ("[data-fieldname='color_equipment']").scrollIntoView();
@@ -30,8 +30,6 @@ frappe.ui.form.on('TAS Quality Control', {
 
     refresh(frm) {
         if (frm.doc.docstatus < 2 && !frm.is_new()) {
-            clickStatusColOfEachRow(frm)
-            
             ////////////// Create PDF //////////////
             frm.add_custom_button(__("Report"), () => {
                 let url = `/api/method/quality_inspection.quality_inspection.doctype.tas_quality_control.tas_quality_control.get_document_report_pdf`;
@@ -40,6 +38,8 @@ frappe.ui.form.on('TAS Quality Control', {
                 };
                 open_url_post(url, args, true);
             })
+
+            clickStatusColOfEachRow(frm)
         }
 
         setTimeout(() => {
@@ -355,48 +355,6 @@ const take_notes_on_workflow_action_change = async function (frm, action) {
     let dialog_field = []
     
     dialog_field.push(
-        // {
-        //     fieldtype: "Data",
-        //     fieldname: "new_tag",
-        //     read_only: 0
-        // },
-        // { fieldtype: "Column Break", fieldname: "column_break_1" },
-        // {
-        //     fieldtype: "Button",
-        //     fieldname: "create_tag",
-        //     label: __("Create Tag"),
-        //     click: function (e) {
-        //         let new_tag = dialog.get_value('new_tag')
-        //         if (new_tag) {
-        //             if (new_tag.trim().length > 0) {
-        //                 frappe.call({
-        //                     method: "add_new_tag",
-        //                     doc: frm.doc,
-        //                     args: {
-        //                         new_tag: new_tag.trim()
-        //                     },
-        //                     callback: function (r) {
-        //                         if (r.message) {
-        //                             // console.log(r.message, "===========r.message==========")
-        //                             // console.log(dialog.get_value('tags'), "===========dialog.get_value('tags')=================")
-        //                             let current_tags = dialog.get_value('tags') || []
-                                    
-        //                             current_tags.push({'tags': new_tag.trim()})
-        //                             dialog.set_value('tags', current_tags)
-        //                             // dialog.fields_dict.tags.refresh()
-        //                             dialog.set_value('new_tag', '')
-        //                         }
-        //                     }
-        //                 })
-
-        //             }
-        //         }
-        //     }
-        // },
-        // {
-        //     fieldtype: "Section Break",
-        //     fieldname: "section_break_1"
-        // },
         {
             fieldtype: "Table MultiSelect",
             fieldname: "tags",
@@ -470,6 +428,8 @@ const take_notes_on_workflow_action_change = async function (frm, action) {
                         refresh_field("quality_remarks");
                         // console.log("===================")
                         resolve()
+                        frm.reload_doc()
+
                     })
             }
             dialog.hide()
@@ -477,8 +437,19 @@ const take_notes_on_workflow_action_change = async function (frm, action) {
         },
         secondary_action_label: __('Skip'),
         secondary_action: () => {
-            dialog.hide()
-            resolve()
+            frappe.call({
+                    method: "set_comments_details",
+                    doc: frm.doc,
+                    args: {
+                        "action": action
+                    },
+                })
+            .then(() => {
+                dialog.hide()
+                resolve()
+                frm.reload_doc()
+            })
+            
         },
     })
 
@@ -489,7 +460,7 @@ const take_notes_on_workflow_action_change = async function (frm, action) {
 
 //  set css in table columns based on values/data
 const setStatusInTableField = function (frm) {
-    if (frm.doc.docstatus < 1) {
+    if (frm.doc.docstatus <= 1) {
         for (const table of table_details) {
         if (table.table_field_name == 'pallet_details') {
             // bindStatusOnRender(frm, table.table_field_name, 'button_select')
@@ -517,7 +488,7 @@ const clickStatusColOfEachRow = function (frm) {
         for (const table of table_details) {
             if (table.table_field_name == 'pallet_details') {
                 frm.fields_dict["pallet_details"].grid.grid_rows.forEach((row, idx) => {
-                    row.columns['button_select'].click()
+                    row.columns['installation_status'].click()
                 })
             }
             else {
@@ -652,7 +623,7 @@ function bindStatusOnRender(frm, child_table, fieldname) {
 
             $cell.css('position', 'relative');
 
-            if (!frm.is_new() && frm.doc.docstatus === 0) {
+            if (!frm.is_new() && frm.doc.docstatus == 0) {
                 if ((frappe.user.has_role("Quality User External") || frappe.user.has_role("Quality User Internal")) && ["Pending Approval", "On Hold"].includes(frm.doc.workflow_state)){}
                 else{
                     $cell.append($btn);
@@ -742,7 +713,8 @@ let set_pallet_details_each_row_property = function (frm) {
         if (e.pallet_type && e.pallet_type == "Plywood") {
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('corner_height', true);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('current_width', true);
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('width', true);
+            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('height_photo', true);
+            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('width_photo', true);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('button_select', true);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('iipa', false);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('ippc_photo', false);
@@ -755,7 +727,8 @@ let set_pallet_details_each_row_property = function (frm) {
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('ippc_photo', true);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('corner_height', false);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('current_width', false);
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('width', false);
+            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('height_photo', false);
+            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('width_photo', false);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('button_select', false);
 
             frm.fields_dict['pallet_details'].grid.wrapper.find(`div[data-name="${e.name}"] div[data-fieldname="button_select"] button.float-status-btn`).css('display', 'none')
@@ -767,7 +740,8 @@ let set_pallet_details_each_row_property = function (frm) {
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('current_width', false);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('width', false);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('button_select', false);
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('iipa', false);
+            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('height_photo', false);
+            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('width_photo', false);
             frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('ippc_photo', false);
 
             frm.fields_dict['pallet_details'].grid.wrapper.find(`div[data-name="${e.name}"] div[data-fieldname="iipa"] button.float-status-btn`).css('display', 'none')
@@ -833,6 +807,8 @@ let update_child_table_field_property = function (frm) {
                 // hide: Pad away
                 frm.fields_dict[open_table].grid.update_docfield_property("finished_board", "hidden", 1)
                 frm.fields_dict[open_table].grid.update_docfield_property("finished_board", "in_list_view", 0)
+                frm.fields_dict[open_table].grid.update_docfield_property("finished_board_2", "hidden", 1)
+                frm.fields_dict[open_table].grid.update_docfield_property("finished_board_2", "in_list_view", 0)
                 frm.fields_dict[open_table].grid.update_docfield_property("pad_away_select", "hidden", 1)
                 frm.fields_dict[open_table].grid.update_docfield_property("pad_away_select", "in_list_view", 0)
             }
@@ -840,6 +816,8 @@ let update_child_table_field_property = function (frm) {
                 // show: Pad away
                 frm.fields_dict[open_table].grid.update_docfield_property("finished_board", "hidden", 0)
                 frm.fields_dict[open_table].grid.update_docfield_property("finished_board", "in_list_view", 1)
+                frm.fields_dict[open_table].grid.update_docfield_property("finished_board_2", "hidden", 0)
+                frm.fields_dict[open_table].grid.update_docfield_property("finished_board_2", "in_list_view", 1)
                 frm.fields_dict[open_table].grid.update_docfield_property("pad_away_select", "hidden", 0)
                 frm.fields_dict[open_table].grid.update_docfield_property("pad_away_select", "in_list_view", 1)
             }
@@ -908,8 +886,9 @@ let set_row_above_table_header = function (frm) {
                         <div class="col grid-static-col col-xs-3 text-center" style="">Installation</div>
                         <div class="col grid-static-col col-xs-4" style=""> </div>
                         <div class="col grid-static-col col-xs-3" style="border-left:1px solid #3b3838"></div>
-                        <div class="col grid-static-col col-xs-3 text-right" style="padding-right: 0px !important;">Corner</div>
-                        <div class="col grid-static-col col-xs-3" style="">Reading</div>
+                        <div class="col grid-static-col col-xs-3"></div>
+                        <div class="col grid-static-col col-xs-3" style="">Corner Reading</div>
+                        <div class="col grid-static-col col-xs-3" style=""></div>
                         <div class="col grid-static-col col-xs-4" style=""></div>
                         <div class="col grid-static-col col-xs-4 text-right" style="border-left:1px solid #3b3838">IPPC</div> 
                         <div class="col grid-static-col col-xs-3" style=""></div>
@@ -1177,9 +1156,11 @@ let set_row_above_table_header = function (frm) {
                             </div>
                             <div class="col grid-static-col col-xs-4 " style="padding-left: 0px !important" >Boards
                             </div>
-                            <div class="col grid-static-col col-xs-4 text-right" style="border-left:1px solid #3b3838; padding-right: 5px !important;"> Pad Away From the
+                            <div class="col grid-static-col col-xs-4" style="border-left:1px solid #3b3838;">
                             </div>
-                            <div class="col grid-static-col col-xs-4 text-left" style="padding-left: 0px !important;"> Locking System
+                            <div class="col grid-static-col col-xs-4 text-right" style="padding-right: 5px !important;"> Pad Away From the Locking
+                            </div>
+                            <div class="col grid-static-col col-xs-4 text-left" style="padding-left: 0px !important;">  System
                             </div>
                             <div class="col grid-static-col col-xs-4 " style="border-left:1px solid #3b3838;">
                             </div>

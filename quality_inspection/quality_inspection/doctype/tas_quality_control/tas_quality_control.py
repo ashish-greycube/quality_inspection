@@ -138,7 +138,7 @@ class TASQualityControl(Document):
 
 						for row in self.get(child_table_name):
 							for attach in attach_field_list:
-								if child_table_name == "open_box_inspection_details_" + cstr(i+1) and self.flooring_class == "HARDWOOD FLOORING" and attach == "finished_board":
+								if child_table_name == "open_box_inspection_details_" + cstr(i+1) and self.flooring_class == "HARDWOOD FLOORING" and (attach == "finished_board" or attach == "finished_board_2"):
 									continue
 								elif child_table_name == "width_and_thickness_details_" + cstr(i+1) and self.flooring_class == "HARDWOOD FLOORING" and (attach == "finished_board_2" or attach == "finished_board_3"):
 									continue
@@ -180,7 +180,7 @@ class TASQualityControl(Document):
 		return total_attachments, pendings, pass_ration, undetermined_ratio, todo_ration, not_applicable_ratio
 	
 	def set_attachments_details(self):
-		pallet = self.calculate_attachments_details("pallet_details", ['installation_photo','width', 'ippc_photo'], ['button_select', 'installation_status', 'iipa'])
+		pallet = self.calculate_attachments_details("pallet_details", ['installation_photo','width_photo','height_photo', 'ippc_photo'], ['button_select', 'installation_status', 'iipa'])
 		self.pallet_total_attachment = pallet[0]
 		self.pallet_pending_attachment = pallet[1]
 		self.pallet_pass_ration = flt((pallet[2]), 2)
@@ -232,7 +232,7 @@ class TASQualityControl(Document):
 		self.moisture_todo_ratio = flt((moisture[4]), 2)
 		self.moisture_na_ratio = flt((moisture[5]), 2)
 
-		open = self.calculate_attachments_details("open_box_inspection_details_", ['max_opening_photo','finished_board', 'master_depth_photo', 'depth_photo'],
+		open = self.calculate_attachments_details("open_box_inspection_details_", ['max_opening_photo','finished_board', 'finished_board_2','master_depth_photo', 'depth_photo'],
 											['bowing_select', 'ledging_overwood_select', 'max_opening_result','pad_away_select', 'master_depth_result','depth_result'])
 		self.open_total_attachment = open[0]
 		self.open_pending_attachment = open[1]
@@ -587,13 +587,16 @@ class TASQualityControl(Document):
 										elif table.get("table_name") == "over_wax_and_edge_paint_" and field.fieldname == "edge_paint_select" and self.flooring_class == "HARDWOOD FLOORING":
 											missing_row_data = False
 
-										elif table.get("table_name") == "open_box_inspection_details_" and field.fieldname in ["finished_board", "pad_away_select"] and self.flooring_class == "HARDWOOD FLOORING":
+										elif table.get("table_name") == "open_box_inspection_details_" and field.fieldname in ["finished_board", "finished_board_2","pad_away_select"] and self.flooring_class == "HARDWOOD FLOORING":
+											missing_row_data = False
+										
+										elif table.get("table_name") == "width_and_thickness_details_" and field.fieldname in ["finished_board_1", "thickness"] and self.flooring_class != "HARDWOOD FLOORING":
 											missing_row_data = False
 										
 										elif table.get("table_name") == "width_and_thickness_details_" and field.fieldname in ["finished_board_2", "thickness_without_padding_1", "finished_board_3", "thickness_with_padding_1"] and self.flooring_class == "HARDWOOD FLOORING":
 											missing_row_data = False
 
-										elif table.get("table_name") == "pallet_details" and field.fieldname in ["corner_height","current_width", "width", "button_select"] and row.pallet_type != "Plywood":
+										elif table.get("table_name") == "pallet_details" and field.fieldname in ["corner_height","current_width", "height_photo", "width_photo", "button_select"] and row.pallet_type != "Plywood":
 											missing_row_data = False
 										
 										elif table.get("table_name") == "pallet_details" and field.fieldname in ["iipa", "ippc_photo"] and row.pallet_type != "Hardwood":
@@ -736,7 +739,16 @@ class TASQualityControl(Document):
 				# row.fields = data.get("field_notes") or None
 
 		self.last_workflow_actor = actor
-		self.last_workflow_comment = notes or "No Remarks"
+		self.last_workflow_comment = notes or action
+
+		self.flags.ignore_validate = True
+		self.save()
+
+
+	@frappe.whitelist()
+	def set_comments_details(self, action):
+		self.last_workflow_actor = frappe.session.user
+		self.last_workflow_comment = action or "No Remarks"
 
 		self.flags.ignore_validate = True
 		self.save()
@@ -884,7 +896,8 @@ def doc_tab_wise_field_list():
 			],
 			"attachment_fields": [
 				{"label": "Installation Photo", "url": "installation_photo"}, 
-				{"label": "Corner Photo", "url": "width"},
+				{"label": "Corner Height Photo", "url": "height_photo"},
+				{"label": "Corner Width Photo", "url": "width_photo"},
 				{"label": "IPPC Photo", "url": "ippc_photo"}]
 		},
 		{ 	"tab_name": "Inner & Outer Carton", "result_field_prefix": "inner_",  "tas_po_field": "carton_po_", "table_fieldname" : "inner_and_outer_carton_details_",
@@ -970,7 +983,8 @@ def doc_tab_wise_field_list():
 			],
 			"attachment_fields": [
 				{"label": "Max Opening Photo", "url": "max_opening_photo"},
-				{"label": "Finished Board", "url": "finished_board"},
+				{"label": "Finished Board 1", "url": "finished_board"},
+				{"label": "Finished Board 2", "url": "finished_board_2"},
 				{"label": "Master Depth Photo", "url": "master_depth_photo"},
 				{"label": "Depth Photo", "url": "depth_photo"},
 			],

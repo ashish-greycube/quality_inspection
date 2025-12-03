@@ -1,0 +1,30 @@
+{
+ "attach_print": 0,
+ "channel": "Email",
+ "condition": "doc.previous_workflow_state==\"Rejected - Closed\"",
+ "creation": "2025-12-02 20:05:08.701641",
+ "days_in_advance": 0,
+ "docstatus": 0,
+ "doctype": "Notification",
+ "document_type": "TAS Quality Control",
+ "enabled": 1,
+ "event": "Cancel",
+ "idx": 0,
+ "is_standard": 1,
+ "message": "QC Report {{doc.name}}<br>\nSubmitted By : {{doc.user}}<br>\nRejected Closed by : {{doc.previous_workflow_actor}}<br>\nhas been cancelled by {{doc.last_workflow_actor_fn}}<br>\nComments: {{ doc.last_workflow_comment or 'Rejected - Closed'}}<br>\nNo further action is required.<br>\n<br><br>\nThank you,<br>\n    Workflow Notification System\n",
+ "message_type": "Markdown",
+ "modified": "2025-12-02 22:45:37.888427",
+ "modified_by": "Administrator",
+ "module": "Quality Inspection",
+ "name": "QI Report  Cancelled",
+ "owner": "Administrator",
+ "recipients": [
+  {
+   "receiver_by_document_field": "user"
+  }
+ ],
+ "send_system_notification": 0,
+ "send_to_all_assignees": 0,
+ "subject": "QI Report Cancelled",
+ "value_changed": "last_workflow_comment"
+}

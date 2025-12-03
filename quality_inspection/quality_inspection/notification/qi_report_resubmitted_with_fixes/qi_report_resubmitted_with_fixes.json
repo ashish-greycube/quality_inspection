@@ -1,0 +1,30 @@
+{
+ "attach_print": 0,
+ "channel": "Email",
+ "condition": "doc.workflow_state==\"Pending Approval\" and doc.previous_workflow_state==\"Rejected - Awaiting Fixes\"",
+ "creation": "2025-12-02 20:04:26.087314",
+ "days_in_advance": 0,
+ "docstatus": 0,
+ "doctype": "Notification",
+ "document_type": "TAS Quality Control",
+ "enabled": 1,
+ "event": "Value Change",
+ "idx": 0,
+ "is_standard": 1,
+ "message": "QC Report {{doc.name}}<br>\nSubmitted By : {{doc.user}}<br>\nMarked Submit Fixed : {{doc.previous_workflow_actor}} <br>\nhas been resubmitted after making required fixes by {{doc.user}}<br>\nComments: {{ doc.last_workflow_comment or 'Submit Fixes'}}<br>\nNo further action is required.<br>\n<br><br>\nThank you,<br>\n Workflow Notification System",
+ "message_type": "Markdown",
+ "modified": "2025-12-02 22:46:09.957895",
+ "modified_by": "Administrator",
+ "module": "Quality Inspection",
+ "name": "QI Report Resubmitted With Fixes",
+ "owner": "Administrator",
+ "recipients": [
+  {
+   "receiver_by_role": "QI Manager"
+  }
+ ],
+ "send_system_notification": 0,
+ "send_to_all_assignees": 0,
+ "subject": "QI Report Resubmitted With Fixes",
+ "value_changed": "last_workflow_comment"
+}
