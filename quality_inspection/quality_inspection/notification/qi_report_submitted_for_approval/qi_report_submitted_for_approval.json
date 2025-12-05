@@ -1,0 +1,30 @@
+{
+ "attach_print": 0,
+ "channel": "Email",
+ "condition": "doc.workflow_state == \"Pending Approval\"",
+ "creation": "2025-12-05 01:41:32.130694",
+ "days_in_advance": 0,
+ "docstatus": 0,
+ "doctype": "Notification",
+ "document_type": "TAS Quality Control",
+ "enabled": 1,
+ "event": "Value Change",
+ "idx": 0,
+ "is_standard": 1,
+ "message": "<p>Dear Purchasing Team,<br>\nQuality Inspector (QI User) has submitted a QI report and it is now pending your review and approval.<br>\nQI - {{doc.name}}<br>\n<br>\nThank you,<br>\n Workflow Notification System</p>\n",
+ "message_type": "Markdown",
+ "modified": "2025-12-05 01:42:59.254245",
+ "modified_by": "Administrator",
+ "module": "Quality Inspection",
+ "name": "QI Report Submitted For Approval",
+ "owner": "Administrator",
+ "recipients": [
+  {
+   "receiver_by_role": "QI Manager"
+  }
+ ],
+ "send_system_notification": 0,
+ "send_to_all_assignees": 0,
+ "subject": " QI Report {{doc.name}}: {{ doc.workflow_state }}",
+ "value_changed": "workflow_state"
+}

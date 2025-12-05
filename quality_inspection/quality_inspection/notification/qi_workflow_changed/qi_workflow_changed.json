@@ -1,0 +1,30 @@
+{
+ "attach_print": 0,
+ "channel": "Email",
+ "condition": "doc.workflow_state not in [\"Draft\", \"Completed\", \"Pending Approval\", \"Cancelled\"]",
+ "creation": "2025-12-05 01:44:37.934563",
+ "days_in_advance": 0,
+ "docstatus": 0,
+ "doctype": "Notification",
+ "document_type": "TAS Quality Control",
+ "enabled": 1,
+ "event": "Value Change",
+ "idx": 0,
+ "is_standard": 1,
+ "message": "<p>Dear Quality Inspector, <br>\nYour submitted QI report has been on {{doc.workflow_state}}\n<br><br>\nThank you,<br>\n Workflow Notification System</p>\n",
+ "message_type": "Markdown",
+ "modified": "2025-12-05 01:49:54.066470",
+ "modified_by": "Administrator",
+ "module": "Quality Inspection",
+ "name": "QI Workflow changed",
+ "owner": "Administrator",
+ "recipients": [
+  {
+   "receiver_by_document_field": "user"
+  }
+ ],
+ "send_system_notification": 0,
+ "send_to_all_assignees": 0,
+ "subject": "QI Report {{doc.name}} : {{doc.workflow_state}}",
+ "value_changed": "workflow_state"
+}
