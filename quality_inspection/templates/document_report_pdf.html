@@ -115,7 +115,7 @@
                                     <td class="text-right"><br><b>Equipement In Use  </b></td>
                                     <td class="text-left"><br> : 
                                         {% if tab.tab_name == "Moisture Content" %}
-                                    {{ doc[equipement_fieldname] }}
+                                    {{ doc[equipement_fieldname] or "" }}
                                 {% else%}
                                     {% for equip in doc[equipement_fieldname] %}
                                         {{equip.equipment}}{% if loop.index != doc[equipement_fieldname]|length %},{%endif%}
@@ -173,79 +173,81 @@
                         {% set tas_po = tab.tas_po_field + (i+1)|string %}
                         {% set table_name = tab.table_fieldname + (i+1)|string %}
 
-                        <tr style="background-color: #D1D8BE; font-size: 20px;">
-                            <td colspan="2"><b>
-                               PO - {{doc[tas_po]}}
-                               </b>
-                            </td>
-                        </tr>
+                        {% if doc[tas_po] and doc[tas_po] != "" %}
+                            <tr style="background-color: #D1D8BE; font-size: 20px;">
+                                <td colspan="2"><b>
+                                PO - {{doc[tas_po]}}
+                                </b>
+                                </td>
+                            </tr>
 
-                        {% for item in doc[table_name]%}
-                        <tr>
-                            <td colspan="2" style="padding-top: 15px !important;">
-                                <p style="font-size: 18px;"> <b> {{ item.item_color }} </b></p>
-                                <table class="table table-bordered">
-                                    <thead>
-                                        {% for l in tab.table_field_list%}
-                                            {% if tab.tab_name == "Bevel, Over Wax & Edge Paint" %}
-                                                {% if (doc.flooring_class == "HARDWOOD FLOORING" and l.fieldname[0] == "edge_paint_select") or (doc.flooring_class == "RC/SPC/WPC/LVGD" and l.fieldname[0] == "over_wax_select") %}
-                                                {% else %}
-                                                    <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}} style="font-size: 20px; vertical-align: middle;">{{l.label}}</th>
-                                                {% endif %}
-
-                                            {% elif tab.tab_name == "Open Box Inspection" %}
-                                                {% if doc.flooring_class == "HARDWOOD FLOORING" and l.label == "Pad Away From the Locking System"%}
-                                                {% else %}
-                                                    <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}} style="font-size: 20px; vertical-align: middle;">{{l.label}}</th>
-                                                {% endif %}
-
-                                            {% elif tab.tab_name == "Width & Thickness" %}
-                                                {% if doc.flooring_class == "HARDWOOD FLOORING" and l.label in ["Thickness without padding", "Thickness with Padding"]%}
-                                                {% elif doc.flooring_class != "HARDWOOD FLOORING" and l.label == "Thickness"  %}
-                                                {% else %}
-                                                    <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}} style="font-size: 20px; vertical-align: middle;">{{l.label}}</th>
-                                                {% endif %}
-
-                                            {% else%}
-                                                <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}} style="font-size: 20px; vertical-align: middle;">{{l.label}}</th>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            {% for f in tab.table_field_list%}
-                                                {% for field in f.fieldname %}
-                                                    {% if tab.tab_name == "Bevel, Over Wax & Edge Paint" %}
-                                                        {% if (doc.flooring_class == "HARDWOOD FLOORING" and field == "edge_paint_select") or (doc.flooring_class == "RC/SPC/WPC/LVGD" and field == "over_wax_select") %}
-                                                        {% else %}
-                                                            <td class="text-center">{{item[field] or ''}}</td>
-                                                        {% endif %}
-
-                                                    {% elif tab.tab_name == "Open Box Inspection" %}
-                                                        {% if doc.flooring_class == "HARDWOOD FLOORING" and field == "pad_away_select"%}
-                                                        {% else %}
-                                                            <td class="text-center">{{item[field] or ''}}</td>
-                                                        {% endif %}
-
-                                                    {% elif tab.tab_name == "Width & Thickness" %}
-                                                        {% if doc.flooring_class == "HARDWOOD FLOORING" and field in ["thickness_without_padding_1", "thickness_with_padding_1"]%}
-                                                        {% elif doc.flooring_class != "HARDWOOD FLOORING" and field == "thickness"  %}
-                                                        {% else %}
-                                                            <td class="text-center">{{item[field] or ''}}</td>
-                                                        {% endif %}
-
+                            {% for item in doc[table_name]%}
+                            <tr>
+                                <td colspan="2" style="padding-top: 15px !important;">
+                                    <p style="font-size: 18px;"> <b> {{ item.item_color }} </b></p>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            {% for l in tab.table_field_list%}
+                                                {% if tab.tab_name == "Bevel, Over Wax & Edge Paint" %}
+                                                    {% if (doc.flooring_class == "HARDWOOD FLOORING" and l.fieldname[0] == "edge_paint_select") or (doc.flooring_class == "RC/SPC/WPC/LVGD" and l.fieldname[0] == "over_wax_select") %}
                                                     {% else %}
-                                                        <td class="text-center">{{item[field] or ''}}</td>
+                                                        <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}} style="font-size: 20px; vertical-align: middle;">{{l.label}}</th>
                                                     {% endif %}
-                                                {% endfor %}
-                                            {% endfor %}
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                        {% endfor %}
+                                                {% elif tab.tab_name == "Open Box Inspection" %}
+                                                    {% if doc.flooring_class == "HARDWOOD FLOORING" and l.label == "Pad Away From the Locking System"%}
+                                                    {% else %}
+                                                        <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}} style="font-size: 20px; vertical-align: middle;">{{l.label}}</th>
+                                                    {% endif %}
+
+                                                {% elif tab.tab_name == "Width & Thickness" %}
+                                                    {% if doc.flooring_class == "HARDWOOD FLOORING" and l.label in ["Thickness without padding", "Thickness with Padding"]%}
+                                                    {% elif doc.flooring_class != "HARDWOOD FLOORING" and l.label == "Thickness"  %}
+                                                    {% else %}
+                                                        <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}} style="font-size: 20px; vertical-align: middle;">{{l.label}}</th>
+                                                    {% endif %}
+
+                                                {% else%}
+                                                    <th colspan="{{ l.fieldname|length or 1 }}" class="text-center" width={{l.width}} style="font-size: 20px; vertical-align: middle;">{{l.label}}</th>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                {% for f in tab.table_field_list%}
+                                                    {% for field in f.fieldname %}
+                                                        {% if tab.tab_name == "Bevel, Over Wax & Edge Paint" %}
+                                                            {% if (doc.flooring_class == "HARDWOOD FLOORING" and field == "edge_paint_select") or (doc.flooring_class == "RC/SPC/WPC/LVGD" and field == "over_wax_select") %}
+                                                            {% else %}
+                                                                <td class="text-center">{{item[field] or ''}}</td>
+                                                            {% endif %}
+
+                                                        {% elif tab.tab_name == "Open Box Inspection" %}
+                                                            {% if doc.flooring_class == "HARDWOOD FLOORING" and field == "pad_away_select"%}
+                                                            {% else %}
+                                                                <td class="text-center">{{item[field] or ''}}</td>
+                                                            {% endif %}
+
+                                                        {% elif tab.tab_name == "Width & Thickness" %}
+                                                            {% if doc.flooring_class == "HARDWOOD FLOORING" and field in ["thickness_without_padding_1", "thickness_with_padding_1"]%}
+                                                            {% elif doc.flooring_class != "HARDWOOD FLOORING" and field == "thickness"  %}
+                                                            {% else %}
+                                                                <td class="text-center">{{item[field] or ''}}</td>
+                                                            {% endif %}
+
+                                                        {% else %}
+                                                            <td class="text-center">{{item[field] or ''}}</td>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endfor %}
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {%endif%}
                         {% endfor %}
                     
                     {% else %}

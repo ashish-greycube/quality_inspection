@@ -25,11 +25,13 @@ class TASQualityControl(Document):
 
 	def validate(self):
 		self.set_default_values_and_guidelines()
+		self.remove_deleted_tas_po_details()
 		self.set_attachments_details()
 		self.set_color_count_for_color_match_and_embossing()
 		self.fill_missing_data_details()
 		# self.check_all_data_mark_as_completed()	
 		self.add_assign_to_user()
+		
 
 	def on_submit(self):
 		# self.validate_over_wax_and_edge_paint_child_table()
@@ -95,7 +97,7 @@ class TASQualityControl(Document):
 				for row in self.get(child_table):
 
 					for attach in attach_field_list:
-						if row.pallet_type != "Plywood" and attach == "width":
+						if row.pallet_type != "Plywood" and attach in ["height_photo", "width_photo"]:
 							continue
 						elif row.pallet_type != "Hardwood" and attach == "ippc_photo":
 							continue
@@ -155,9 +157,10 @@ class TASQualityControl(Document):
 									continue
 								elif child_table_name == "over_wax_and_edge_paint_" + cstr(i+1) and self.flooring_class == "HARDWOOD FLOORING" and select == "edge_paint_select":
 									continue
-								elif child_table_name == "open_box_inspection_details_" + cstr(i+1) and self.flooring_class == "HARDWOOD FLOORING" and attach == "pad_away_select":
+								elif child_table_name == "open_box_inspection_details_" + cstr(i+1) and self.flooring_class == "HARDWOOD FLOORING" and select == "pad_away_select":
 									continue
 								else:
+			
 									total_select_fields = total_select_fields + 1
 									if row.get(select) in PASS_STATUS:
 										total_pass = total_pass + 1
@@ -169,6 +172,7 @@ class TASQualityControl(Document):
 										total_not_applicable = total_not_applicable + 1
 									else:
 										pass
+							print(total_select_fields, "=====total_select_fields====", child_table_name)
 
 						# total_select_fields = table_length * len(select_field_list)
 				if total_select_fields > 0:
@@ -288,6 +292,7 @@ class TASQualityControl(Document):
 					unique_tas_po.append(po.get('tas_po'))
 
 			self.no_of_po = len(unique_tas_po)
+			self.actual_no_of_po = len(unique_tas_po)
 
 			# set tas po name
 			for idx,unique in enumerate(unique_tas_po):
@@ -318,7 +323,7 @@ class TASQualityControl(Document):
 							po1.tas_po_ref = item_doc[0].parent
 							po1.tas_po_item_ref = item_doc[0].name
 
-			self.set_pallet_details_table(unique_tas_po)
+			self.set_tas_po_and_pallet_details_table(unique_tas_po)
 
 			self.set_po_ref_and_child_tables(unique_tas_po, "carton_po_", "inner_and_outer_carton_details_")
 			self.set_po_ref_and_child_tables(unique_tas_po, "po_color_", "color_match_and_embossing_details_")
@@ -356,6 +361,7 @@ class TASQualityControl(Document):
 					unique_tas_po.append(po.name)
 
 			self.no_of_po = len(unique_tas_po)
+			self.actual_no_of_po = len(unique_tas_po)
 
 			# set tas po name
 			for idx,unique in enumerate(unique_tas_po):
@@ -398,7 +404,7 @@ class TASQualityControl(Document):
 						# 	po1.item_color = cstr(item.item_no) + "-" + (cstr(item.color) or 'red')
 						# 	po1.tas_po_ref = item.parent
 			
-			self.set_pallet_details_table(unique_tas_po)
+			self.set_tas_po_and_pallet_details_table(unique_tas_po)
 
 			self.set_po_ref_and_child_tables(unique_tas_po, "carton_po_", "inner_and_outer_carton_details_")
 			self.set_po_ref_and_child_tables(unique_tas_po, "po_color_", "color_match_and_embossing_details_")
@@ -431,12 +437,16 @@ class TASQualityControl(Document):
 					row = self.append(child_table_name, {})
 					row.item_color = item.item_color
 
-	def set_pallet_details_table(self, po_list):
+	def set_tas_po_and_pallet_details_table(self, po_list):
 		if len(po_list) > 0:
 			self.pallet_details = []
+			self.tas_po_details = []
 			for po in po_list:
 				row = self.append("pallet_details")
 				row.tas_po = po
+
+				po_row = self.append("tas_po_details")
+				po_row.tas_po = po
 
 	@frappe.whitelist()
 	def set_default_values_and_guidelines(self):
@@ -513,6 +523,38 @@ class TASQualityControl(Document):
 					msg=_("Please attach pictures for following : <br> {0}").format(joint_items),
 					title=_("Finished board pictures are required for failed pad."),
 				)
+
+	def remove_deleted_tas_po_details(self):
+		if len(self.tas_po_details) > 0:
+			for tas_po_row in self.tas_po_details:
+				if tas_po_row.status == "Remove" and tas_po_row.is_removed == 0:
+					tas_po_row.is_removed = 1
+
+					for pallet_row in self.pallet_details:
+						if pallet_row.tas_po == tas_po_row.tas_po:
+							self.remove(pallet_row)
+							break
+
+					self.remove_deleted_tas_po_from_tab(tas_po_row.tas_po, tas_po_row.idx, "tas_po_name_", "quality_control_item_")
+					self.remove_deleted_tas_po_from_tab(tas_po_row.tas_po, tas_po_row.idx, "carton_po_", "inner_and_outer_carton_details_")
+					self.remove_deleted_tas_po_from_tab(tas_po_row.tas_po, tas_po_row.idx, "po_color_", "color_match_and_embossing_details_")
+					self.remove_deleted_tas_po_from_tab(tas_po_row.tas_po, tas_po_row.idx, "po_over_", "over_wax_and_edge_paint_")
+					self.remove_deleted_tas_po_from_tab(tas_po_row.tas_po, tas_po_row.idx, "po_gloss_", "gloss_level_details_")
+					self.remove_deleted_tas_po_from_tab(tas_po_row.tas_po, tas_po_row.idx, "po_moisture_", "moisture_content_details_")
+					self.remove_deleted_tas_po_from_tab(tas_po_row.tas_po, tas_po_row.idx, "po_open_", "open_box_inspection_details_")
+					self.remove_deleted_tas_po_from_tab(tas_po_row.tas_po, tas_po_row.idx, "po_width_", "width_and_thickness_details_")
+					# self.reload()
+		
+		self.actual_no_of_po = len(self.pallet_details)
+
+	def remove_deleted_tas_po_from_tab(self, deleted_tas_po, deleted_tas_po_idx, tas_po_field_name, child_table_name):
+		# print("=========remove_deleted_tas_po_from_tab=============")
+		tas_po_field = tas_po_field_name + cstr(deleted_tas_po_idx)
+		table_name = child_table_name + cstr(deleted_tas_po_idx)
+		# print(tas_po_field, "=================tas_po_field============", table_name, "==========table_name=========")
+		if self.get(tas_po_field) == deleted_tas_po:
+			self.set(tas_po_field, "")
+			self.set(table_name, [])
 
 	def create_child_table_list(self, child_table_name):
 		child_table_list = []

@@ -29,6 +29,9 @@ frappe.ui.form.on('TAS Quality Control', {
     },
 
     refresh(frm) {
+        if (frm.doc.workflow_state != "Draft"){
+            frm.set_df_property("tas_po_details", "read_only", 1)
+        }
         if (frm.doc.docstatus < 2 && !frm.is_new()) {
             ////////////// Create PDF //////////////
             frm.add_custom_button(__("Report"), () => {
@@ -48,6 +51,7 @@ frappe.ui.form.on('TAS Quality Control', {
             $(`div.form-group button.grid-remove-rows`).hide()
             $(`div.modal-dialog button.grid-add-row`).show()
             $(`div.modal-dialog button.grid-remove-rows`).show()
+            // $(`div[data-fieldname="tas_po_details"] button.grid-remove-rows`).show()
         }, 1000)
 
         setTimeout(() => {
@@ -1311,5 +1315,31 @@ frappe.ui.form.on("Color Match and Embossing Details QI", {
                 }
             )
         }
+    }
+})
+
+
+frappe.ui.form.on("Distinct TAS PO Details QI", {
+    status(frm, cdt, cdn){
+        let row = locals[cdt][cdn]
+        if (row.status == "Remove"){
+            frappe.confirm(__("Are you sure, You want to remove PO : <b>{0}</b>?", [row.tas_po]),
+                () => {
+                    // action to perform if Yes is selected
+                    frm.save().then(() => {frm.reload_doc()})
+                   
+                },
+                () => {
+                    // action to perform if No is selected
+                    frm.reload_doc()
+                }
+            )
+        }
+        else{
+            frm.reaload_doc()
+        }
+    },
+    tas_po_details_move(frm, cdt, cdn){
+        frm.reload_doc()
     }
 })
