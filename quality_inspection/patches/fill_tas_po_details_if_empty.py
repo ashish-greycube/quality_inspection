@@ -12,4 +12,4 @@ def execute():
                         "status": "Active",
                     })
 
-                qi_doc.save(ignore_permissions = True)
+                qi_doc.save(ignore_permissions = True, ignore_mandatory = True)
