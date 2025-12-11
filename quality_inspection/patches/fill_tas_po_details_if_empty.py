@@ -11,5 +11,6 @@ def execute():
                         "tas_po": pallet.tas_po,
                         "status": "Active",
                     })
-
-                qi_doc.save(ignore_permissions = True, ignore_mandatory = True)
+                
+                qi_doc.flags.ignore_mandatory = True
+                qi_doc.save(ignore_permissions = True)
