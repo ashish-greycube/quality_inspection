@@ -5,6 +5,8 @@ def execute():
     if len(qi_list) > 0:
         for qi in qi_list:
             qi_doc = frappe.get_doc("TAS Quality Control", qi)
+            if len(qi_doc.pallet_details) > 0 and qi_doc.actual_no_of_po == 0:
+                qi_doc.actual_no_of_po = len(qi_doc.pallet_details)
             if len(qi_doc.tas_po_details) < 1 and len(qi_doc.pallet_details) > 0:
                 for pallet in qi_doc.pallet_details:
                     qi_doc.append("tas_po_details", {
@@ -12,5 +14,5 @@ def execute():
                         "status": "Active",
                     })
                 
-                qi_doc.flags.ignore_mandatory = True
-                qi_doc.save(ignore_permissions = True)
+            qi_doc.flags.ignore_mandatory = True
+            qi_doc.save(ignore_permissions = True)
