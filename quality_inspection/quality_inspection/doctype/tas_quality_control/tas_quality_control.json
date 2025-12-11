@@ -1,7 +1,7 @@
 {
  "actions": [],
  "autoname": "naming_series:",
- "creation": "2024-12-30 20:41:08.095302",
+ "creation": "2025-12-09 23:14:47.166165",
  "default_view": "List",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -2322,6 +2322,7 @@
    "label": "To Remove TAS PO"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "tas_po_details",
    "fieldtype": "Table",
    "label": "TAS PO Details",
@@ -2341,7 +2342,7 @@
  "is_submittable": 1,
  "links": [],
  "make_attachments_public": 1,
- "modified": "2025-12-09 23:05:49.252551",
+ "modified": "2025-12-10 20:56:28.840881",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "TAS Quality Control",

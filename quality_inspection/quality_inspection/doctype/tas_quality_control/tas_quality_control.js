@@ -116,7 +116,7 @@ frappe.ui.form.on('TAS Quality Control', {
                     )
 
                     let get_tas_po = function () {
-                        console.log("------get_tas_po------")
+                        // console.log("------get_tas_po------")
                         frappe.call({
                             method: "quality_inspection.quality_inspection.doctype.tas_quality_control.tas_quality_control.get_tas_po",
                             args: {

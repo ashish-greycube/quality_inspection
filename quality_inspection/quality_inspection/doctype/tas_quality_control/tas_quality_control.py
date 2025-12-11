@@ -172,7 +172,7 @@ class TASQualityControl(Document):
 										total_not_applicable = total_not_applicable + 1
 									else:
 										pass
-							print(total_select_fields, "=====total_select_fields====", child_table_name)
+							# print(total_select_fields, "=====total_select_fields====", child_table_name)
 
 						# total_select_fields = table_length * len(select_field_list)
 				if total_select_fields > 0:
@@ -267,7 +267,7 @@ class TASQualityControl(Document):
 
 	@frappe.whitelist()
 	def make_quality_control_item_using_tas_po_items(self, selected_items_list):
-		print(selected_items_list, "=========selected_items_list", type(selected_items_list))
+		# print(selected_items_list, "=========selected_items_list", type(selected_items_list))
 		
 		# empty child table values
 		total_no_of_child_table=10
@@ -732,7 +732,7 @@ class TASQualityControl(Document):
 			data = remarks[0]
 			# remarks = remarks.as_dict()
 			# if data.get("notes"):
-			print(data, "======data======")
+			# print(data, "======data======")
 			# if self.tags:
 			# 	self.tags = self.tags + " ," + (data.get("tags") or '')
 			# else:
@@ -745,7 +745,7 @@ class TASQualityControl(Document):
 					self.add_tag(t.get("tags"))
 					
 
-			print(self.tags, "==========self.tags====")
+			# print(self.tags, "==========self.tags====")
 
 			if data.get("field_wise_notes") and len(data.get("field_wise_notes")) > 0:
 				for d in data.get("field_wise_notes"):
