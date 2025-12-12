@@ -194,12 +194,3 @@ def create_quality_roles_if_not_exists():
             print("Role: {0} created".format(role))
         else:
             pass
-
-
-def fill_tas_po_details_if_empty():
-    qi_list = frappe.db.get_all("")
-		# if len(self.tas_po_details) < 1 and len(self.pallet_details) > 0:
-		# 	for pallet in self.pallet_details:
-		# 		self.append("tas_po_details", {
-		# 			"tas_po": pallet.tas_po
-		# 		})

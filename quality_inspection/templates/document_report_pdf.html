@@ -303,7 +303,9 @@
                         {% for i in range(doc.no_of_po) %}
                             {% set tas_po = tab.tas_po_field + (i+1)|string %}
                             
-                            <p style="font-size: 20px; text-align:center; padding-top: 20px" class="col-xs-12"><b> TAS PO : {{doc[tas_po]}}</b></p><br>
+                            {% if doc[tas_po] %}
+                                <p style="font-size: 20px; text-align:center; padding-top: 20px" class="col-xs-12"><b> TAS PO : {{doc[tas_po]}}</b></p><br>
+                            {% endif %}
 
                             {% set table_name = tab.table_fieldname + (i+1)|string %}
                             {% for item in doc[table_name]%}
@@ -323,7 +325,9 @@
                     {% else %}
                         {% for item in doc[tab.table_fieldname]%}
                             <div style="page-break-inside: avoid !important;">
-                                <p style="font-size: 20px; text-align:center; padding-top: 20px !important;" class="col-xs-12"><b> TAS PO : {{item.tas_po}}</b></p>
+                                {% if item.tas_po %}
+                                    <p style="font-size: 20px; text-align:center; padding-top: 20px !important;" class="col-xs-12"><b> TAS PO : {{item.tas_po}}</b></p>
+                                {% endif %}
                                 {% for field in tab.attachment_fields %}
                                     {% if item[field.url] %}
                                         <div class="col-xs-4 text-center" style="padding: 5px; page-break-inside: avoid !important;">
