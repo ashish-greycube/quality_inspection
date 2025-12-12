@@ -124,10 +124,11 @@ class TASQualityControl(Document):
 							else:
 								pass
 
-				pass_ration = ((total_pass * 100)/ total_select_fields)
-				undetermined_ratio = ((total_undetermined * 100) / total_select_fields)
-				todo_ration = ((total_todo * 100) / total_select_fields)
-				not_applicable_ratio = ((total_not_applicable * 100) / total_select_fields)
+				if total_select_fields > 0:
+					pass_ration = ((total_pass * 100)/ total_select_fields)
+					undetermined_ratio = ((total_undetermined * 100) / total_select_fields)
+					todo_ration = ((total_todo * 100) / total_select_fields)
+					not_applicable_ratio = ((total_not_applicable * 100) / total_select_fields)
 
 			else:
 				table_length = 0
@@ -535,6 +536,14 @@ class TASQualityControl(Document):
 							self.remove(pallet_row)
 							break
 
+					for missing_data_row in self.missing_data_details:
+						if missing_data_row.tab_name == "Pallet Information" and missing_data_row.po_or_item_color == tas_po_row.tas_po:
+							self.remove(missing_data_row)
+						elif missing_data_row.child_or_parent_name == tas_po_row.tas_po:
+							self.remove(missing_data_row)
+						else:
+							pass
+
 					self.remove_deleted_tas_po_from_tab(tas_po_row.tas_po, tas_po_row.idx, "tas_po_name_", "quality_control_item_")
 					self.remove_deleted_tas_po_from_tab(tas_po_row.tas_po, tas_po_row.idx, "carton_po_", "inner_and_outer_carton_details_")
 					self.remove_deleted_tas_po_from_tab(tas_po_row.tas_po, tas_po_row.idx, "po_color_", "color_match_and_embossing_details_")
@@ -543,7 +552,6 @@ class TASQualityControl(Document):
 					self.remove_deleted_tas_po_from_tab(tas_po_row.tas_po, tas_po_row.idx, "po_moisture_", "moisture_content_details_")
 					self.remove_deleted_tas_po_from_tab(tas_po_row.tas_po, tas_po_row.idx, "po_open_", "open_box_inspection_details_")
 					self.remove_deleted_tas_po_from_tab(tas_po_row.tas_po, tas_po_row.idx, "po_width_", "width_and_thickness_details_")
-					# self.reload()
 		
 		self.actual_no_of_po = len(self.pallet_details)
 

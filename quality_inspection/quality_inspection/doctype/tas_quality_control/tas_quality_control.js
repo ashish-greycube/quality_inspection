@@ -29,7 +29,7 @@ frappe.ui.form.on('TAS Quality Control', {
     },
 
     refresh(frm) {
-        if (frm.doc.workflow_state != "Draft"){
+        if (frm.doc.docstatus > 0 && (frappe.user.has_role("System Manager") || frappe.user.has_role("QI Manager") || frappe.user.has_role("Quality User Internal"))){
             frm.set_df_property("tas_po_details", "read_only", 1)
         }
         if (frm.doc.docstatus < 2 && !frm.is_new()) {
