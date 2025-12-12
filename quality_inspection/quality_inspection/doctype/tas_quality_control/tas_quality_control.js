@@ -49,6 +49,7 @@ frappe.ui.form.on('TAS Quality Control', {
             // $('button.grid-add-row').hide()
             $(`div.form-group button.grid-add-row`).hide()
             $(`div.form-group button.grid-remove-rows`).hide()
+            $(`div.form-group button.grid-remove-all-rows`).hide()
             $(`div.modal-dialog button.grid-add-row`).show()
             $(`div.modal-dialog button.grid-remove-rows`).show()
             // $(`div[data-fieldname="tas_po_details"] button.grid-remove-rows`).show()
@@ -1340,6 +1341,16 @@ frappe.ui.form.on("Distinct TAS PO Details QI", {
         }
     },
     tas_po_details_move(frm, cdt, cdn){
+        frm.reload_doc()
+    }
+})
+
+
+frappe.ui.form.on("Missing Data Fields Details QI", {
+    missing_data_details_remove(frm) {
+        frappe.show_alert({
+            message: __("You can't delete a row"), indicator: 'red'
+        }, 5);
         frm.reload_doc()
     }
 })
