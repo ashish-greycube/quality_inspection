@@ -1,8 +1,13 @@
 {
  "charts": [],
- "content": "[{\"id\":\"fhSN7RI3yY\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">TAS Quality External User</span>\",\"col\":12}},{\"id\":\"xeeqK7cScL\",\"type\":\"card\",\"data\":{\"card_name\":\"Transaction\",\"col\":4}}]",
+ "content": "[{\"id\":\"fhSN7RI3yY\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">TAS Quality External User</span>\",\"col\":12}},{\"id\":\"xeeqK7cScL\",\"type\":\"card\",\"data\":{\"card_name\":\"Transaction\",\"col\":4}},{\"id\":\"8-8bPOerCR\",\"type\":\"custom_block\",\"data\":{\"custom_block_name\":\"Calendar View\",\"col\":12}}]",
  "creation": "2025-09-24 05:37:58.577930",
- "custom_blocks": [],
+ "custom_blocks": [
+  {
+   "custom_block_name": "Calendar View",
+   "label": "Calendar View"
+  }
+ ],
  "docstatus": 0,
  "doctype": "Workspace",
  "for_user": "",
@@ -33,7 +38,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-09-24 05:38:50.958717",
+ "modified": "2026-07-07 05:33:58.236573",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "TAS Quality External User",

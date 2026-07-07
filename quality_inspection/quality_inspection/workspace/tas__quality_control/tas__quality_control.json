@@ -1,8 +1,13 @@
 {
  "charts": [],
- "content": "[{\"id\":\"nxPQvEjF2R\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">TAS Quality Control </span>\",\"col\":12}},{\"id\":\"ZuH9N8ORhr\",\"type\":\"card\",\"data\":{\"card_name\":\"Transaction\",\"col\":4}},{\"id\":\"lP6S25r9qR\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"LCmMo6euFa\",\"type\":\"card\",\"data\":{\"card_name\":\"LOV\",\"col\":4}},{\"id\":\"NUNZK8CL1l\",\"type\":\"card\",\"data\":{\"card_name\":\"Master\",\"col\":4}}]",
+ "content": "[{\"id\":\"nxPQvEjF2R\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">TAS Quality Control </span>\",\"col\":12}},{\"id\":\"ZuH9N8ORhr\",\"type\":\"card\",\"data\":{\"card_name\":\"Transaction\",\"col\":4}},{\"id\":\"lP6S25r9qR\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"LCmMo6euFa\",\"type\":\"card\",\"data\":{\"card_name\":\"LOV\",\"col\":4}},{\"id\":\"NUNZK8CL1l\",\"type\":\"card\",\"data\":{\"card_name\":\"Master\",\"col\":4}},{\"id\":\"1-hlE58LmY\",\"type\":\"custom_block\",\"data\":{\"custom_block_name\":\"Calendar View\",\"col\":12}}]",
  "creation": "2025-04-30 03:24:34.380964",
- "custom_blocks": [],
+ "custom_blocks": [
+  {
+   "custom_block_name": "Calendar View",
+   "label": "Calendar View"
+  }
+ ],
  "docstatus": 0,
  "doctype": "Workspace",
  "for_user": "",
@@ -140,7 +145,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-09-24 05:13:06.367102",
+ "modified": "2026-07-07 05:31:34.313874",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "TAS  Quality Control",

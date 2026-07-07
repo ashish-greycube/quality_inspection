@@ -2,6 +2,7 @@ import frappe
 
 def before_migrate():
     create_quality_roles_if_not_exists()
+    create_custom_html_block_of_calendar()
 
 def after_migrate():
     update_dashboard_link_for_core_doctype(doctype='TAS Purchase Order',
@@ -194,3 +195,13 @@ def create_quality_roles_if_not_exists():
             print("Role: {0} created".format(role))
         else:
             pass
+
+def create_custom_html_block_of_calendar():
+    if not frappe.db.exists("Custom HTML Block", "Calendar View"):
+        new_doc = frappe.new_doc("Custom HTML Block")
+        new_doc.__newname = "Calendar View"
+        new_doc.html = '<iframe src="/app/tas-quality-control/view/calendar/default" style="width:100%; height:800px; border:none;"></iframe>'
+        new_doc.save(ignore_permissions=True)
+        print("Custom HTML Block: Calendar View created")
+    else:
+        pass

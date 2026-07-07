@@ -1,8 +1,13 @@
 {
  "charts": [],
- "content": "[{\"id\":\"k3ZKAVIdia\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">TAS Quality User</span>\",\"col\":12}},{\"id\":\"tIey_mc4TT\",\"type\":\"card\",\"data\":{\"card_name\":\"Transaction\",\"col\":4}},{\"id\":\"cjoi7-Hlec\",\"type\":\"card\",\"data\":{\"card_name\":\"Master\",\"col\":4}}]",
+ "content": "[{\"id\":\"k3ZKAVIdia\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">TAS Quality User</span>\",\"col\":12}},{\"id\":\"tIey_mc4TT\",\"type\":\"card\",\"data\":{\"card_name\":\"Transaction\",\"col\":4}},{\"id\":\"3gj6UI8cCM\",\"type\":\"custom_block\",\"data\":{\"custom_block_name\":\"Calendar View\",\"col\":12}},{\"id\":\"cjoi7-Hlec\",\"type\":\"card\",\"data\":{\"card_name\":\"Master\",\"col\":4}}]",
  "creation": "2025-09-24 05:29:04.846136",
- "custom_blocks": [],
+ "custom_blocks": [
+  {
+   "custom_block_name": "Calendar View",
+   "label": "Calendar View"
+  }
+ ],
  "docstatus": 0,
  "doctype": "Workspace",
  "for_user": "",
@@ -72,7 +77,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-09-24 05:36:33.245907",
+ "modified": "2026-07-07 05:33:24.970040",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "TAS Quality Internal User",
