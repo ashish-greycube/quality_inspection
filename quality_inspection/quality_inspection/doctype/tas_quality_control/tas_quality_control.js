@@ -29,6 +29,7 @@ frappe.ui.form.on('TAS Quality Control', {
     },
 
     refresh(frm) {
+        bindAttachButton(frm)
         if (frm.doc.docstatus > 0 && (frappe.user.has_role("System Manager") || frappe.user.has_role("QI Manager") || frappe.user.has_role("Quality User Internal"))){
             frm.set_df_property("tas_po_details", "read_only", 1)
         }
@@ -330,6 +331,110 @@ frappe.ui.form.on('TAS Quality Control', {
         }
     },
 })
+
+function bindAttachButton(frm) {
+    if (frm.doc.docstatus <= 1) {
+        const po_table_list = create_child_table_list(frm, "quality_control_item_")
+        if (po_table_list.length > 0) {
+            for (const table_name of po_table_list) {
+                cur_frm.fields_dict[table_name].$wrapper.find('.grid-body .rows').find(".grid-row").each(function (i, item) {
+                    $(item).find('[data-fieldname="add_attachments"]').css({
+                        "display": "flex",
+                        "justify-content": "center",
+                        "align-items": "center",
+                        "width": "100%",
+                        "height": "100%",
+                    })
+                    $(item).find('[data-fieldname="add_attachments"]').empty().append(`<button class="btn btn-primary btn-xs" style="line-height: 1rem; font-size: 0.8rem; border-radius: 6px; background-color: #4c90ad; font-weight: bold;">Attach</button>`).click(function (e) {
+                        e.preventDefault()
+                        let cdn = $(item).attr('data-name')
+                        let cdt = cur_frm.fields_dict[table_name].grid.doctype
+                        let row = locals[cdt][cdn]
+                        show_multi_attach_dialog(frm, row, table_name)
+                    })
+                });
+            }
+        }
+    }
+}
+
+function show_multi_attach_dialog(frm, row, table_name) {
+    let pending = [];
+    let uploaded_count = 0;
+
+    let add_disclosure_row = (file_url) => {
+        frm.add_child('additional_disclosure', {
+            po: row.tas_po_ref || table_name,
+            item_color: row.item_color,
+            attachment: file_url,
+            remark: $remark.val() || '',
+        });
+        frm.refresh_field('additional_disclosure');
+        frm.dirty();
+    };
+
+    let file_uploader = new frappe.ui.FileUploader({
+        doctype: frm.doctype,
+        docname: frm.docname,
+        allow_multiple: true,
+        dialog_title: __('Add Attachments') + (row.item_color ? ` - ${row.item_color}` : ''),
+        on_success: (file_doc) => {
+            uploaded_count++;
+            if (file_doc.file_url) {
+                add_disclosure_row(file_doc.file_url);
+            } else {
+                let p = frappe.call({
+                    method: 'frappe.client.get_value',
+                    args: {
+                        doctype: 'File',
+                        filters: { name: file_doc.name },
+                        fieldname: 'file_url',
+                    },
+                    callback: function (res) {
+                        if (res.message && res.message.file_url) {
+                            add_disclosure_row(res.message.file_url);
+                        }
+                    }
+                });
+               
+                pending.push(p);
+            }
+        }
+    });
+
+    let dialog = file_uploader.dialog;
+    let $body = $(dialog.body);
+
+    // Sits as a sibling right after the uploader's own root element (drop-zone +
+    // file preview area), so it is untouched by the uploader's own re-renders.
+    let $remark_wrapper = $(`
+        <div class="custom-attachment-remark" style="display:none; margin-top:15px; padding-top:15px; border-top:1px solid var(--border-color);">
+            <label class="control-label" style="padding-bottom:5px;">${__('Remark')}</label>
+            <textarea class="form-control" rows="2"
+                placeholder="${__('This remark will be saved against every attachment added above')}"></textarea>
+            <p class="text-muted small" style="margin-top:3px;">${__('Applies to all files selected in this upload')}</p>
+        </div>
+    `).appendTo($body);
+    let $remark = $remark_wrapper.find('textarea');
+
+    // FileUploader's file preview area uses v-show (toggles inline display:none),
+    // so watch for that instead of hooking into Vue internals.
+    let observer = new MutationObserver(() => {
+        let has_files = $body.find('.file-preview-area').is(':visible');
+        $remark_wrapper.toggle(has_files);
+    });
+    observer.observe($body.get(0), { attributes: true, subtree: true, attributeFilter: ['style'] });
+
+    dialog.$wrapper.one('hidden.bs.modal', () => {
+        observer.disconnect();
+        Promise.all(pending).then(() => {
+            if (uploaded_count > 0) {
+                frm.refresh_field('additional_disclosure');
+                frm.save();
+            }
+        });
+    });
+}
 
 const check_missing_data_before_completion = async function (frm) {
     frappe.dom.unfreeze()

@@ -293,6 +293,26 @@
 
         <div class="text-left">
 
+        {% set additional_disclosure_details = additional_disclosure_table_details(doc.name) %}
+        <p style="font-size: 22px; text-align:center; background-color:#F5D2D2; padding: 5px 0px"><b>Additional Disclosure</b></p>
+        {% if additional_disclosure_details | length > 0 %}
+            {% for add in additional_disclosure_details %}
+                {% set attachments = (add.attachments).split(",") %}
+                <p style="font-size: 20px; text-align:center; padding-top: 20px" class="col-xs-12"><b> TAS PO : {{add.po}}, Item-Color: {{add.item_color}}</b></p><br>
+                <p style="font-size: 18px; text-align:center; padding: 10px 0px 2px 0px !important" class="col-xs-12"><b>Remarks : </b></p>
+                <p style="font-size: 18px; text-align:center;" class="col-xs-12">{{add.remarks or '-'}}</p><br>
+
+                {% if attachments | length > 0 %}
+                    {% for attachment in attachments %}
+                        <div class="col-xs-4 text-center" style="padding: 5px; page-break-inside: avoid !important;">
+                            <img src="{{ frappe.get_url() }}/{{attachment or ''}}" alt="{{attachment}}" width="300px" class="img-responsive" style="height: 300px !important; padding-top: 10px !important;">
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                 
+            {% endfor %}
+        {% endif %}
+
         {% for tab in tab_details %}
 
             {% if tab.tab_name == "Moisture Content" and doc.flooring_class != "HARDWOOD FLOORING" %}
