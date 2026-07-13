@@ -11,16 +11,17 @@
  "event": "Value Change",
  "idx": 0,
  "is_standard": 1,
- "message": "<p>Dear Quality Inspector, <br>\nYour submitted QI report has been placed on hold by {{doc.last_workflow_actor_fn}}. <br>\nComments: {{ doc.last_workflow_comment or 'On Hold'}} <br>\nFurther action will be communicated once the hold is resolved. <br>\n<br><br>\nThank you,<br>\n Workflow Notification System</p>\n",
+ "message": "<p>Dear Quality Inspector, <br>\nYour submitted QI report has been placed on hold by {{doc.last_workflow_actor_fn}}. <br>\nComments: {{ doc.last_workflow_comment or 'On Hold'}} <br>\nFurther action will be communicated once the hold is resolved. <br>\n<a href=\"{{ frappe.utils.get_url() }}/app/tas-quality-control/{{ doc.name }}\" target=\"_blank\">\n{{ frappe.utils.get_url() }}/app/tas-quality-control/{{ doc.name }}\n</a>\n<br><br>\nThank you,<br>\n Workflow Notification System</p>\n",
  "message_type": "Markdown",
- "modified": "2025-12-05 01:54:01.912791",
+ "modified": "2026-07-09 03:16:49.388884",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "QI Report Placed On Hold",
  "owner": "Administrator",
  "recipients": [
   {
-   "receiver_by_document_field": "user"
+   "receiver_by_document_field": "user",
+   "receiver_by_role": "QI Manager"
   }
  ],
  "send_system_notification": 0,

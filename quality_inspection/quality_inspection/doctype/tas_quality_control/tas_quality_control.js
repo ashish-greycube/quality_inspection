@@ -36,11 +36,17 @@ frappe.ui.form.on('TAS Quality Control', {
         if (frm.doc.docstatus < 2 && !frm.is_new()) {
             ////////////// Create PDF //////////////
             frm.add_custom_button(__("Report"), () => {
-                let url = `/api/method/quality_inspection.quality_inspection.doctype.tas_quality_control.tas_quality_control.get_document_report_pdf`;
-                let args = {
-                    doc: frm.doc
-                };
-                open_url_post(url, args, true);
+                // let url = `/api/method/quality_inspection.quality_inspection.doctype.tas_quality_control.tas_quality_control.get_document_report_pdf`;
+                // let args = {
+                //     doc: frm.doc
+                // };
+                // open_url_post(url, args, true);
+                frappe.call({
+                    method: "quality_inspection.quality_inspection.doctype.tas_quality_control.tas_quality_control.get_document_report_pdf",
+                    args: {
+                        "doc": frm.doc
+                    }
+                })
             })
 
             clickStatusColOfEachRow(frm)

@@ -16,6 +16,7 @@
   "vendor",
   "vendor_name",
   "flooring_class",
+  "report_pdf",
   "column_break_fvru",
   "user",
   "qi_user_full_name",
@@ -2340,13 +2341,18 @@
   {
    "fieldname": "section_break_vgxh",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "report_pdf",
+   "fieldtype": "Attach",
+   "label": "Report PDF"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
  "make_attachments_public": 1,
- "modified": "2026-07-08 01:11:21.660376",
+ "modified": "2026-07-09 02:25:28.482541",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "TAS Quality Control",

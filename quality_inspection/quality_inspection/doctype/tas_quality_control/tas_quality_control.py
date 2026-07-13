@@ -13,6 +13,13 @@ import json
 from six import string_types
 # from frappe.www.printview import get_print_style
 
+import os
+from bs4 import BeautifulSoup
+from frappe.utils import get_bench_path
+import pdfkit
+from frappe.utils.background_jobs import is_job_enqueued
+
+
 PASS_STATUS = ["Pass"]
 UNDETERMINED = ["Undetermined"]
 TODO_STATUS = ["To Do"]
@@ -832,96 +839,149 @@ def get_tas_po_items(vendor):
 
 @frappe.whitelist()
 def get_document_report_pdf(doc):
-	import pdfkit
+	if isinstance(doc, string_types):
+		doc = json.loads(doc)
+	job_id = f"generate_pdf::{doc.get('doctype')}::{doc.get('name')}"
 
+	if is_job_enqueued(job_id):
+		frappe.throw("Report generation is already in progress.")
+		return
+	
+	frappe.enqueue(
+		"quality_inspection.quality_inspection.doctype.tas_quality_control.tas_quality_control.generate_pdf_and_attach",
+		doc=doc,
+		queue="long",
+		job_id=job_id
+	)
+	frappe.msgprint(_("PDF generation has been queued. You will be notified when it is ready."), indicator="green", alert=True)
+
+def _inline_css(html):
+	"""Replace CSS <link> tags with inline <style> content read from the filesystem."""
+	soup = BeautifulSoup(html, "html.parser")
+	assets_path = os.path.join(get_bench_path(), "sites", "assets")
+
+	for link in soup.find_all("link", rel=lambda r: r and "stylesheet" in r):
+		href = link.get("href", "")
+		if not href or "/assets/" not in href:
+			continue
+		
+		assets_relative = href.split("?")[0].split("/assets/", 1)[-1]
+		file_path = os.path.join(assets_path, assets_relative)
+		if os.path.exists(file_path):
+			try:
+				with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+					css_content = f.read()
+				style_tag = soup.new_tag("style")
+				style_tag.string = css_content
+				link.replace_with(style_tag)
+			except Exception as e:
+				frappe.log_error(f"PDF CSS inline failed for {file_path}: {e}")
+
+	return str(soup)
+
+def generate_pdf_and_attach(doc, user=None):
+	import tempfile
 	if isinstance(doc, string_types):
 		doc = json.loads(doc)
 
-	# base_template_path = "frappe/www/printview.html"
-	# html = frappe.get_template("quality_inspection/templates/document_report_pdf.html").render(dict(doc=doc))
-	# html = frappe.render_template(
-	# 			base_template_path,
-	# 			{"body": html, "css": get_print_style(),"lang": frappe.local.lang, "title":"Quality Inspection Report"}
-	# 		)
+	try:
+		template_path = "quality_inspection/templates/document_report_pdf.html"
 
-	template_path = "quality_inspection/templates/document_report_pdf.html"
+		company = doc.get("company") or erpnext.get_default_company()
+		letter_head = get_letter_head_name(company)
+		header_html, footer_html = frappe.db.get_value("Letter Head", letter_head, ["content", "footer"])
 
-	company = doc.get("company") or erpnext.get_default_company()
-	letter_head = get_letter_head_name(company)
-	header_html, footer_html = frappe.db.get_value("Letter Head", letter_head, ["content", "footer"])
-	# print(footer_html, "==============footer_html====================", type(footer_html), "===========")
-
-	html = frappe.render_template(template_path,  dict(doc=doc))
-	# print(html, "================html")
-
-	import tempfile
-
-	header = tempfile.NamedTemporaryFile(delete=True,suffix='.html')
-	with open(header.name, 'w') as h:
-		h.write("""
-				<!DOCTYPE html>
-				<html>
-				<head>
-					<meta charset="UTF-8">
-				</head>
-				<body>
-		  			{0}
-				</body>
-				</html>
-				""".format(header_html.format(get_url=get_url())))
+		html = frappe.render_template(template_path,  dict(doc=doc))
+		html = _inline_css(html)
 		
-	footer = tempfile.NamedTemporaryFile(delete=True,suffix='.html')
-	with open(footer.name, 'w') as f:
-		f.write("""
-				<!DOCTYPE html>
-				<html>
-				<head>
-					<meta charset="UTF-8">
-				</head>
-				<body>
-		 		 <br>
-					{0}
-				</body>
-				</html>
-				""".format(footer_html.format(get_url=get_url())))
-	
-	options = {
-		'enable-internal-links': '',
-		"page-size": "A3", 
-		"margin-top": "28mm", "margin-right": "10mm", "margin-bottom": "30mm", "margin-left": "10mm",
-		"disable-javascript": "", 
-		"disable-local-file-access": "",
-		'encoding': "UTF-8",
-		'user-style-sheet': 'frappe/templates/styles/standard.css',
-		'header-html': header.name,
-		'header-right': '[page] of [topage]',
-		'footer-html': footer.name,
-		'footer-font-size': "9",
-		'custom-header': [
-        ('Accept-Encoding', 'gzip'),
-    ],
-	}
+		header = tempfile.NamedTemporaryFile(delete=True,suffix='.html')
+		with open(header.name, 'w') as h:
+			h.write("""
+					<!DOCTYPE html>
+					<html>
+					<head>
+						<meta charset="UTF-8">
+					</head>
+					<body>
+						{0}
+					</body>
+					</html>
+					""".format(header_html.format(get_url=get_url())))
+			
+		footer = tempfile.NamedTemporaryFile(delete=True,suffix='.html')
+		with open(footer.name, 'w') as f:
+			f.write("""
+					<!DOCTYPE html>
+					<html>
+					<head>
+						<meta charset="UTF-8">
+					</head>
+					<body>
+					<br>
+						{0}
+					</body>
+					</html>
+					""".format(footer_html.format(get_url=get_url())))
+		
+		options = {
+			'enable-internal-links': '',
+			"page-size": "A3", 
+			"margin-top": "28mm", "margin-right": "10mm", "margin-bottom": "30mm", "margin-left": "10mm",
+			"disable-javascript": "", 
+			"disable-local-file-access": "",
+			'encoding': "UTF-8",
+			'user-style-sheet': 'frappe/templates/styles/standard.css',
+			'header-html': header.name,
+			'header-right': '[page] of [topage]',
+			'footer-html': footer.name,
+			'footer-font-size': "9",
+			'custom-header': [
+			('Accept-Encoding', 'gzip'),
+		],
+		}
 
-	# print(options, "==============before options")
+		# print(options, "==============before options")
 
-	### cookies (for private images)
-	options.update(get_cookie_options())
-	html = inline_private_images(html)
+		### cookies (for private images)
+		options.update(get_cookie_options())                                                                                                                                  
+		html = inline_private_images(html)
 
-	# print(options, "==============after options")
+		# print(options, "==============after options")
 
-	# html, options = prepare_options(html, options)
+		# html, options = prepare_options(html, options)
 
-	docname = doc.get("name")
-	frappe.local.response.filename = "{name}.pdf".format(name=docname.replace(" ", "-").replace("/", "-"))
-	# frappe.local.response.filecontent = get_pdf(html, options=options)
+		docname = doc.get("name")
+		frappe.local.response.filename = "{name}.pdf".format(name=docname.replace(" ", "-").replace("/", "-"))
+		# frappe.local.response.filecontent = get_pdf(html, options=options)
 
-	frappe.local.response.filecontent = pdfkit.from_string(html, options=options or {}, verbose=True)
-	frappe.local.response.type = "pdf"
+		frappe.local.response.filecontent = pdfkit.from_string(html, options=options or {}, verbose=True)
+		frappe.local.response.type = "pdf"
 
-	header.close()
-	footer.close()
+		_file = frappe.new_doc("File")
+		_file.file_name = frappe.local.response.filename
+		_file.content = frappe.local.response.filecontent
+		_file.attached_to_doctype = doc.get("doctype")
+		_file.attached_to_name = doc.get("name")
+		_file.save(ignore_permissions=True)
 
+		if frappe.db.get_value("TAS Quality Control", doc.get("name"), "report_pdf") == '' or frappe.db.get_value("TAS Quality Control", doc.get("name"), "report_pdf") == None:
+			frappe.db.set_value("TAS Quality Control", doc.get("name"), "report_pdf", _file.file_url)
+
+		frappe.sendmail(
+			recipients=[frappe.session.user],
+			subject="PDF Generated for {0} - {1}".format(doc.get("doctype"), doc.get("name")),
+			message="<p>PDF has been generated and attached to the document {0}.</p>".format(frappe.utils.get_link_to_form(doc.get("doctype"), doc.get("name"))),
+			reference_doctype="TAS Quality Control",
+			reference_name=doc.get("name"),
+			now=True,
+		)
+
+		header.close()
+		footer.close()
+	except Exception as e:
+		log = frappe.log_error(frappe.get_traceback(), "PDF Generation Error")
+		doc = frappe.get_doc("TAS Quality Control", doc.get("name"))
+		doc.add_comment("Comment", _("An error occurred while generating the PDF. Please check the Error Log for details. {0}").format(frappe.utils.get_link_to_form("Error Log", log.name)))
 
 	# pdfkit.from_string(html, options=options or {}, verbose=True)
 
@@ -1057,6 +1117,22 @@ def doc_tab_wise_field_list():
 		},
 	]
 	return field_list
+
+def additional_disclosure_table_details(docname):
+	additional_disclosure_details = frappe.db.sql("""
+											SELECT
+												po,
+												item_color,
+												GROUP_CONCAT(DISTINCT remark SEPARATOR ', ') AS remarks,
+												GROUP_CONCAT(DISTINCT attachment SEPARATOR ', ') AS attachments
+											FROM
+												`tabAdditional Disclosure Attachments Details QI`
+											WHERE parent = "{0}"
+											GROUP BY
+												po,
+												item_color """.format(docname), as_dict=1)
+	
+	return additional_disclosure_details or []
 
 @frappe.whitelist()
 @frappe.validate_and_sanitize_search_inputs
