@@ -64,6 +64,7 @@
 
                     
                     <h2><b>Flooring Class: </b>{{doc.flooring_class}}</h2>
+                    <h2><b><a href="#additional_disclosure">Go to Additional Disclosure Attachments</a></b></h2>
                 </td>
                 <td>
                     <h2><b>Relative humidity :</b> {{doc.relative_humidity or ''}} </h2> 
@@ -294,7 +295,7 @@
         <div class="text-left">
 
         {% set additional_disclosure_details = additional_disclosure_table_details(doc.name) %}
-        <p style="font-size: 22px; text-align:center; background-color:#F5D2D2; padding: 5px 0px"><b>Additional Disclosure</b></p>
+        <p style="font-size: 22px; text-align:center; background-color:#F5D2D2; padding: 5px 0px" id="additional_disclosure"><b>Additional Disclosure</b></p>
         {% if additional_disclosure_details | length > 0 %}
             {% for add in additional_disclosure_details %}
                 {% set attachments = (add.attachments).split(",") %}
