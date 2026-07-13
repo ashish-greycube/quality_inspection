@@ -18,6 +18,9 @@ from bs4 import BeautifulSoup
 from frappe.utils import get_bench_path
 import pdfkit
 from frappe.utils.background_jobs import is_job_enqueued
+import base64
+import mimetypes
+from urllib.parse import urlparse, parse_qs, unquote
 
 
 PASS_STATUS = ["Pass"]
@@ -879,6 +882,42 @@ def _inline_css(html):
 
 	return str(soup)
 
+def _inline_cloud_storage_images(html):
+	"""Replace <img> tags backed by the cloud_storage app with inline base64 data.
+
+	cloud_storage's File.file_url is "/api/method/retrieve?key=<path>", a whitelisted
+	endpoint that issues a 302 redirect to a signed URL on the actual cloud bucket.
+	wkhtmltopdf has to follow that redirect to an external domain to fetch each <img> as
+	a page sub-resource, which is unreliable (and failed here). frappe.utils.pdf's own
+	inline_private_images() can't help either: it guesses the mime type from the URL
+	*path*, but for these URLs the file extension lives inside the `key` query param, not
+	the path, so mimetypes.guess_type() returns None and it silently skips them. Fetch the
+	bytes directly through the File doc (which cloud_storage resolves via boto3) instead of
+	relying on wkhtmltopdf's HTTP fetch.
+	"""
+	soup = BeautifulSoup(html, "html.parser")
+	for img in soup.find_all("img"):
+		src = img.get("src") or ""
+		if "/api/method/retrieve" not in src:
+			continue
+		try:
+			key = parse_qs(urlparse(src).query).get("key", [None])[0]
+			if not key:
+				continue
+			key = unquote(key)
+			file_name = frappe.db.get_value("File", {"file_url": ["like", f"%key={key}"]}, "name")
+			if not file_name:
+				continue
+			mime_type = mimetypes.guess_type(key)[0]
+			if not mime_type or not mime_type.startswith("image/"):
+				continue
+			content = frappe.get_doc("File", file_name).get_content()
+			img["src"] = f"data:{mime_type};base64,{base64.b64encode(content).decode()}"
+		except Exception as e:
+			frappe.log_error(f"PDF cloud image inline failed for {src}: {e}", "PDF Cloud Image Inline Error")
+
+	return str(soup)
+
 def generate_pdf_and_attach(doc, user=None):
 	import tempfile
 	if isinstance(doc, string_types):
@@ -943,8 +982,9 @@ def generate_pdf_and_attach(doc, user=None):
 		# print(options, "==============before options")
 
 		### cookies (for private images)
-		options.update(get_cookie_options())                                                                                                                                  
+		options.update(get_cookie_options())
 		html = inline_private_images(html)
+		html = _inline_cloud_storage_images(html)
 
 		# print(options, "==============after options")
 
@@ -964,8 +1004,7 @@ def generate_pdf_and_attach(doc, user=None):
 		_file.attached_to_name = doc.get("name")
 		_file.save(ignore_permissions=True)
 
-		if frappe.db.get_value("TAS Quality Control", doc.get("name"), "report_pdf") == '' or frappe.db.get_value("TAS Quality Control", doc.get("name"), "report_pdf") == None:
-			frappe.db.set_value("TAS Quality Control", doc.get("name"), "report_pdf", _file.file_url)
+		frappe.db.set_value("TAS Quality Control", doc.get("name"), "report_pdf", _file.file_url)
 
 		frappe.sendmail(
 			recipients=[frappe.session.user],

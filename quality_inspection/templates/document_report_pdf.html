@@ -118,8 +118,8 @@
                                         {% if tab.tab_name == "Moisture Content" %}
                                     {{ doc[equipement_fieldname] or "" }}
                                 {% else%}
-                                    {% for equip in doc[equipement_fieldname] %}
-                                        {{equip.equipment}}{% if loop.index != doc[equipement_fieldname]|length %},{%endif%}
+                                    {% for equip in doc[equipement_fieldname] or [] %}
+                                        {{equip.equipment}}{% if loop.index != (doc[equipement_fieldname] or [])|length %},{%endif%}
                                     {% endfor %}
                                 {% endif %}
                                     </td>
@@ -306,7 +306,8 @@
                 {% if attachments | length > 0 %}
                     {% for attachment in attachments %}
                         <div class="col-xs-4 text-center" style="padding: 5px; page-break-inside: avoid !important;">
-                            <img src="{{ frappe.get_url() }}/{{attachment or ''}}" alt="{{attachment}}" width="300px" class="img-responsive" style="height: 300px !important; padding-top: 10px !important;">
+                            {% set _url = attachment or '' %}
+                            <img src="{{ _url if _url.startswith('http') else frappe.get_url() + _url }}" alt="{{attachment}}" width="300px" class="img-responsive" style="height: 300px !important; padding-top: 10px !important;">
                         </div>
                     {% endfor %}
                 {% endif %}
@@ -336,7 +337,8 @@
                                         {% if item[field.url] %}
                                             <div class="col-xs-4 text-center" style="padding: 5px; page-break-inside: avoid !important;">
                                                 <span style="font-size: 18px;"><b>{{field.label}}</b></span><br> 
-                                                <img src="{{ frappe.get_url() }}/{{item[field.url] or ''}}" alt="{{field.url}}" width="300px" class="img-responsive" style="height: 300px !important; padding-top: 10px !important;">
+                                                {% set _url = item[field.url] or '' %}
+                                                <img src="{{ _url if _url.startswith('http') else frappe.get_url() + _url }}" alt="{{field.url}}" width="300px" class="img-responsive" style="height: 300px !important; padding-top: 10px !important;">
                                             </div>
                                         {% endif %}
                                     {% endfor %}
@@ -353,7 +355,8 @@
                                     {% if item[field.url] %}
                                         <div class="col-xs-4 text-center" style="padding: 5px; page-break-inside: avoid !important;">
                                             <span style="font-size: 18px;"><b>{{field.label}}</b></span> <br>
-                                            <img src="{{ frappe.get_url() }}/{{item[field.url] or ''}}" alt="{{field.url}}" width="300px" class="img-responsive" style="height: 300px !important; padding-top: 10px !important;">
+                                            {% set _url = item[field.url] or '' %}
+                                            <img src="{{ _url if _url.startswith('http') else frappe.get_url() + _url }}" alt="{{field.url}}" width="300px" class="img-responsive" style="height: 300px !important; padding-top: 10px !important;">
                                         </div>
                                     {% endif %}
                                 {% endfor %}
