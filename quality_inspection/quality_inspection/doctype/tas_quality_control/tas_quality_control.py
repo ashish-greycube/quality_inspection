@@ -1004,12 +1004,16 @@ def generate_pdf_and_attach(doc, user=None):
 		_file.attached_to_name = doc.get("name")
 		_file.save(ignore_permissions=True)
 
-		frappe.db.set_value("TAS Quality Control", doc.get("name"), "report_pdf", _file.file_url)
+		file_url = frappe.db.get_value("File",  {"attached_to_doctype": doc.get("doctype"), "attached_to_name": doc.get("name")}, "file_url")
+		frappe.db.set_value("TAS Quality Control", doc.get("name"), "report_pdf", _file.file_url or file_url)
 
 		frappe.sendmail(
 			recipients=[frappe.session.user],
 			subject="PDF Generated for {0} - {1}".format(doc.get("doctype"), doc.get("name")),
-			message="<p>PDF has been generated and attached to the document {0}.</p>".format(frappe.utils.get_link_to_form(doc.get("doctype"), doc.get("name"))),
+			message="<p>PDF has been generated and attached to the document {0}.</p><br><a href='{1}'>View Document</a>".format(
+					frappe.utils.get_link_to_form(doc.get("doctype"), doc.get("name")),
+					frappe.utils.get_url(frappe.db.get_value("TAS Quality Control", doc.get("name"), "report_pdf"))
+				),
 			reference_doctype="TAS Quality Control",
 			reference_name=doc.get("name"),
 			now=True,
