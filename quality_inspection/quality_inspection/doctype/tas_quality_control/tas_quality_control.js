@@ -52,19 +52,8 @@ frappe.ui.form.on('TAS Quality Control', {
             clickStatusColOfEachRow(frm)
         }
 
-        setTimeout(() => {
-            // $('button.grid-add-row').hide()
-            $(`div.form-group button.grid-add-row`).hide()
-            $(`div.form-group button.grid-remove-rows`).hide()
-            $(`div.form-group button.grid-remove-all-rows`).hide()
-            $(`div.modal-dialog button.grid-add-row`).show()
-            $(`div.modal-dialog button.grid-remove-rows`).show()
-            // $(`div[data-fieldname="tas_po_details"] button.grid-remove-rows`).show()
-        }, 1000)
-
-        setTimeout(() => {
-            $(`div[data-page-route="TAS Quality Control"] div.col-lg-2.layout-side-section`).hide()
-        }, 50)
+        setTimeout(hideGridBulkActionButtons, 1000)
+        setTimeout(hideFormSidebar, 50)
 
         update_child_table_field_property(frm)
         set_html_details(frm)
@@ -316,9 +305,17 @@ frappe.ui.form.on('TAS Quality Control', {
     },
 
     before_workflow_action: async (frm) => {
-        if (frm.doc.workflow_state){    
-            await frappe.db.set_value(frm.doc.doctype, frm.doc.name, 'previous_workflow_state', frm.doc.workflow_state)
-            await frappe.db.set_value(frm.doc.doctype, frm.doc.name, 'previous_workflow_actor', frm.doc.last_workflow_actor || '')
+        if (frm.doc.workflow_state){
+
+            const r = await frappe.db.set_value(frm.doc.doctype, frm.doc.name, {
+                previous_workflow_state: frm.doc.workflow_state,
+                previous_workflow_actor: frm.doc.last_workflow_actor || ''
+            })
+            if (r && r.message) {
+                frm.doc.modified = r.message.modified
+                frm.doc.previous_workflow_state = r.message.previous_workflow_state
+                frm.doc.previous_workflow_actor = r.message.previous_workflow_actor
+            }
         }
 
         if (frm.doc.workflow_state && frm.doc.workflow_state == "Completed"){
@@ -337,6 +334,19 @@ frappe.ui.form.on('TAS Quality Control', {
         }
     },
 })
+
+// Only the bulk add/remove-row buttons 
+function hideGridBulkActionButtons() {
+    $(`div.form-group button.grid-add-row`).hide()
+    $(`div.form-group button.grid-remove-rows`).hide()
+    $(`div.form-group button.grid-remove-all-rows`).hide()
+    $(`div.modal-dialog button.grid-add-row`).show()
+    $(`div.modal-dialog button.grid-remove-rows`).show()
+}
+
+function hideFormSidebar() {
+    $(`div[data-page-route="TAS Quality Control"] div.col-lg-2.layout-side-section`).hide()
+}
 
 function bindAttachButton(frm) {
     if (frm.doc.docstatus <= 1) {
@@ -446,8 +456,8 @@ const check_missing_data_before_completion = async function (frm) {
     frappe.dom.unfreeze()
     let promise = new Promise((resolve, reject) => {
         frappe.confirm('Are you sure you want to proceed?',
-            () => {
-                // action to perform if Yes is selected
+            async () => {
+                await frm.reload_doc()
                 frappe.call({
                     method: "check_all_data_mark_as_completed",
                     doc: frm.doc,
@@ -468,8 +478,10 @@ const check_missing_data_before_completion = async function (frm) {
 }
 
 const take_notes_on_workflow_action_change = async function (frm, action) {
+    await frm.reload_doc()
+
     let dialog_field = []
-    
+
     dialog_field.push(
         {
             fieldtype: "Table MultiSelect",
@@ -528,11 +540,11 @@ const take_notes_on_workflow_action_change = async function (frm, action) {
         title: __("Notes"),
         fields: dialog_field,
         primary_action_label: 'Add Notes',
-        primary_action: function (values) {
+        primary_action: async function (values) {
             // console.log(values, "===========values========")
             if (values) {
                 let remarks = [values]
-                frappe.call({
+                await frappe.call({
                     method: "fill_remarks_table",
                     doc: frm.doc,
                     args: {
@@ -540,32 +552,26 @@ const take_notes_on_workflow_action_change = async function (frm, action) {
                         "action": action
                     },
                 })
-                    .then(() => {
-                        refresh_field("quality_remarks");
-                        // console.log("===================")
-                        resolve()
-                        frm.reload_doc()
-
-                    })
+                // Must finish reloading frm.doc BEFORE resolve()
+                await frm.reload_doc()
+                refresh_field("quality_remarks");
+                resolve()
             }
             dialog.hide()
 
         },
         secondary_action_label: __('Skip'),
-        secondary_action: () => {
-            frappe.call({
+        secondary_action: async () => {
+            await frappe.call({
                     method: "set_comments_details",
                     doc: frm.doc,
                     args: {
                         "action": action
                     },
                 })
-            .then(() => {
-                dialog.hide()
-                resolve()
-                frm.reload_doc()
-            })
-            
+            dialog.hide()
+            await frm.reload_doc()
+            resolve()
         },
     })
 
@@ -824,175 +830,102 @@ let set_html_details = function (frm) {
     make_html(frm, "width_thick", "width_thickness_html")
 }
 
+function toggleRowFieldsDisplay(grid, rowname, fieldnames, visible) {
+    const grid_row = grid.grid_rows_by_docname[rowname]
+    for (const fieldname of fieldnames) {
+        grid_row.toggle_display(fieldname, visible)
+    }
+}
+
+function toggleRowFloatButton(grid, rowname, fieldname, show) {
+    grid.wrapper.find(`div[data-name="${rowname}"] div[data-fieldname="${fieldname}"] button.float-status-btn`).css('display', show ? '' : 'none')
+}
+
 let set_pallet_details_each_row_property = function (frm) {
+    const grid = frm.fields_dict['pallet_details'].grid
+
     frm.doc.pallet_details.forEach(e => {
-        if (e.pallet_type && e.pallet_type == "Plywood") {
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('corner_height', true);
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('current_width', true);
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('height_photo', true);
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('width_photo', true);
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('button_select', true);
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('iipa', false);
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('ippc_photo', false);
-            
-            frm.fields_dict['pallet_details'].grid.wrapper.find(`div[data-name="${e.name}"] div[data-fieldname="iipa"] button.float-status-btn`).css('display', 'none')
-            frm.fields_dict['pallet_details'].grid.wrapper.find(`div[data-name="${e.name}"] div[data-fieldname="button_select"] button.float-status-btn`).css('display', '')
+        if (e.pallet_type == "Plywood") {
+            toggleRowFieldsDisplay(grid, e.name, ['corner_height', 'current_width', 'height_photo', 'width_photo', 'button_select'], true)
+            toggleRowFieldsDisplay(grid, e.name, ['iipa', 'ippc_photo'], false)
+            toggleRowFloatButton(grid, e.name, 'iipa', false)
+            toggleRowFloatButton(grid, e.name, 'button_select', true)
         }
-        else if (e.pallet_type && e.pallet_type == "Hardwood") {
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('iipa', true);
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('ippc_photo', true);
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('corner_height', false);
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('current_width', false);
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('height_photo', false);
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('width_photo', false);
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('button_select', false);
-
-            frm.fields_dict['pallet_details'].grid.wrapper.find(`div[data-name="${e.name}"] div[data-fieldname="button_select"] button.float-status-btn`).css('display', 'none')
-            frm.fields_dict['pallet_details'].grid.wrapper.find(`div[data-name="${e.name}"] div[data-fieldname="iipa"] button.float-status-btn`).css('display', '')
-
+        else if (e.pallet_type == "Hardwood") {
+            toggleRowFieldsDisplay(grid, e.name, ['iipa', 'ippc_photo'], true)
+            toggleRowFieldsDisplay(grid, e.name, ['corner_height', 'current_width', 'height_photo', 'width_photo', 'button_select'], false)
+            toggleRowFloatButton(grid, e.name, 'button_select', false)
+            toggleRowFloatButton(grid, e.name, 'iipa', true)
         }
         else {
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('corner_height', false);
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('current_width', false);
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('width', false);
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('button_select', false);
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('height_photo', false);
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('width_photo', false);
-            frm.fields_dict['pallet_details'].grid.grid_rows_by_docname[e.name].toggle_display('ippc_photo', false);
-
-            frm.fields_dict['pallet_details'].grid.wrapper.find(`div[data-name="${e.name}"] div[data-fieldname="iipa"] button.float-status-btn`).css('display', 'none')
-            frm.fields_dict['pallet_details'].grid.wrapper.find(`div[data-name="${e.name}"] div[data-fieldname="button_select"] button.float-status-btn`).css('display', 'none')
-            
+            toggleRowFieldsDisplay(grid, e.name, ['corner_height', 'current_width', 'width', 'button_select', 'height_photo', 'width_photo', 'ippc_photo'], false)
+            toggleRowFloatButton(grid, e.name, 'iipa', false)
+            toggleRowFloatButton(grid, e.name, 'button_select', false)
         }
     })
 
-    if (frm.doc.docstatus == 0){
-        frm.fields_dict["pallet_details"].grid.grid_rows.forEach((row, idx) => {
-        row.columns['button_select'].click()
-    })
+    if (frm.doc.docstatus == 0) {
+        grid.grid_rows.forEach((row) => {
+            row.columns['button_select'].click()
+        })
+    }
+}
+
+// Show (in_list_view=1, hidden=0) or hide (hidden=1, in_list_view=0) a set of grid
+// columns in one shot. Replaces the repeated hidden/in_list_view pairs per field/table.
+function setFieldsVisibility(grid, fieldnames, visible) {
+    for (const fieldname of fieldnames) {
+        grid.update_docfield_property(fieldname, "hidden", visible ? 0 : 1)
+        grid.update_docfield_property(fieldname, "in_list_view", visible ? 1 : 0)
     }
 }
 
 // based on conditions hide unhide table columns
 let update_child_table_field_property = function (frm) {
-    let inner_outer_tables = create_child_table_list(frm, 'inner_and_outer_carton_details_')
-    if (inner_outer_tables.length > 0) {
-        for (const inner_table of inner_outer_tables) {
-            if (frm.doc.flooring_class == 'RC/SPC/WPC/LVGD') {
-                frm.fields_dict[inner_table].grid.update_docfield_property("carb_select", "hidden", 1);
-                frm.fields_dict[inner_table].grid.update_docfield_property("carb_select", "in_list_view", 0);
-                frm.fields_dict[inner_table].grid.reset_grid();
-            }
-            else {
-                frm.fields_dict[inner_table].grid.update_docfield_property("carb_select", "hidden", 0);
-                frm.fields_dict[inner_table].grid.update_docfield_property("carb_select", "in_list_view", 1);
-                frm.fields_dict[inner_table].grid.reset_grid();
-            }
-        }
+    const is_rc_spc = frm.doc.flooring_class == 'RC/SPC/WPC/LVGD'
+    const is_hardwood = frm.doc.flooring_class == 'HARDWOOD FLOORING'
+
+    for (const inner_table of create_child_table_list(frm, 'inner_and_outer_carton_details_')) {
+        const grid = frm.fields_dict[inner_table].grid
+        setFieldsVisibility(grid, ["carb_select"], !is_rc_spc)
+        grid.reset_grid()
     }
 
-    let over_wax_tables = create_child_table_list(frm, 'over_wax_and_edge_paint_')
-    if (over_wax_tables.length > 0) {
-        for (const over_table of over_wax_tables) {
-            if (frm.doc.flooring_class == 'RC/SPC/WPC/LVGD') {
-                frm.fields_dict[over_table].grid.update_docfield_property("over_wax_select", "hidden", 1);
-                frm.fields_dict[over_table].grid.update_docfield_property("over_wax_select", "in_list_view", 0);
-            }
-            else {
-                frm.fields_dict[over_table].grid.update_docfield_property("over_wax_select", "hidden", 0);
-                frm.fields_dict[over_table].grid.update_docfield_property("over_wax_select", "in_list_view", 1);
-            }
-
-            if (frm.doc.flooring_class == 'HARDWOOD FLOORING') {
-                frm.fields_dict[over_table].grid.update_docfield_property("edge_paint_select", "hidden", 1);
-                frm.fields_dict[over_table].grid.update_docfield_property("edge_paint_select", "in_list_view", 0);
-            }
-            else {
-                frm.fields_dict[over_table].grid.update_docfield_property("edge_paint_select", "hidden", 0);
-                frm.fields_dict[over_table].grid.update_docfield_property("edge_paint_select", "in_list_view", 1);
-            }
-            frm.fields_dict[over_table].grid.reset_grid();
-        }
+    for (const over_table of create_child_table_list(frm, 'over_wax_and_edge_paint_')) {
+        const grid = frm.fields_dict[over_table].grid
+        setFieldsVisibility(grid, ["over_wax_select"], !is_rc_spc)
+        setFieldsVisibility(grid, ["edge_paint_select"], !is_hardwood)
+        grid.reset_grid()
     }
 
-    let open_box_tables = create_child_table_list(frm, 'open_box_inspection_details_')
-    if (open_box_tables.length > 0) {
-        for (const open_table of open_box_tables) {
-            if (frm.doc.flooring_class == 'HARDWOOD FLOORING') {
-
-                // hide: Pad away
-                frm.fields_dict[open_table].grid.update_docfield_property("finished_board", "hidden", 1)
-                frm.fields_dict[open_table].grid.update_docfield_property("finished_board", "in_list_view", 0)
-                frm.fields_dict[open_table].grid.update_docfield_property("finished_board_2", "hidden", 1)
-                frm.fields_dict[open_table].grid.update_docfield_property("finished_board_2", "in_list_view", 0)
-                frm.fields_dict[open_table].grid.update_docfield_property("pad_away_select", "hidden", 1)
-                frm.fields_dict[open_table].grid.update_docfield_property("pad_away_select", "in_list_view", 0)
-            }
-            else {
-                // show: Pad away
-                frm.fields_dict[open_table].grid.update_docfield_property("finished_board", "hidden", 0)
-                frm.fields_dict[open_table].grid.update_docfield_property("finished_board", "in_list_view", 1)
-                frm.fields_dict[open_table].grid.update_docfield_property("finished_board_2", "hidden", 0)
-                frm.fields_dict[open_table].grid.update_docfield_property("finished_board_2", "in_list_view", 1)
-                frm.fields_dict[open_table].grid.update_docfield_property("pad_away_select", "hidden", 0)
-                frm.fields_dict[open_table].grid.update_docfield_property("pad_away_select", "in_list_view", 1)
-            }
-            frm.fields_dict[open_table].grid.reset_grid();
-        }
+    for (const open_table of create_child_table_list(frm, 'open_box_inspection_details_')) {
+        const grid = frm.fields_dict[open_table].grid
+        // Pad Away (and its evidence photos) doesn't apply to Hardwood Flooring
+        setFieldsVisibility(grid, ["finished_board", "finished_board_2", "pad_away_select"], !is_hardwood)
+        grid.reset_grid()
     }
 
-    let width_thickness_tables = create_child_table_list(frm, 'width_and_thickness_details_')
-    if (width_thickness_tables.length > 0) {
-        for (const width_table of width_thickness_tables) {
-            if (frm.doc.flooring_class == 'HARDWOOD FLOORING') {
-
-                // Show : Thickness
-                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_1", "hidden", 0)
-                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_1", "in_list_view", 1)
-                frm.fields_dict[width_table].grid.update_docfield_property("thickness", "hidden", 0)
-                frm.fields_dict[width_table].grid.update_docfield_property("thickness", "in_list_view", 1)
-
-                // Hide : Thickness without padding
-                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_2", "hidden", 1)
-                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_2", "in_list_view", 0)
-                frm.fields_dict[width_table].grid.update_docfield_property("thickness_without_padding_1", "hidden", 1)
-                frm.fields_dict[width_table].grid.update_docfield_property("thickness_without_padding_1", "in_list_view", 0)
-
-                // Hide : Thickness with padding
-                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_3", "hidden", 1)
-                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_3", "in_list_view", 0)
-                frm.fields_dict[width_table].grid.update_docfield_property("thickness_with_padding_1", "hidden", 1)
-                frm.fields_dict[width_table].grid.update_docfield_property("thickness_with_padding_1", "in_list_view", 0)
-            }
-            else {
-                // Hide : Thickness
-                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_1", "hidden", 1)
-                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_1", "in_list_view", 0)
-                frm.fields_dict[width_table].grid.update_docfield_property("thickness", "hidden", 1)
-                frm.fields_dict[width_table].grid.update_docfield_property("thickness", "in_list_view", 0)
-
-                // Show : Thickness without padding
-                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_2", "hidden", 0)
-                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_2", "in_list_view", 1)
-                frm.fields_dict[width_table].grid.update_docfield_property("thickness_without_padding_1", "hidden", 0)
-                frm.fields_dict[width_table].grid.update_docfield_property("thickness_without_padding_1", "in_list_view", 1)
-
-                // Show : Thickness with padding
-                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_3", "hidden", 0)
-                frm.fields_dict[width_table].grid.update_docfield_property("finished_board_3", "in_list_view", 1)
-                frm.fields_dict[width_table].grid.update_docfield_property("thickness_with_padding_1", "hidden", 0)
-                frm.fields_dict[width_table].grid.update_docfield_property("thickness_with_padding_1", "in_list_view", 1)
-            }
-            frm.fields_dict[width_table].grid.reset_grid();
-        }
-
+    for (const width_table of create_child_table_list(frm, 'width_and_thickness_details_')) {
+        const grid = frm.fields_dict[width_table].grid
+        // Hardwood reports a single "Thickness"; every other flooring class splits it
+        // into "without padding" / "with padding" readings.
+        setFieldsVisibility(grid, ["finished_board_1", "thickness"], is_hardwood)
+        setFieldsVisibility(grid, ["finished_board_2", "thickness_without_padding_1", "finished_board_3", "thickness_with_padding_1"], !is_hardwood)
+        grid.reset_grid()
     }
 }
 
+
+function prependGridHeaderRow(grid, marker_id, html) {
+    if (grid.wrapper.find('.grid-heading-row').find(`#${marker_id}`).length == 0) {
+        grid.wrapper.find('div.grid-heading-row').prepend(html)
+    }
+    grid.wrapper.find('.grid-heading-row').css('height', 'auto')
+}
+
 let set_row_above_table_header = function (frm) {
-    if (frm.doc.pallet_details.length  > 0){
-        if (frm.fields_dict.pallet_details.grid.wrapper.find('.grid-heading-row').find('#pallet_table').length == 0) {
-            frm.fields_dict.pallet_details.grid.wrapper.find('div.grid-heading-row').prepend(`
+    if (frm.doc.pallet_details.length > 0) {
+        prependGridHeaderRow(frm.fields_dict.pallet_details.grid, 'pallet_table', `
                 <div id="pallet_table" style="background-color: #f3f3f3;">
                     <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
                         <div class="" style="width:71px"></div>
@@ -1006,24 +939,17 @@ let set_row_above_table_header = function (frm) {
                         <div class="col grid-static-col col-xs-3" style="">Corner Reading</div>
                         <div class="col grid-static-col col-xs-3" style=""></div>
                         <div class="col grid-static-col col-xs-4" style=""></div>
-                        <div class="col grid-static-col col-xs-4 text-right" style="border-left:1px solid #3b3838">IPPC</div> 
+                        <div class="col grid-static-col col-xs-4 text-right" style="border-left:1px solid #3b3838">IPPC</div>
                         <div class="col grid-static-col col-xs-3" style=""></div>
                         <div class="" style="border-radius: 0px 10px 0px 0px; width: 30px;">
                         </div>
                     </div>
                 </div>
                 `)
-        }
-        frm.fields_dict.pallet_details.grid.wrapper.find('.grid-heading-row').css('height', 'auto')
     }
 
-
-    let color_match_tables = create_child_table_list(frm, 'color_match_and_embossing_details_')
-    if (color_match_tables.length > 0) {
-        for (const color_table of color_match_tables) {
-            if (frm.fields_dict[color_table].grid.wrapper.find('.grid-heading-row').find('#color_table').length == 0) {
-                // padding-left: 4.4%;
-                frm.fields_dict[color_table].grid.wrapper.find('div.grid-heading-row').prepend(`
+    for (const color_table of create_child_table_list(frm, 'color_match_and_embossing_details_')) {
+        prependGridHeaderRow(frm.fields_dict[color_table].grid, 'color_table', `
                         <div id="color_table" style="background-color: #f3f3f3;">
                             <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
                                 <div class="" style="width:71px"></div>
@@ -1041,17 +967,12 @@ let set_row_above_table_header = function (frm) {
                             </div>
                         </div>
                         `)
-            }
-            frm.fields_dict[color_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
-        }
     }
 
-    let over_wax_tables = create_child_table_list(frm, 'over_wax_and_edge_paint_')
-    if (over_wax_tables.length > 0) {
-        for (const over_wax_table of over_wax_tables) {
-            if (frm.fields_dict[over_wax_table].grid.wrapper.find('.grid-heading-row').find('#over_wax_table').length == 0) {
-                if (frm.doc.flooring_class == 'RC/SPC/WPC/LVGD') {
-                    frm.fields_dict[over_wax_table].grid.wrapper.find('div.grid-heading-row').prepend(`
+    for (const over_wax_table of create_child_table_list(frm, 'over_wax_and_edge_paint_')) {
+        let html
+        if (frm.doc.flooring_class == 'RC/SPC/WPC/LVGD') {
+            html = `
                             <div id="over_wax_table" style="background-color: #f3f3f3;" >
                                 <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
                                     <div class="" style="width:71px"></div>
@@ -1067,10 +988,10 @@ let set_row_above_table_header = function (frm) {
                                     </div>
                                 </div>
                             </div>
-                    `)
-                }
-                else if (frm.doc.flooring_class == 'HARDWOOD FLOORING') {
-                    frm.fields_dict[over_wax_table].grid.wrapper.find('div.grid-heading-row').prepend(`
+                    `
+        }
+        else if (frm.doc.flooring_class == 'HARDWOOD FLOORING') {
+            html = `
                         <div id="over_wax_table" style="background-color: #f3f3f3;" >
                                 <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
                                     <div class="" style="width:71px"></div>
@@ -1086,9 +1007,9 @@ let set_row_above_table_header = function (frm) {
                                     </div>
                                 </div>
                             </div>
-                        `)
-                } else {
-                    frm.fields_dict[over_wax_table].grid.wrapper.find('div.grid-heading-row').prepend(`
+                        `
+        } else {
+            html = `
                         <div id="over_wax_table" style="background-color: #f3f3f3;" >
                             <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
                                 <div class="" style="width:71px"></div>
@@ -1098,7 +1019,7 @@ let set_row_above_table_header = function (frm) {
                                 </div>
                                 <div class="col grid-static-col col-xs-4 " style="border-left:1px solid #3b3838">
                                 </div>
-                                <div class="col grid-static-col col-xs-8 text-left" style="">Over Wax 
+                                <div class="col grid-static-col col-xs-8 text-left" style="">Over Wax
                                 </div>
                                 <div class="col grid-static-col col-xs-4 text-center" style="border-left:1px solid #3b3838; border-right:1px solid #3b3838">Edge Paint
                                 </div>
@@ -1106,18 +1027,13 @@ let set_row_above_table_header = function (frm) {
                                 </div>
                             </div>
                         </div>
-                        `)
-                }
-            }
-            frm.fields_dict[over_wax_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
+                        `
         }
+        prependGridHeaderRow(frm.fields_dict[over_wax_table].grid, 'over_wax_table', html)
     }
 
-    let gloss_level_tables = create_child_table_list(frm, 'gloss_level_details_')
-    if (gloss_level_tables.length > 0) {
-        for (const gloss_level_table of gloss_level_tables) {
-            if (frm.fields_dict[gloss_level_table].grid.wrapper.find('.grid-heading-row').find('#gloss_level_table').length == 0) {
-                frm.fields_dict[gloss_level_table].grid.wrapper.find('div.grid-heading-row').prepend(`
+    for (const gloss_level_table of create_child_table_list(frm, 'gloss_level_details_')) {
+        prependGridHeaderRow(frm.fields_dict[gloss_level_table].grid, 'gloss_level_table', `
                     <div id="gloss_level_table" style="background-color: #f3f3f3;">
                         <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
                             <div class="" style="width:71px"></div>
@@ -1161,18 +1077,12 @@ let set_row_above_table_header = function (frm) {
                             </div>
                         </div>
                     </div>
-                    
+
                     `)
-            }
-            frm.fields_dict[gloss_level_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
-        }
     }
 
-    let moisture_content_tables = create_child_table_list(frm, 'moisture_content_details_')
-    if (moisture_content_tables.length > 0) {
-        for (const moisture_content_table of moisture_content_tables) {
-            if (frm.fields_dict[moisture_content_table].grid.wrapper.find('.grid-heading-row').find('#moisture_content_table').length == 0) {
-                frm.fields_dict[moisture_content_table].grid.wrapper.find('div.grid-heading-row').prepend(`
+    for (const moisture_content_table of create_child_table_list(frm, 'moisture_content_details_')) {
+        prependGridHeaderRow(frm.fields_dict[moisture_content_table].grid, 'moisture_content_table', `
                     <div id="moisture_content_table" style="background-color: #f3f3f3;">
                         <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
                             <div class="" style="width:71px"></div>
@@ -1190,7 +1100,7 @@ let set_row_above_table_header = function (frm) {
                             </div>
                             <div class="col grid-static-col col-xs-3 " style="">
                             </div>
-                            <div class="col grid-static-col col-xs-3 " style="">Finished Board 2 
+                            <div class="col grid-static-col col-xs-3 " style="">Finished Board 2
                             </div>
                             <div class="col grid-static-col col-xs-4 " style="border-right:1px solid #3b3838;">
                             </div>
@@ -1211,17 +1121,12 @@ let set_row_above_table_header = function (frm) {
                         </div>
                     </div>
                     `)
-            }
-            frm.fields_dict[moisture_content_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
-        }
     }
 
-    let open_box_tables = create_child_table_list(frm, 'open_box_inspection_details_')
-    if (open_box_tables.length > 0) {
-        for (const open_box_table of open_box_tables) {
-            if (frm.fields_dict[open_box_table].grid.wrapper.find('.grid-heading-row').find('#open_box_table').length == 0) {
-                if (frm.doc.flooring_class == 'HARDWOOD FLOORING') {
-                    frm.fields_dict[open_box_table].grid.wrapper.find('div.grid-heading-row').prepend(`
+    for (const open_box_table of create_child_table_list(frm, 'open_box_inspection_details_')) {
+        let html
+        if (frm.doc.flooring_class == 'HARDWOOD FLOORING') {
+            html = `
                     <div id="open_box_table" style="background-color: #f3f3f3;">
                         <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
                             <div class="" style="width:71px"></div>
@@ -1229,7 +1134,7 @@ let set_row_above_table_header = function (frm) {
                             </div>
                             <div class="col grid-static-col col-xs-4 text-center" style="border-left:1px solid #3b3838;"> Bowing
                             </div>
-                            <div class="col grid-static-col col-xs-4 text-center" style="border-left:1px solid #3b3838;" > Ledging Overwood 
+                            <div class="col grid-static-col col-xs-4 text-center" style="border-left:1px solid #3b3838;" > Ledging Overwood
                             </div>
                             <div class="col grid-static-col col-xs-4 " style="border-left:1px solid #3b3838;">
                             </div>
@@ -1253,10 +1158,10 @@ let set_row_above_table_header = function (frm) {
                             </div>
                         </div>
                     </div>
-                    `)
-                }
-                else{
-                    frm.fields_dict[open_box_table].grid.wrapper.find('div.grid-heading-row').prepend(`
+                    `
+        }
+        else {
+            html = `
                     <div id="open_box_table" style="background-color: #f3f3f3;">
                         <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
                             <div class="" style="width:71px"></div>
@@ -1264,7 +1169,7 @@ let set_row_above_table_header = function (frm) {
                             </div>
                             <div class="col grid-static-col col-xs-4 text-center" style="border-left:1px solid #3b3838;"> Bowing
                             </div>
-                            <div class="col grid-static-col col-xs-4 text-center" style="border-left:1px solid #3b3838;" > Ledging Overwood 
+                            <div class="col grid-static-col col-xs-4 text-center" style="border-left:1px solid #3b3838;" > Ledging Overwood
                             </div>
                             <div class="col grid-static-col col-xs-4 " style="border-left:1px solid #3b3838;">
                             </div>
@@ -1294,19 +1199,15 @@ let set_row_above_table_header = function (frm) {
                             </div>
                         </div>
                     </div>
-                    `)
-                }
-            }
-            frm.fields_dict[open_box_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
+                    `
         }
+        prependGridHeaderRow(frm.fields_dict[open_box_table].grid, 'open_box_table', html)
     }
 
-    let width_tables = create_child_table_list(frm, 'width_and_thickness_details_')
-    if (width_tables.length > 0) {
-        for (const width_table of width_tables) {
-            if (frm.fields_dict[width_table].grid.wrapper.find('.grid-heading-row').find('#width_table').length == 0) {
-                if (frm.doc.flooring_class == 'HARDWOOD FLOORING') {
-                    frm.fields_dict[width_table].grid.wrapper.find('div.grid-heading-row').prepend(`
+    for (const width_table of create_child_table_list(frm, 'width_and_thickness_details_')) {
+        let html
+        if (frm.doc.flooring_class == 'HARDWOOD FLOORING') {
+            html = `
                     <div id="width_table" style="background-color: #f3f3f3;">
                         <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
                             <div class="" style="width:71px"></div>
@@ -1316,11 +1217,11 @@ let set_row_above_table_header = function (frm) {
                             </div>
                             <div class="col grid-static-col col-xs-3" style="">
                             </div>
-                            <div class="col grid-static-col col-xs-3 text-right" style="border-left:1px solid #3b3838; padding-right: 5px !important;">Thickness 
+                            <div class="col grid-static-col col-xs-3 text-right" style="border-left:1px solid #3b3838; padding-right: 5px !important;">Thickness
                             </div>
                             <div class="col grid-static-col col-xs-3 text-left" style="padding-left: 0px !important;">
                             </div>
-                            <div class="col grid-static-col col-xs-3" style="border-left:1px solid #3b3838;"> 
+                            <div class="col grid-static-col col-xs-3" style="border-left:1px solid #3b3838;">
                             </div>
                             <div class="col grid-static-col col-xs-4" style="border-right:1px solid #3b3838;"> Manual Pull Test
                             </div>
@@ -1328,10 +1229,10 @@ let set_row_above_table_header = function (frm) {
                             </div>
                         </div>
                     </div>
-                    `)
-                }
-                else {
-                    frm.fields_dict[width_table].grid.wrapper.find('div.grid-heading-row').prepend(`
+                    `
+        }
+        else {
+            html = `
                     <div id="width_table" style="background-color: #f3f3f3;">
                         <div class="data-row row m-0" style="font-size:14px; color:#3b3838; border:1px solid #3b3838; border-radius: 10px 10px 0px 0px;">
                             <div class="" style="width:71px"></div>
@@ -1341,15 +1242,15 @@ let set_row_above_table_header = function (frm) {
                             </div>
                             <div class="col grid-static-col col-xs-3" style="">
                             </div>
-                            <div class="col grid-static-col col-xs-3 text-right" style="border-left:1px solid #3b3838; padding-right: 5px !important;"> Thickness without 
+                            <div class="col grid-static-col col-xs-3 text-right" style="border-left:1px solid #3b3838; padding-right: 5px !important;"> Thickness without
                             </div>
                             <div class="col grid-static-col col-xs-3 text-left" style="padding-left: 0px !important;"> padding
                             </div>
-                            <div class="col grid-static-col col-xs-3 text-right" style="border-left:1px solid #3b3838; padding-right: 5px !important;">Thickness with 
+                            <div class="col grid-static-col col-xs-3 text-right" style="border-left:1px solid #3b3838; padding-right: 5px !important;">Thickness with
                             </div>
                             <div class="col grid-static-col col-xs-3 text-left" style="padding-left: 0px !important;">Padding
                             </div>
-                            <div class="col grid-static-col col-xs-3" style="border-left:1px solid #3b3838;"> 
+                            <div class="col grid-static-col col-xs-3" style="border-left:1px solid #3b3838;">
                             </div>
                             <div class="col grid-static-col col-xs-4" style="border-right:1px solid #3b3838;"> Manual Pull Test
                             </div>
@@ -1357,12 +1258,9 @@ let set_row_above_table_header = function (frm) {
                             </div>
                         </div>
                     </div>
-                    `)
-                }
-                
-            }
-            frm.fields_dict[width_table].grid.wrapper.find('.grid-heading-row').css('height', 'auto')
+                    `
         }
+        prependGridHeaderRow(frm.fields_dict[width_table].grid, 'width_table', html)
     }
 }
 
