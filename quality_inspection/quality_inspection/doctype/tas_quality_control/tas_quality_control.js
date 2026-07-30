@@ -30,6 +30,7 @@ frappe.ui.form.on('TAS Quality Control', {
 
     refresh(frm) {
         bindAttachButton(frm)
+        hideGridRowFormButtons()
         if (frm.doc.docstatus > 0 && (frappe.user.has_role("System Manager") || frappe.user.has_role("QI Manager") || frappe.user.has_role("Quality User Internal"))){
             frm.set_df_property("tas_po_details", "read_only", 1)
         }
@@ -346,6 +347,21 @@ function hideGridBulkActionButtons() {
 
 function hideFormSidebar() {
     $(`div[data-page-route="TAS Quality Control"] div.col-lg-2.layout-side-section`).hide()
+}
+
+function hideGridRowFormButtons() {
+    if ($('#tas-qc-hide-row-form-buttons').length) return
+    $('head').append(`
+        <style id="tas-qc-hide-row-form-buttons">
+            div[data-page-route="TAS Quality Control"] .grid-insert-row,
+            div[data-page-route="TAS Quality Control"] .grid-insert-row-below,
+            div[data-page-route="TAS Quality Control"] .grid-duplicate-row,
+            div[data-page-route="TAS Quality Control"] .grid-move-row,
+            div[data-page-route="TAS Quality Control"] .grid-delete-row {
+                display: none !important;
+            }
+        </style>
+    `)
 }
 
 function bindAttachButton(frm) {
