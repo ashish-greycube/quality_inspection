@@ -821,7 +821,7 @@ def get_tas_po(vendor):
 		SELECT tas.name as tas_po, tas.vendor From `tabTAS Purchase Order Item` as ti 
 			INNER JOIN `tabTAS Purchase Order` as tas ON  tas.name = ti.parent 
 			WHERE tas.vendor = '{0}' and 
-			ti.name NOT IN (SELECT qi.tas_po_item_ref FROM `tabQuality Control Item QI` as qi WHERE qi.docstatus = 1) 
+			ti.name NOT IN (SELECT qi.tas_po_item_ref FROM `tabQuality Control Item QI` as qi WHERE qi.docstatus = 0) 
 			GROUP BY tas_po;""".format(vendor), as_dict=1, debug=1)
 	
 	return tas_po_list
@@ -832,7 +832,7 @@ def get_tas_po_items(vendor):
 		SELECT tas.name as tas_po, ti.item_no, ti.custom_qty_ord as qty, ti.color, ti.name as item_name 
 			From `tabTAS Purchase Order Item` as ti INNER JOIN `tabTAS Purchase Order` as tas ON  tas.name = ti.parent 
 			WHERE tas.vendor = '{0}' 
-							  and ti.name NOT IN (SELECT qi.tas_po_item_ref FROM `tabQuality Control Item QI` as qi WHERE qi.docstatus = 1);
+							  and ti.name NOT IN (SELECT qi.tas_po_item_ref FROM `tabQuality Control Item QI` as qi WHERE qi.docstatus = 0);
 	""".format(vendor), as_dict=1, debug=1)
 
 	# SELECT tas.name as tas_po, tas.vendor From `tabTAS Purchase Order Item` as ti INNER JOIN `tabTAS Purchase Order` as tas ON  tas.name = ti.parent 

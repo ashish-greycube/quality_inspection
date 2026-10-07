@@ -776,12 +776,15 @@ export default class GridRow {
 	}
 
 	set_dependant_property(df) {
+		let changed = false;
+
 		if (
 			!df.reqd &&
 			df.mandatory_depends_on &&
 			this.evaluate_depends_on_value(df.mandatory_depends_on)
 		) {
 			df.reqd = 1;
+			changed = true;
 		}
 
 		if (
@@ -790,6 +793,22 @@ export default class GridRow {
 			this.evaluate_depends_on_value(df.read_only_depends_on)
 		) {
 			df.read_only = 1;
+			changed = true;
+		}
+
+		return changed;
+	}
+
+	refresh_dependency() {
+		// called by v15 layout.js on form refresh; re-evaluate column dependencies
+		let changed = false;
+		for (const { df } of this.columns_list || []) {
+			if (df && (df.mandatory_depends_on || df.read_only_depends_on)) {
+				changed = this.set_dependant_property(df) || changed;
+			}
+		}
+		if (changed) {
+			this.refresh();
 		}
 	}
 

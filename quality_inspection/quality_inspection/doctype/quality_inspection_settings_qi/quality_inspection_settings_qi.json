@@ -7,6 +7,8 @@
  "field_order": [
   "defaults_tab",
   "pallet_default_value",
+  "attachments_section",
+  "restrict_tqc_upload_to_camera",
   "tab_break_iiih",
   "hide_pallet_information_guide",
   "pallet_information_guide",
@@ -40,6 +42,18 @@
    "in_list_view": 1,
    "label": "<b>Pallet Default Value</b> (inches)",
    "reqd": 1
+  },
+  {
+   "fieldname": "attachments_section",
+   "fieldtype": "Section Break",
+   "label": "Attachments"
+  },
+  {
+   "default": "0",
+   "description": "In TAS Quality Control, hide My Device, Library and Link in the upload dialog and block drag & drop of files, so attachments can only be added using the Camera.",
+   "fieldname": "restrict_tqc_upload_to_camera",
+   "fieldtype": "Check",
+   "label": "Camera Only Attachments in TAS Quality Control"
   },
   {
    "fieldname": "tab_break_iiih",
@@ -172,7 +186,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-09-29 01:34:00.537566",
+ "modified": "2026-10-07 12:00:00.000000",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Quality Inspection Settings QI",

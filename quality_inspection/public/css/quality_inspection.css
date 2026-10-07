@@ -22,3 +22,7 @@
 .float-status-btn:hover i {
   color: #B7B7B7;
 }
+/* TAS Quality Control: camera-only attachments (see public/js/tqc_camera_only.js) */
+body.qi-camera-only .file-uploader .btn-file-upload.qi-hide {
+  display: none !important;
+}
