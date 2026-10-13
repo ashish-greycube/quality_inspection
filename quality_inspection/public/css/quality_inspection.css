@@ -26,3 +26,11 @@
 body.qi-camera-only .file-uploader .btn-file-upload.qi-hide {
   display: none !important;
 }
+
+/* TAS Quality Control: TAS PO marked QC critical (see highlight_qc_critical_po) */
+.qc-critical-po .control-value,
+.qc-critical-po .like-disabled-input {
+  background-color: var(--bg-orange) !important;
+  color: var(--text-on-orange) !important;
+  font-weight: 600;
+}

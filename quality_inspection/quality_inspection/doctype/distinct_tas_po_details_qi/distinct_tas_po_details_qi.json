@@ -10,7 +10,8 @@
   "column_break_ddfv",
   "status",
   "column_break_rtrg",
-  "is_removed"
+  "is_removed",
+  "is_qc_critical"
  ],
  "fields": [
   {
@@ -43,13 +44,20 @@
   {
    "fieldname": "column_break_rtrg",
    "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_qc_critical",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "is_qc_critical"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-12-09 22:24:30.929500",
+ "modified": "2026-10-13 00:44:55.585717",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "Distinct TAS PO Details QI",

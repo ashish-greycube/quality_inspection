@@ -60,6 +60,7 @@ frappe.ui.form.on('TAS Quality Control', {
         set_html_details(frm)
         set_row_above_table_header(frm)
         set_pallet_details_each_row_property(frm)
+        highlight_qc_critical_po(frm)
 
         if (!frm.is_new() && frm.doc.workflow_state === "Draft" && (frappe.user.has_role("System Manager") || frappe.user.has_role("QI Manager") || frappe.user.has_role("Quality User Internal"))) {
             frm.add_custom_button(__("TAS Po"), function () {
@@ -270,6 +271,7 @@ frappe.ui.form.on('TAS Quality Control', {
                                     })
                                         .then(() => {
                                             refresh_field("tas_po_name_1");
+                                            highlight_qc_critical_po(frm);
                                         });
                                 }
                                 else {
@@ -285,6 +287,7 @@ frappe.ui.form.on('TAS Quality Control', {
                                     })
                                         .then(() => {
                                             refresh_field("tas_po_name_1");
+                                            highlight_qc_critical_po(frm);
                                         });
                                 }
                             }
@@ -819,6 +822,20 @@ function bindStatusOnRender(frm, child_table, fieldname) {
         }
 
     });
+}
+
+// highlight tas_po_name_1..10 whose TAS PO is QC critical (is_qc_critical in tas_po_details)
+let highlight_qc_critical_po = function (frm) {
+    const critical_po_list = (frm.doc.tas_po_details || [])
+        .filter(row => row.is_qc_critical && row.status != "Remove")
+        .map(row => row.tas_po)
+
+    for (let i = 1; i <= 10; i++) {
+        const field = frm.fields_dict["tas_po_name_" + i]
+        if (!field) continue
+        const po = frm.doc["tas_po_name_" + i]
+        field.$wrapper.toggleClass("qc-critical-po", !!po && critical_po_list.includes(po))
+    }
 }
 
 let make_html = function (frm, field_name, html_details) {

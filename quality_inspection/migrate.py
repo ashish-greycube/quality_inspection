@@ -1,4 +1,5 @@
 import frappe
+from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 
 def before_migrate():
     create_quality_roles_if_not_exists()
@@ -12,6 +13,7 @@ def after_migrate():
                                            table_fieldname='pallet_details')
     create_tab_wise_field_name_documents()
     create_installation_id_documents_and_set_flooting_class()
+    create_fields_for_quality_inspection(CUSTOM_FIELDS)
     
     ### Pallet Type QI ###
 
@@ -205,3 +207,30 @@ def create_custom_html_block_of_calendar():
         print("Custom HTML Block: Calendar View created")
     else:
         pass
+
+CUSTOM_FIELDS = {
+    "TAS Purchase Order": [
+        {
+            "fieldname": "custom_is_qc_critical",
+            "fieldtype" : "Check",
+            "label": "Is QC Critical?",
+            "insert_after": "items",
+            "is_custom_field": 1,
+            "is_system_generated": 0,
+            "read_only_depends_on": "eval:doc.custom_is_qc_critical == 1 || doc.status == 'Closed'"
+        },
+        {
+            "fieldname": "custom_qc_critical_details",
+            "fieldtype": "Table",
+            "label": "QC Critical Details",
+            "options": "TAS QC Critical Details QI",
+            "insert_after": "custom_is_qc_critical",
+            "is_custom_field": 1,
+            "is_system_generated": 0
+        },
+    ]
+}
+
+def create_fields_for_quality_inspection(fields):
+    print("Creating custom fields for Quality Inspection")
+    create_custom_fields(fields, update=True)

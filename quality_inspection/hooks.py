@@ -8,7 +8,7 @@ app_license = "mit"
 # Apps
 # ------------------
 
-# required_apps = []
+required_apps = ["tas_customizations"]
 
 # Each item in the list will be shown as an app in the apps page
 # add_to_apps_screen = [
@@ -47,6 +47,9 @@ app_include_js = "/assets/quality_inspection/js/tqc_camera_only.js"
 
 # include js in doctype views
 # doctype_js = {"doctype" : "public/js/doctype.js"}
+doctype_js = {
+    "TAS Purchase Order": "public/js/tas_purchase_order.js"
+}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -154,6 +157,13 @@ after_migrate = "quality_inspection.migrate.after_migrate"
 # 		"on_trash": "method"
 # 	}
 # }
+
+doc_events = {
+    "TAS Purchase Order": {
+        "validate": ["quality_inspection.api.add_items_in_qc_critical_table_in_tas_po", 
+                     "quality_inspection.api.update_qc_critical_notes_in_quality_control"]
+    }
+}
 
 # Scheduled Tasks
 # ---------------
