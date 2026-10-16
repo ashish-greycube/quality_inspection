@@ -119,7 +119,8 @@ frappe.ui.form.on('TAS Quality Control', {
                         frappe.call({
                             method: "quality_inspection.quality_inspection.doctype.tas_quality_control.tas_quality_control.get_tas_po",
                             args: {
-                                vendor: frm.doc.vendor
+                                vendor: frm.doc.vendor,
+                                qc_docname: frm.doc.name
                             },
                             callback: function (r) {
                                 let po_list = r.message
@@ -175,6 +176,7 @@ frappe.ui.form.on('TAS Quality Control', {
                             method: "quality_inspection.quality_inspection.doctype.tas_quality_control.tas_quality_control.get_tas_po_items",
                             args: {
                                 vendor: frm.doc.vendor,
+                                qc_docname: frm.doc.name
                             },
                             callback: function (r) {
                                 let item_list = r.message

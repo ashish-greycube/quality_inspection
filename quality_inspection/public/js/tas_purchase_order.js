@@ -1,24 +1,33 @@
 frappe.ui.form.on("TAS Purchase Order", {
-    custom_is_qc_critical(frm) {
-        add_qc_critical_items_in_table(frm);
-    }
-})
-
-// same logic as quality_inspection.api.add_items_in_qc_critical_table_in_tas_po (runs on validate)
-function add_qc_critical_items_in_table(frm) {
-    if (frm.doc.custom_is_qc_critical == 1) {
-        let qc_critical_details = frm.doc.custom_qc_critical_details || []
-        if (qc_critical_details.length != (frm.doc.items || []).length) {
-            for (const row of frm.doc.items || []) {
-                if (!qc_critical_details.some(d => d.item_no == row.item_no && d.color == row.color)) {
-                    frm.add_child("custom_qc_critical_details", {
-                        item_no: row.item_no,
-                        color: row.color,
-                        item_name: row.item_desc,
-                    });
-                }
-            }
-            frm.refresh_field("custom_qc_critical_details");
+   refresh(frm) {
+    frm.set_query('item_no', 'custom_qc_critical_details', (doc, cdt, cdn) => {
+    return {
+        query: "quality_inspection.api.get_tas_po_items", 
+        filters: {
+            tas_po: frm.doc.name
         }
     }
-}
+})
+   }
+})
+
+frappe.ui.form.on("TAS QC Critical Details QI", {
+    item_no(frm, cdt, cdn) {
+        let row = locals[cdt][cdn];
+        if (!row.item_no) {
+            frappe.model.set_value(cdt, cdn, { color: "", item_name: "" });
+            return;
+        }
+        // pick the first PO item with this item_no whose color is not already in the QC critical table
+        let used_colors = (frm.doc.custom_qc_critical_details || [])
+            .filter(d => d.name != row.name && d.item_no == row.item_no)
+            .map(d => d.color);
+        let po_item = (frm.doc.items || []).find(d => d.item_no == row.item_no && !used_colors.includes(d.color));
+        if (po_item) {
+            frappe.model.set_value(cdt, cdn, {
+                color: po_item.color,
+                item_name: po_item.item_desc,
+            });
+        }
+    }
+})

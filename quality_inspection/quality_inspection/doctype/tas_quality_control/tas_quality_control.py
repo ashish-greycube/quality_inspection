@@ -398,9 +398,13 @@ class TASQualityControl(Document):
 						not_used_items = frappe.db.sql(""" 
 							SELECT ti.item_no ,ti.item_desc, ti.custom_qty_ord as qty , ti.color, ti.parent, ti.name  
 								FROM `tabTAS Purchase Order Item` as ti 
-								WHERE ti.parent = '{0}' 
-								and ti.name NOT IN (SELECT qi.tas_po_item_ref FROM `tabQuality Control Item QI` as qi WHERE qi.docstatus = 1)
-						""".format(po.name), as_dict=1)
+								WHERE ti.parent = %(tas_po)s 
+								and NOT EXISTS (SELECT 1 FROM `tabQuality Control Item QI` as qi
+									WHERE qi.tas_po_item_ref = ti.name
+									AND qi.docstatus < 2
+									AND qi.parent != %(qc_docname)s)
+								ORDER BY ti.idx
+						""", {"tas_po": po.name, "qc_docname": self.name}, as_dict=1)
 
 						if (len(not_used_items) > 0):
 							for item in not_used_items:
@@ -446,7 +450,11 @@ class TASQualityControl(Document):
 		return self
 	
 	def set_po_ref_and_child_tables(self, po_list, parent_field, child_table):
-		for idx,unique in enumerate(po_list):
+		# loop over all slots, so slots of previously selected (now unselected) tas po get cleared
+		total_no_of_child_table=10
+		for idx in range(total_no_of_child_table):
+			unique = po_list[idx] if idx < len(po_list) else None
+
 			# parent po field
 			parent_po_field_name=parent_field+cstr(idx+1)
 			self.set(parent_po_field_name,unique)
@@ -466,6 +474,13 @@ class TASQualityControl(Document):
 
 	def set_tas_po_and_pallet_details_table(self, po_list):
 		if len(po_list) > 0:
+			# tas po having at least one item with qc critical remarks
+			qc_critical_po = set()
+			for idx in range(10):
+				for item in self.get("quality_control_item_"+cstr(idx+1)) or []:
+					if item.qc_critical_remarks:
+						qc_critical_po.add(item.tas_po_ref)
+
 			self.pallet_details = []
 			self.tas_po_details = []
 			for po in po_list:
@@ -474,7 +489,7 @@ class TASQualityControl(Document):
 
 				po_row = self.append("tas_po_details")
 				po_row.tas_po = po
-				po_row.is_qc_critical = frappe.db.get_value("TAS Purchase Order", po, "custom_is_qc_critical") or 0
+				po_row.is_qc_critical = 1 if po in qc_critical_po else 0
 
 	@frappe.whitelist()
 	def set_default_values_and_guidelines(self):
@@ -833,30 +848,32 @@ class TASQualityControl(Document):
 
 
 @frappe.whitelist()
-def get_tas_po(vendor):
+def get_tas_po(vendor, qc_docname):
 	tas_po_list = frappe.db.sql("""
 		SELECT tas.name as tas_po, tas.vendor From `tabTAS Purchase Order Item` as ti 
 			INNER JOIN `tabTAS Purchase Order` as tas ON  tas.name = ti.parent 
 			WHERE tas.vendor = '{0}' and tas.status != 'Closed'
 			and EXISTS (SELECT 1 FROM `tabQuality Control Item QI` as qi
 				WHERE qi.docstatus < 2
+				AND qi.parent != '{1}'
 				AND qi.tas_po_ref = tas.name
 				AND qi.item_color = CONCAT(IFNULL(ti.item_no, ''), '-', UPPER(IFNULL(ti.color, '')))) = 0 
-			GROUP BY tas_po;""".format(vendor), as_dict=1, debug=1)
+			GROUP BY tas_po;""".format(vendor, qc_docname), as_dict=1, debug=1)
 	
 	return tas_po_list
 
 @frappe.whitelist()
-def get_tas_po_items(vendor):	
+def get_tas_po_items(vendor, qc_docname):	
 	tas_po_items = frappe.db.sql("""
 		SELECT tas.name as tas_po, ti.item_no, ti.custom_qty_ord as qty, ti.color, ti.name as item_name 
 			From `tabTAS Purchase Order Item` as ti INNER JOIN `tabTAS Purchase Order` as tas ON  tas.name = ti.parent 
 			WHERE tas.vendor = '{0}' and tas.status != 'Closed'
 				and EXISTS (SELECT 1 FROM `tabQuality Control Item QI` as qi
 				WHERE qi.docstatus < 2
+				AND qi.parent != '{1}'
 				AND qi.tas_po_ref = tas.name
 				AND qi.item_color = CONCAT(IFNULL(ti.item_no, ''), '-', UPPER(IFNULL(ti.color, '')))) = 0;
-	""".format(vendor), as_dict=1, debug=1)
+	""".format(vendor, qc_docname), as_dict=1, debug=1)
 
 	# SELECT tas.name as tas_po, tas.vendor From `tabTAS Purchase Order Item` as ti INNER JOIN `tabTAS Purchase Order` as tas ON  tas.name = ti.parent 
 # WHERE tas.vendor = '001573' and ti.name NOT IN (SELECT qi.tas_po_item_ref FROM `tabQuality Control Item QI` as qi WHERE qi.docstatus = 1) GROUP BY tas_po;

@@ -211,20 +211,11 @@ def create_custom_html_block_of_calendar():
 CUSTOM_FIELDS = {
     "TAS Purchase Order": [
         {
-            "fieldname": "custom_is_qc_critical",
-            "fieldtype" : "Check",
-            "label": "Is QC Critical?",
-            "insert_after": "items",
-            "is_custom_field": 1,
-            "is_system_generated": 0,
-            "read_only_depends_on": "eval:doc.custom_is_qc_critical == 1 || doc.status == 'Closed'"
-        },
-        {
             "fieldname": "custom_qc_critical_details",
             "fieldtype": "Table",
             "label": "QC Critical Details",
             "options": "TAS QC Critical Details QI",
-            "insert_after": "custom_is_qc_critical",
+            "insert_after": "items",
             "is_custom_field": 1,
             "is_system_generated": 0
         },

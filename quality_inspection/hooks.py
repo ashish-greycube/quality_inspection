@@ -160,8 +160,7 @@ after_migrate = "quality_inspection.migrate.after_migrate"
 
 doc_events = {
     "TAS Purchase Order": {
-        "validate": ["quality_inspection.api.add_items_in_qc_critical_table_in_tas_po", 
-                     "quality_inspection.api.update_qc_critical_notes_in_quality_control"]
+        "validate": ["quality_inspection.api.set_qc_critical_flag_and_remars_in_qc"]
     }
 }
 
