@@ -5,7 +5,7 @@ import frappe
 import erpnext
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import cstr, flt, getdate, nowdate, add_to_date, now, get_url
+from frappe.utils import cstr, flt, getdate, nowdate, add_to_date, now, get_url, strip_html, get_fullname, get_url_to_form
 from frappe.desk.form.assign_to import get as get_assignees, add as add_assign
 
 from frappe.utils.pdf import get_pdf, prepare_options, inline_private_images, get_cookie_options
@@ -776,6 +776,7 @@ class TASQualityControl(Document):
 	def fill_remarks_table(self, remarks, action):
 		# print("========================fill_remarks_table======================", remarks)
 		notes = ""
+		mentioned_notes = None
 		actor = frappe.session.user
 
 		if remarks:
@@ -811,13 +812,15 @@ class TASQualityControl(Document):
 					else:
 						notes = notes + "<br>" + row.notes
 
-			elif data.get("notes"):
+			elif data.get("notes") and strip_html(data.get("notes")).strip():
 				row = self.append("quality_remarks", {})
 				row.action = action
 				row.actor = frappe.session.user
 				row.date_time = now()
+				# notes is html from text editor (may contain @mentions)
 				row.notes = data.get("notes")
-				notes = data.get("notes")
+				notes = strip_html(data.get("notes")).strip()
+				mentioned_notes = data.get("notes")
 				
 				# field_details = []
 				# if data.get("field_notes"):
@@ -835,6 +838,33 @@ class TASQualityControl(Document):
 
 		self.flags.ignore_validate = True
 		self.save()
+
+		if mentioned_notes:
+			self.notify_mentioned_users(mentioned_notes, action)
+
+	def notify_mentioned_users(self, notes, action):
+		from frappe.desk.notifications import extract_mentions
+		from frappe.desk.doctype.notification_log.notification_log import enqueue_create_notification
+
+		mentioned_users = list(set(extract_mentions(notes) or []))
+		recipients = [
+			user for user in mentioned_users
+			if user != frappe.session.user and frappe.db.get_value("User", {"name": user, "enabled": 1})
+		]
+		if not recipients:
+			return
+
+		subject = _("{0} tagged you in a note on {1} {2} ({3})").format(
+			frappe.bold(get_fullname(frappe.session.user)), frappe.bold(self.doctype), frappe.bold(self.name), action
+		)
+		enqueue_create_notification(recipients, {
+			"type": "Mention",
+			"document_type": self.doctype,
+			"document_name": self.name,
+			"subject": subject,
+			"from_user": frappe.session.user,
+			"email_content": notes,
+		})
 
 
 	@frappe.whitelist()
@@ -1232,3 +1262,29 @@ def get_qi_users_list(doctype, txt, searchfield, start, page_len, filters):
 	# print(users, "=============users=============")
 	unique = tuple(set(users))
 	return unique
+
+
+@frappe.whitelist()
+def get_qi_users_for_mentions(search_term=""):
+	# @mention list in workflow notes dialog, restricted to quality inspection users
+	from frappe.core.doctype.role.role import get_users
+
+	user_list = list(set(get_users("Quality User Internal") + get_users("Quality User External") + get_users("QI Manager")))
+	if not user_list:
+		return []
+
+	users = frappe.get_all("User",
+		filters={"enabled": 1, "name": ["in", [u for u in user_list if u not in ("Administrator", "Guest")]]},
+		fields=["name as id", "full_name as value"],
+		order_by="full_name asc")
+
+	search_term = (search_term or "").lower()
+	mentions = []
+	for user in users:
+		user.value = user.value or user.id
+		if search_term and search_term not in user.value.lower() and search_term not in user.id.lower():
+			continue
+		user.link = get_url_to_form("User Profile", user.id)
+		mentions.append(user)
+
+	return mentions

@@ -544,6 +544,17 @@ const take_notes_on_workflow_action_change = async function (frm, action) {
                 fields: table_fields,
             })
     }
+    else if (frm.doc.workflow_state && frm.doc.workflow_state == "Completed") {
+        dialog_field.push(
+            {
+                fieldtype: "Text Editor",
+                fieldname: "notes",
+                label: __("Notes"),
+                description: __("Type @ to tag a user, tagged users will be notified"),
+                enable_mentions: 1,
+                read_only: 0,
+            })
+    }
     else {
         dialog_field.push(
             {
@@ -595,6 +606,11 @@ const take_notes_on_workflow_action_change = async function (frm, action) {
             resolve()
         },
     })
+
+    // restrict @mention list to quality inspection users
+    if (dialog.fields_dict.notes) {
+        dialog.fields_dict.notes.mention_search_method = "quality_inspection.quality_inspection.doctype.tas_quality_control.tas_quality_control.get_qi_users_for_mentions"
+    }
 
     dialog.show()
     })
