@@ -28,6 +28,16 @@ UNDETERMINED = ["Undetermined"]
 TODO_STATUS = ["To Do"]
 NOT_APPLICABLE_STATUS = ["Not Applicable"]
 FAIL_STATUS = ['Fail - Minor', 'Fail - Major', 'Fail - Critical']
+# child tables (suffixed 1..10) having one row per quality_control_item_ row, linked using qc_item_ref
+QC_ITEM_REFERENCE_TABLES = {
+	"inner_and_outer_carton_details_": "Inner & Outer Carton",
+	"color_match_and_embossing_details_": "Color Match & Embossing",
+	"over_wax_and_edge_paint_": "Bevel, Over Wax & Edge Paint",
+	"gloss_level_details_": "Gloss Level",
+	"moisture_content_details_": "Moisture Content",
+	"open_box_inspection_details_": "Open Box Inspection",
+	"width_and_thickness_details_": "Width & Thickness",
+}
 class TASQualityControl(Document):
 
 	def onload(self):
@@ -469,8 +479,13 @@ class TASQualityControl(Document):
 			# set child table
 			if len(self.get(qi_items_table)) > 0:
 				for item in self.get(qi_items_table):
+					# qc item row is not saved yet, so set its name now to use it as qc_item_ref
+					# (row stays __islocal, so it is inserted with this name)
+					if not item.name:
+						item.name = frappe.generate_hash(length=10)
 					row = self.append(child_table_name, {})
 					row.item_color = item.item_color
+					row.qc_item_ref = item.name
 
 	def set_tas_po_and_pallet_details_table(self, po_list):
 		if len(po_list) > 0:
@@ -605,6 +620,64 @@ class TASQualityControl(Document):
 		if self.get(tas_po_field) == deleted_tas_po:
 			self.set(tas_po_field, "")
 			self.set(table_name, [])
+
+	@frappe.whitelist()
+	def remove_qc_item(self, table_name, row_name):
+		if self.docstatus != 0:
+			frappe.throw(_("Item can be removed only in Draft"))
+
+		if not table_name.startswith("quality_control_item_"):
+			frappe.throw(_("Invalid table {0}").format(table_name))
+
+		table_no = table_name.replace("quality_control_item_", "")
+		qc_item = next((d for d in self.get(table_name) if d.name == row_name), None)
+		if not qc_item:
+			frappe.throw(_("Item not found. Please reload the document."))
+
+		if len(self.get(table_name)) == 1:
+			frappe.throw(_("{0} is the last item of TAS PO {1}. To remove the whole PO, set its status to Remove in TAS PO Details.").format(qc_item.item_color, qc_item.tas_po_ref))
+
+		# rows created before qc_item_ref was introduced cannot be matched safely
+		reference_tables = [table + table_no for table in QC_ITEM_REFERENCE_TABLES]
+		for prefix, tab_name in QC_ITEM_REFERENCE_TABLES.items():
+			for row in self.get(prefix + table_no):
+				if not row.qc_item_ref:
+					frappe.throw(_("Cannot remove {0}: rows in {1} tab are not linked to items (QC Item Ref is missing).").format(qc_item.item_color, _(tab_name)))
+
+		removed_rows = set()
+		for table in reference_tables:
+			for row in list(self.get(table)):
+				if row.qc_item_ref == qc_item.name:
+					removed_rows.add(row.name)
+					self.remove(row)
+
+		for row in list(self.additional_disclosure):
+			if row.qc_item_ref == qc_item.name:
+				self.remove(row)
+
+		for row in list(self.missing_data_details):
+			if row.row_ref in removed_rows:
+				self.remove(row)
+
+		self.remove(qc_item)
+		self.update_qc_critical_flag(qc_item.tas_po_ref)
+		self.save()
+
+		self.add_comment("Comment", _("Item <b>{0}</b> ({1}, Qty: {2}) of TAS PO {3} removed by <b>{4}</b> along with its rows in all inspection tabs and attachments.").format(
+			qc_item.item_color, qc_item.item_name, qc_item.qty, qc_item.tas_po_ref, get_fullname(frappe.session.user)))
+
+		frappe.msgprint(_("Item {0} removed").format(qc_item.item_color), alert=True, indicator="green")
+
+	def update_qc_critical_flag(self, tas_po):
+		is_qc_critical = False
+		for idx in range(10):
+			for item in self.get("quality_control_item_"+cstr(idx+1)) or []:
+				if item.tas_po_ref == tas_po and item.qc_critical_remarks:
+					is_qc_critical = True
+
+		for po_row in self.tas_po_details:
+			if po_row.tas_po == tas_po:
+				po_row.is_qc_critical = 1 if is_qc_critical else 0
 
 	def create_child_table_list(self, child_table_name):
 		child_table_list = []

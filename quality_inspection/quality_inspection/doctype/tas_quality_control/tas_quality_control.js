@@ -393,6 +393,40 @@ function bindAttachButton(frm) {
             }
         }
     }
+    bindRemoveItemButton(frm)
+}
+
+function bindRemoveItemButton(frm) {
+    const can_remove = frm.doc.docstatus == 0 && frm.doc.workflow_state === "Draft"
+        && (frappe.user.has_role("System Manager") || frappe.user.has_role("QI Manager") || frappe.user.has_role("Quality User Internal"))
+    const po_table_list = create_child_table_list(frm, "quality_control_item_")
+    for (const table_name of po_table_list) {
+        cur_frm.fields_dict[table_name].$wrapper.find('.grid-body .rows').find(".grid-row").each(function (i, item) {
+            let $field = $(item).find('[data-fieldname="remove_item"]').empty().off('click')
+            if (!can_remove) return
+            $field.css({
+                "display": "flex",
+                "justify-content": "center",
+                "align-items": "center",
+                "width": "100%",
+                "height": "100%",
+            })
+            $field.append(`<button class="btn btn-danger btn-xs" style="line-height: 1rem; font-size: 0.8rem; border-radius: 6px; font-weight: bold;">Remove</button>`).on('click', function (e) {
+                e.preventDefault()
+                e.stopPropagation()
+                if (frm.is_dirty()) {
+                    frappe.msgprint(__("Please save the document before removing an item."))
+                    return
+                }
+                let cdn = $(item).attr('data-name')
+                let row = locals[cur_frm.fields_dict[table_name].grid.doctype][cdn]
+                frappe.confirm(__("Remove item <b>{0}</b>? Its rows in all inspection tabs and its attachments will be deleted.", [row.item_color]), () => {
+                    frm.call("remove_qc_item", { table_name: table_name, row_name: row.name })
+                        .then(() => frm.reload_doc())
+                })
+            })
+        });
+    }
 }
 
 function show_multi_attach_dialog(frm, row, table_name) {
@@ -403,6 +437,7 @@ function show_multi_attach_dialog(frm, row, table_name) {
         frm.add_child('additional_disclosure', {
             po: row.tas_po_ref || table_name,
             item_color: row.item_color,
+            qc_item_ref: row.name,
             attachment: file_url,
             remark: $remark.val() || '',
         });
