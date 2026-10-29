@@ -339,6 +339,14 @@ frappe.ui.form.on('TAS Quality Control', {
             take_notes_on_workflow_action_change(frm, frm.doc.workflow_state)
         }
     },
+    is_inspection_started: (frm) => {
+        if (frm.doc.is_inspection_started) {
+            frm.set_value("actual_time_of_inspection", frappe.datetime.now_datetime())
+        }
+        else {
+            frm.set_value("actual_time_of_inspection", "")
+        }
+    }
 })
 
 // Only the bulk add/remove-row buttons 

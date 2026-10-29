@@ -17,12 +17,14 @@
   "vendor_name",
   "flooring_class",
   "report_pdf",
+  "is_inspection_started",
   "column_break_fvru",
   "user",
   "qi_user_full_name",
   "qi_document_no",
   "relative_humidity",
   "temperature",
+  "actual_time_of_inspection",
   "amended_from",
   "section_break_cgfz",
   "tas_po_details",
@@ -2350,13 +2352,26 @@
    "fieldtype": "Attach",
    "label": "Report PDF",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_inspection_started",
+   "fieldtype": "Check",
+   "label": "<b style=\"font-size: 18px;\">Start Inspection</b>"
+  },
+  {
+   "depends_on": "eval:doc.is_inspection_started==1",
+   "fieldname": "actual_time_of_inspection",
+   "fieldtype": "Datetime",
+   "label": "Actual Time of Inspection",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
  "make_attachments_public": 1,
- "modified": "2026-10-13 00:26:20.269059",
+ "modified": "2026-10-28 23:10:43.678119",
  "modified_by": "Administrator",
  "module": "Quality Inspection",
  "name": "TAS Quality Control",
