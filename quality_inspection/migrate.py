@@ -211,14 +211,28 @@ def create_custom_html_block_of_calendar():
 CUSTOM_FIELDS = {
     "TAS Purchase Order": [
         {
+            "fieldname" : "custom_qc_section_break_1",
+            "fieldtype" : "Section Break",
+            "insert_after" : "items",
+            "is_custom_field" : 1,
+            "is_system_generated" : 0
+        },
+        {
             "fieldname": "custom_qc_critical_details",
             "fieldtype": "Table",
             "label": "QC Critical Details",
             "options": "TAS QC Critical Details QI",
-            "insert_after": "items",
+            "insert_after": "custom_qc_section_break",
             "is_custom_field": 1,
             "is_system_generated": 0
         },
+        {
+            "fieldname": "custom_qc_section_break_2",
+            "fieldtype": "Section Break",
+            "insert_after": "custom_qc_critical_details",
+            "is_custom_field": 1,
+            "is_system_generated": 0
+        }
     ]
 }
 
