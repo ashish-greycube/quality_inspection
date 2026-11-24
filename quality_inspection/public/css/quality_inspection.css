@@ -27,9 +27,14 @@ body.qi-camera-only .file-uploader .btn-file-upload.qi-hide {
   display: none !important;
 }
 
-/* TAS Quality Control: TAS PO marked QC critical (see highlight_qc_critical_po) */
+/* TAS Quality Control: TAS PO / item row marked QC critical (see highlight_qc_critical_po) */
 .qc-critical-po .control-value,
-.qc-critical-po .like-disabled-input {
+.qc-critical-po .like-disabled-input,
+.qc-critical-row > .data-row,
+.qc-critical-row > .data-row .grid-static-col,
+.qc-critical-row > .data-row .row-check,
+.qc-critical-row > .data-row .row-index,
+.qc-critical-row > .data-row .form-control {
   background-color: var(--bg-orange) !important;
   color: var(--text-on-orange) !important;
   font-weight: 600;

@@ -886,6 +886,7 @@ function bindStatusOnRender(frm, child_table, fieldname) {
 }
 
 // highlight tas_po_name_1..10 whose TAS PO is QC critical (is_qc_critical in tas_po_details)
+// and quality_control_item_1..10 rows having qc_critical_remarks
 let highlight_qc_critical_po = function (frm) {
     const critical_po_list = (frm.doc.tas_po_details || [])
         .filter(row => row.is_qc_critical && row.status != "Remove")
@@ -896,6 +897,11 @@ let highlight_qc_critical_po = function (frm) {
         if (!field) continue
         const po = frm.doc["tas_po_name_" + i]
         field.$wrapper.toggleClass("qc-critical-po", !!po && critical_po_list.includes(po))
+
+        const grid_rows = frm.fields_dict["quality_control_item_" + i].grid.grid_rows || []
+        grid_rows.forEach((row) => {
+            row.wrapper.toggleClass("qc-critical-row", !!row.doc.qc_critical_remarks)
+        })
     }
 }
 
